@@ -1,2 +1,2 @@
 Leeme. 
-Aqui podras colaborar para el protecto HorWorks
+Aqui podras colaborar para el proyecto HorWorks
