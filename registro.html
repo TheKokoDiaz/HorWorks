@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regístrate - HorWorks</title>
+    <!-- Hojas de estilos -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/registro.css">
+</head>
+<body>
+
+    <main class="register-card">
+        <h1 class="register-title">Regístrate</h1>
+        
+        <form id="registerForm" autocomplete="on" onsubmit="handleRegister(event)">
+            <div class="form-grid">
+                
+                <!-- Columna Izquierda -->
+                
+                <!-- NOMBRE -->
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="nombre" 
+                            name="nombre" 
+                            class="form-input" 
+                            required 
+                            placeholder="WXYZ"
+                            autocomplete="given-name"
+                        >
+                    </div>
+                </div>
+
+                <!-- USUARIO -->
+                <div class="form-group">
+                    <label for="usuario" class="form-label">Usuario</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="usuario" 
+                            name="usuario" 
+                            class="form-input" 
+                            required 
+                            placeholder="WXYZ"
+                            autocomplete="username"
+                        >
+                    </div>
+                </div>
+
+                <!-- APELLIDOS -->
+                <div class="form-group">
+                    <label for="apellidos" class="form-label">Apellidos</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="apellidos" 
+                            name="apellidos" 
+                            class="form-input" 
+                            required 
+                            placeholder="WXYZ"
+                            autocomplete="family-name"
+                        >
+                    </div>
+                </div>
+
+                <!-- CONTRASEÑA -->
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input form-input-password" 
+                            required 
+                            placeholder="WXYZ"
+                            autocomplete="new-password"
+                        >
+                        <!-- Botón para alternar visibilidad de contraseña -->
+                        <button 
+                            type="button" 
+                            id="togglePassword" 
+                            class="password-toggle" 
+                            aria-label="Mostrar contraseña"
+                        >
+                            <!-- Icono ojo tachado (password oculto por defecto) -->
+                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TELEFONO -->
+                <div class="form-group">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="tel" 
+                            id="telefono" 
+                            name="telefono" 
+                            class="form-input" 
+                            required 
+                            placeholder="5555"
+                            autocomplete="tel"
+                        >
+                    </div>
+                </div>
+
+                <!-- CORREO -->
+                <div class="form-group">
+                    <label for="correo" class="form-label">Correo</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="email" 
+                            id="correo" 
+                            name="correo" 
+                            class="form-input" 
+                            required 
+                            placeholder="WXYZ@email.com"
+                            autocomplete="email"
+                        >
+                    </div>
+                </div>
+
+                <!-- Acepto Términos y Condiciones -->
+                <div class="checkbox-row">
+                    <label class="checkbox-container">
+                        Acepto los términos y condiciones
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="actions-row">
+                    <a href="login.html" class="btn-regresar">Regresar</a>
+                    <button type="submit" class="btn-registrar">Regístrate</button>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+    <!-- Script de interactividad básica -->
+    <script>
+        const passwordInput = document.getElementById('password');
+        const togglePasswordButton = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        // SVG del ojo abierto (para cuando la contraseña está visible)
+        const eyeOpenSVG = `
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        `;
+
+        // SVG del ojo tachado (para cuando la contraseña está oculta)
+        const eyeClosedSVG = `
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+        `;
+
+        togglePasswordButton.addEventListener('click', () => {
+            // Alternar el tipo de entrada de password a text y viceversa
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Alternar los iconos SVG y la etiqueta accesible
+            if (type === 'text') {
+                eyeIcon.innerHTML = eyeOpenSVG;
+                togglePasswordButton.setAttribute('aria-label', 'Ocultar contraseña');
+            } else {
+                eyeIcon.innerHTML = eyeClosedSVG;
+                togglePasswordButton.setAttribute('aria-label', 'Mostrar contraseña');
+            }
+        });
+
+        // Simular el proceso de envío del formulario de registro
+        function handleRegister(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const apellidos = document.getElementById('apellidos').value;
+            const usuario = document.getElementById('usuario').value;
+            const correo = document.getElementById('correo').value;
+            
+            console.log('Intento de registro:', { nombre, apellidos, usuario, correo });
+            alert('Registro simulado correctamente para el usuario: ' + usuario);
+        }
+    </script>
+</body>
+</html>
