@@ -1,0 +1,65 @@
+body{
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: row;
+}
+
+aside{
+    width: 6rem;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+    background-color: darkblue;
+
+    gap: 0.5rem;
+
+    button{
+        width: 90%;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0);
+
+        font-weight: 400;
+
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        flex-direction: column;
+
+        gap: 0.2rem;
+        padding: 0.5rem;
+        cursor: pointer;
+
+        img{
+            width: 2rem;
+            aspect-ratio: 1/1;
+        }
+        
+        svg{
+            width: 2rem;
+            aspect-ratio: 1/1;
+            stroke: white;
+            stroke-width: 2px;
+        }
+    }
+
+    button:hover{
+        background-color: cornflowerblue;
+    }
+}
+
+main{
+    width: calc(100% - 6rem);
+    padding: 2rem;
+    
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+}
