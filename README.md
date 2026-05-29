@@ -1,11 +1,25 @@
-Leeme. 
-Aqui podras colaborar para el proyecto HorWorks.
+# Administrador de tareas
+## Equipo
+- Cesár Iván Herrera Reyes
+- Jimena Vásquez Trinidad
+- Pedro Ángel Santos Bautista
+- Bryan Alexis Bautista Aviles
+- Julio Alfredo Vázquez
 
-gg izi
+# Lenguajes
+## FrontEnd
+- HTML
+- CSS
+- JavaScript
 
-pueden tus ideas cambiar el mundo?
+## BackEnd
+- Python
+- Flask
 
-Favor de utilizar REACT
+## Base de Datos
+- MySQL
+
+# HOR HOR 
 ====================================================================================================
 ====================================================================================================
 ===============================================+*#%%#**+============================================

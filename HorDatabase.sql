@@ -1,6 +1,8 @@
+/* BASE DE DATOS */
 CREATE DATABASE DB_HORWORKS;
 USE DB_HORWORKS;
 
+/* TABLAS */
 CREATE TABLE HOR_Usuario(
 	USU_Id				INT				AUTO_INCREMENT,
     USU_Nombre			NVARCHAR(30)	NOT NULL,
@@ -40,14 +42,11 @@ CREATE TABLE HOR_Ajustes(
     AJU_NotiPersistente BOOL DEFAULT 1,
     AJU_NotiSonido      BOOL DEFAULT 1,
     AJU_NotiDesvio      BOOL DEFAULT 1,
-    AJU_NotiCorreo      BOOL DEFAULT 1;
+    AJU_NotiCorreo      BOOL DEFAULT 1
 );
 
-USE DB_HORWORKS;
-
--- ========================================================
--- 1. INSERTAR DATOS EN HOR_Usuario
--- ========================================================
+/* REGISTROS */
+-- HOR_Usuario
 -- Nota: Insertamos 4 usuarios. Los dos primeros actuarán como auditores.
 INSERT INTO HOR_Usuario (USU_Nombre, USU_Usuario, USU_Correo, USU_Contrasenia, USU_Foto, USU_Estado, USU_Tickets)
 VALUES 
@@ -56,10 +55,7 @@ VALUES
 ('Juan Pérez', 'juan_dev', 'juan@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan', 1, 10),
 ('Sofía López', 'sofia_design', 'sofia@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia', 1, 2);
 
-
--- ========================================================
--- 2. INSERTAR DATOS EN HOR_Equipo
--- ========================================================
+-- EN HOR_Equipo
 -- Enlazamos EQU_Auditor con los IDs de Carlos (1) y Ana (2)
 INSERT INTO HOR_Equipo (EQU_Nombre, EQU_Foto, EQU_Auditor)
 VALUES 
@@ -67,9 +63,8 @@ VALUES
 ('Equipo de Diseño UI/UX', 'https://api.dicebear.com/7.x/identicon/svg?seed=Design', 2);
 
 
--- ========================================================
--- 3. INSERTAR DATOS EN HOR_Grupos (Asociación Usuario-Equipo)
--- ========================================================
+-- HOR_Grupos
+-- Asociación Usuario-Equipo
 INSERT INTO HOR_Grupos (USU_Id, EQU_Id)
 VALUES 
 (1, 1), -- Carlos en el Equipo Backend
@@ -77,10 +72,7 @@ VALUES
 (2, 2), -- Ana en el Equipo de Diseño
 (4, 2); -- Sofía en el Equipo de Diseño
 
-
--- ========================================================
--- 4. INSERTAR DATOS EN HOR_Ajustes
--- ========================================================
+-- HOR_Ajustes
 INSERT INTO HOR_Ajustes (USU_Id, AJU_Tema, AJU_Idioma, AJU_ZonaHoraria, AJU_FormatoHora, AJU_NotiPersistente, AJU_NotiSonido, AJU_NotiDesvio, AJU_NotiCorreo)
 VALUES 
 (1, 'oscuro', 'es-MX', 'GMT-06:00', 24, 1, 1, 0, 1),
@@ -88,9 +80,8 @@ VALUES
 (3, 'azul', 'en-US', 'GMT-05:00', 24, 0, 1, 0, 0),
 (4, 'rosa', 'es-MX', 'GMT-06:00', 12, 1, 1, 1, 1);
 
-
+/* PROCEDIMIENTOS ALMACENADOS */
 DELIMITER $$
-
 CREATE PROCEDURE SP_ObtenerAjustesUsuario(IN p_usuario_id INT)
     BEGIN
         SELECT 
@@ -105,12 +96,9 @@ CREATE PROCEDURE SP_ObtenerAjustesUsuario(IN p_usuario_id INT)
         LEFT JOIN HOR_Usuario aud ON e.EQU_Auditor = aud.USU_Id
     WHERE u.USU_Id = p_usuario_id;
 END$$
-
 DELIMITER ;
 
-
 DELIMITER $$
-
 CREATE PROCEDURE SP_ActualizarPreferencias(
     IN p_usuario_id INT,
     IN p_tema VARCHAR(20),
@@ -133,5 +121,4 @@ BEGIN
         USU_NotiCorreo = p_correo
     WHERE USU_Id = p_usuario_id;
 END$$
-
 DELIMITER ;
