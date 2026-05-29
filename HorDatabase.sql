@@ -75,10 +75,10 @@ VALUES
 -- HOR_Ajustes
 INSERT INTO HOR_Ajustes (USU_Id, AJU_Tema, AJU_Idioma, AJU_ZonaHoraria, AJU_FormatoHora, AJU_NotiPersistente, AJU_NotiSonido, AJU_NotiDesvio, AJU_NotiCorreo)
 VALUES 
-(1, 'oscuro', 'es-MX', 'GMT-06:00', 24, 1, 1, 0, 1),
-(2, 'claro', 'es-MX', 'GMT-06:00', 12, 1, 0, 1, 1),
+(1, 'verde', 'es-MX', 'GMT-06:00', 24, 1, 1, 1, 1),
+(2, 'azul', 'es-MX', 'GMT-06:00', 12, 1, 1, 1, 1),
 (3, 'azul', 'en-US', 'GMT-05:00', 24, 0, 1, 0, 0),
-(4, 'rosa', 'es-MX', 'GMT-06:00', 12, 1, 1, 1, 1);
+(4, 'naranja', 'es-MX', 'GMT-06:00', 12, 1, 1, 1, 1);
 
 /* PROCEDIMIENTOS ALMACENADOS */
 DELIMITER $$
