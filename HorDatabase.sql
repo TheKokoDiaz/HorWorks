@@ -1,4 +1,5 @@
 /* BASE DE DATOS */
+-- DROP DATABASE DB_HORWORKS;
 CREATE DATABASE DB_HORWORKS;
 USE DB_HORWORKS;
 
@@ -42,7 +43,10 @@ CREATE TABLE HOR_Ajustes(
     AJU_NotiPersistente BOOL DEFAULT 1,
     AJU_NotiSonido      BOOL DEFAULT 1,
     AJU_NotiDesvio      BOOL DEFAULT 1,
-    AJU_NotiCorreo      BOOL DEFAULT 1
+    AJU_NotiCorreo      BOOL DEFAULT 1,
+    
+    PRIMARY KEY(USU_Id),
+    FOREIGN KEY(USU_Id) REFERENCES HOR_Usuario(USU_Id)
 );
 
 /* REGISTROS */
@@ -61,7 +65,6 @@ INSERT INTO HOR_Equipo (EQU_Nombre, EQU_Foto, EQU_Auditor)
 VALUES 
 ('Equipo de Desarrollo Backend', 'https://api.dicebear.com/7.x/identicon/svg?seed=Backend', 1),
 ('Equipo de Diseño UI/UX', 'https://api.dicebear.com/7.x/identicon/svg?seed=Design', 2);
-
 
 -- HOR_Grupos
 -- Asociación Usuario-Equipo
