@@ -40,7 +40,7 @@ CREATE TABLE HOR_Ajustes(
     AJU_NotiPersistente BOOL DEFAULT 1,
     AJU_NotiSonido      BOOL DEFAULT 1,
     AJU_NotiDesvio      BOOL DEFAULT 1,
-    AJU_NotiCorreo      BOOL DEFAULT 1;
+    AJU_NotiCorreo      BOOL DEFAULT 1
 );
 
 USE DB_HORWORKS;
