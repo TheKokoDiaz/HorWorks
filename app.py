@@ -2,8 +2,7 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-@app.route('/index' \
-'')
+@app.route('/index')
 def index():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
@@ -21,16 +20,11 @@ def registro():
     # y enviarlas a la plantilla HTML usando render_template
     return render_template('/registro.html')
 
-@app.route('/home')
+@app.route('/')
 def home():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
     return render_template('/home.html')
-
-@app.route('/')
-def perfil():
-    # Aquí consultarás la tabla HOR_Usuario filtrando por el ID del usuario logueado
-    return render_template('perfil.html')
 
 
 if __name__ == '__main__':
