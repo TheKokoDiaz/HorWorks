@@ -1,0 +1,364 @@
+body{
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: row;
+}
+
+aside{
+    width: 6rem;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+    background-color: darkblue;
+
+    gap: 0.5rem;
+
+    button{
+        width: 90%;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0);
+
+        font-weight: 400;
+
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        flex-direction: column;
+
+        gap: 0.2rem;
+        padding: 0.5rem;
+        cursor: pointer;
+
+        img{
+            width: 2rem;
+            aspect-ratio: 1/1;
+        }
+        
+        svg{
+            width: 2rem;
+            aspect-ratio: 1/1;
+            stroke: white;
+            stroke-width: 2px;
+        }
+    }
+
+    button:hover{
+        background-color: cornflowerblue;
+    }
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.contenedor-ajustes {
+    flex: 1;
+    padding: 30px;
+    background-color: #fcfbfe;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.titulo-ajustes {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #111;
+}
+
+.cuadricula-ajustes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.columna-ajustes {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* --- TARJETAS --- */
+.tarjeta-ajustes {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.encabezado-tarjeta {
+    background-color: #1c558e;
+    color: #ffffff;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.cuerpo-tarjeta {
+    padding: 20px;
+}
+
+/* --- PERFIL Y AUDITORIA --- */
+.perfil-usuario, .auditor-asignado {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.contenedor-avatar img {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #f0f0f0;
+}
+
+.info-usuario h2, .info-auditor h2 {
+    font-size: 18px;
+    margin: 0 0 4px 0;
+    color: #222;
+}
+
+.info-usuario p, .info-auditor p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 12px 0;
+}
+
+.info-auditor span {
+    font-style: italic;
+    color: #888;
+    font-size: 13px;
+}
+
+.btn-azul-claro {
+    background-color: #7bd3ff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: #0b345c;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-azul-claro:hover {
+    background-color: #5ec2f2;
+}
+
+/* --- POSPONER TICKETS --- */
+.posponer-tickets {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.bloque-tickets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.numero-tickets {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fca121;
+}
+
+.ticket-badge {
+    background-color: #fcd43a;
+    border: 2px dashed #fca121;
+    border-radius: 6px;
+    padding: 2px 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #7a5102;
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+}
+
+.leyenda-tickets {
+    font-size: 13px;
+    margin-top: 5px;
+    color: #444;
+}
+
+.bloque-desafio {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bloque-desafio label {
+    font-style: italic;
+    font-size: 14px;
+    color: #333;
+}
+
+.btn-usar-ticket {
+    background-color: #1c558e;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background 0.2s;
+}
+
+.btn-usar-ticket:hover {
+    background-color: #143d66;
+}
+
+/* --- INPUTS / SELECTS GENERALES --- */
+.control-seleccion {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+/* --- PREFERENCIAS GENERALES --- */
+.fila-preferencia {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.fila-preferencia:last-child {
+    margin-bottom: 0;
+}
+
+.etiqueta-icono {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.selectores-color {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-color {
+    width: 32px;
+    height: 24px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.btn-color.azul { background-color: #1c558e; }
+.btn-color.verde { background-color: #5cb85c; }
+.btn-color.morado { background-color: #8e44ad; }
+.btn-color.naranja { background-color: #f39c12; }
+
+.btn-color.activo {
+    border-color: #000;
+}
+
+.conmutador-horas {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.btn-alternar {
+    background: #fff;
+    border: none;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-alternar.activo {
+    background-color: #7bd3ff;
+    font-weight: 600;
+}
+
+/* --- NOTIFICACIONES & SWITCHES --- */
+.fila-notificacion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.fila-notificacion:last-child {
+    border-bottom: none;
+}
+
+.texto-notificacion label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.texto-notificacion p {
+    margin: 0;
+    font-size: 12px;
+    color: #777;
+}
+
+/* DISEÑO SWITCH DESLIZANTE */
+.switch-control {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch-control input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.deslizador {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.deslizador:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .deslizador {
+    background-color: #4a90e2;
+}
+
+input:checked + .deslizador:before {
+    transform: translateX(22px);
+}
