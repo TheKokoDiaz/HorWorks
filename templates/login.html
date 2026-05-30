@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicia Sesión - HorWorks</title>
     <!-- Hojas de estilos -->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/login.css">
 </head>
 <body>
 
     <main class="login-card">
         <h1 class="login-title">Inicia Sesión</h1>
         
-        <form id="loginForm" autocomplete="on" onsubmit="handleLogin(event)">
+        <form id="loginForm" autocomplete="on" onsubmit="handleLogin(event)" action="/home">
             <!-- Grupo: Correo Electrónico -->
             <div class="form-group">
                 <label for="email" class="form-label">Correo electrónico</label>
@@ -74,7 +74,7 @@
 
         <!-- Enlace de registro -->
         <div class="signup-container">
-            <a href="registro.html" class="signup-link">Registrarse</a>
+            <a href="/registro" class="signup-link">Registrarse</a>
         </div>
     </main>
 
@@ -110,17 +110,21 @@
             }
         });
 
-        // Simular el proceso de envío del formulario
         function handleLogin(event) {
-            event.preventDefault();
+            // 1. Evitamos que el formulario intente hacer un envío real y recargue la página
+            event.preventDefault(); 
+            
             const email = document.getElementById('email').value;
-            const password = passwordInput.value;
-            const remember = document.getElementById('remember').checked;
+            const password = document.getElementById('password').value;
             
-            console.log('Intento de inicio de sesión:', { email, password: '***', remember });
+            // Mensaje en consola para verificar los datos capturados
+            console.log('Intento de Login:', { email, password });
             
-            // Aquí se conectaría con la lógica de backend o redirección.
-            alert('Inicio de sesión simulado correctamente para: ' + email);
+            // 2. Simulamos una validación exitosa (puedes cambiar este mensaje)
+            alert('¡Inicio de sesión simulado con éxito!\nBienvenido: ' + email);
+            
+            // 3. Redirigimos a la ruta del dashboard (/home) usando la sintaxis de Flask
+            window.location.href = "{{ url_for('home') }}";
         }
     </script>
 </body>
