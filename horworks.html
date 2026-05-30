@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HOR WORKS – Keep focus with us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1a3a5c;
+      --navy-deep: #0f2540;
+      --navy-mid: #1e4a7a;
+      --accent: #4a9eff;
+      --accent2: #ff6b6b;
+      --accent3: #ffd166;
+      --white: #f0f6ff;
+      --text-muted: #8aa8c8;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy-deep);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,.12);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--navy-deep);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--navy-deep);
+      font-size: .9rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--navy-mid); }
+
+    .nav-links .dropdown {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .nav-links .dropdown::after {
+      content: '▾';
+      font-size: .7rem;
+      color: var(--navy-mid);
+    }
+
+    .btn-login {
+      background: var(--navy-deep);
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      transition: background .2s !important;
+    }
+    .btn-login:hover { background: var(--navy-mid) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      align-items: center;
+      min-height: calc(100vh - 64px);
+      padding: 64px 48px 64px 72px;
+      background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 60%, #1e5080 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* background decoration */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(74,158,255,.12) 0%, transparent 70%);
+      right: -100px; top: -100px;
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,209,102,.08) 0%, transparent 70%);
+      left: 40px; bottom: 40px;
+      border-radius: 50%;
+    }
+
+    .hero-text {
+      z-index: 2;
+      animation: fadeUp .7s ease both;
+    }
+
+    .hero-text h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      color: var(--white);
+    }
+
+    .hero-text p {
+      margin-top: 20px;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 340px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      margin-top: 36px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(74,158,255,.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(74,158,255,.5); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(240,246,255,.25);
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,.05); }
+
+    /* ── DASHBOARD MOCKUPS ── */
+    .hero-visual {
+      position: relative;
+      z-index: 2;
+      height: 480px;
+      animation: fadeUp .9s .2s ease both;
+    }
+
+    .card-mock {
+      position: absolute;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow: hidden;
+      color: #1a2a3a;
+    }
+
+    /* Tasks card – top right */
+    .card-tasks {
+      width: 340px;
+      top: 0; right: 0;
+      padding: 18px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      color: #1a2a3a;
+    }
+
+    .stat-pills {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .pill {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: .72rem;
+      font-weight: 600;
+    }
+    .pill-blue  { background: #e8f2ff; color: #2979d0; }
+    .pill-orange{ background: #fff3e0; color: #e07b00; }
+    .pill-red   { background: #ffeaea; color: #d63333; }
+    .pill-green { background: #e6faf0; color: #1d9a5f; }
+    .pill-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .task-tabs {
+      display: flex; gap: 8px; margin-bottom: 12px;
+    }
+    .tab {
+      font-size: .7rem; font-weight: 500;
+      padding: 4px 10px; border-radius: 6px;
+      cursor: pointer;
+    }
+    .tab.active { background: #1a3a5c; color: #fff; }
+    .tab:not(.active) { color: #888; }
+
+    .task-row {
+      display: flex; align-items: center;
+      gap: 10px; padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: .74rem; color: #444;
+    }
+    .task-row:last-child { border: none; }
+    .task-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .task-name { flex: 1; }
+    .task-badge {
+      font-size: .65rem; padding: 2px 8px; border-radius: 10px; font-weight: 600;
+    }
+    .badge-in-progress { background: #e8f2ff; color: #2979d0; }
+    .badge-review      { background: #fff3e0; color: #e07b00; }
+    .badge-done        { background: #e6faf0; color: #1d9a5f; }
+    .badge-todo        { background: #f3f3f3; color: #888; }
+
+    /* Teams card – bottom left */
+    .card-teams {
+      width: 280px;
+      bottom: 0; left: -20px;
+      padding: 16px;
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .team-item {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      cursor: pointer;
+      transition: transform .15s;
+    }
+    .team-item:hover { transform: translateY(-2px); }
+
+    .avatar {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .av-blue   { background: #dbeafe; }
+    .av-purple { background: #ede9fe; }
+    .av-pink   { background: #fce7f3; }
+    .av-yellow { background: #fef3c7; }
+    .av-green  { background: #d1fae5; }
+    .av-orange { background: #ffedd5; }
+
+    .team-name {
+      font-size: .62rem; font-weight: 600; color: #555; text-align: center;
+    }
+
+    /* Calendar mini card – floating */
+    .card-mini {
+      width: 190px;
+      top: 130px; left: 60px;
+      padding: 14px;
+    }
+    .mini-title {
+      font-size: .75rem; font-weight: 700; color: #1a2a3a; margin-bottom: 10px;
+    }
+    .mini-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid #f4f4f4;
+      font-size: .68rem; color: #666;
+    }
+    .mini-row:last-child { border: none; }
+    .mini-indicator {
+      width: 4px; height: 24px; border-radius: 4px; flex-shrink: 0;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      background: #fff;
+      color: var(--navy-deep);
+      padding: 80px 72px;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .features-header span {
+      font-size: .8rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .features-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem; font-weight: 800;
+      margin-top: 8px; letter-spacing: -1px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--navy-deep);
+      border-radius: 16px;
+      padding: 28px;
+      color: var(--white);
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.04);
+      right: -20px; top: -20px;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.2); }
+
+    .feature-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem; font-weight: 700; margin-bottom: 10px;
+    }
+    .feature-card p {
+      font-size: .83rem; color: var(--text-muted); line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-deep);
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 32px 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .8rem;
+      color: var(--text-muted);
+    }
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.1rem; color: var(--white);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 48px 28px; min-height: auto; gap: 48px; }
+      .hero-visual { height: 360px; }
+      nav { padding: 0 24px; }
+      .features { padding: 60px 28px; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 24px 28px; flex-direction: column; gap: 12px; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .card-tasks { width: 280px; }
+      .card-mini  { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">HOR WORKS</div>
+    <ul class="nav-links">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#" class="dropdown">Herramientas</a></li>
+      <li><a href="#" class="btn-login">Iniciar sesión</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Keep<br>focus<br>with us</h1>
+      <p>Gestiona tareas, equipos y proyectos desde un solo lugar. Colabora mejor, entrega más rápido.</p>
+      <div class="hero-actions">
+        <button class="btn-primary">Comenzar gratis</button>
+        <button class="btn-ghost">Ver demo →</button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+
+      <!-- Tasks Card -->
+      <div class="card-mock card-tasks">
+        <div class="card-header">
+          <span class="card-title">Tareas próximas</span>
+          <button style="background:#4a9eff;color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:.7rem;cursor:pointer;">+ Nueva tarea</button>
+        </div>
+        <div class="stat-pills">
+          <div class="pill pill-blue"><span class="pill-dot" style="background:#2979d0"></span>12</div>
+          <div class="pill pill-orange"><span class="pill-dot" style="background:#e07b00"></span>3</div>
+          <div class="pill pill-red"><span class="pill-dot" style="background:#d63333"></span>8</div>
+          <div class="pill pill-green"><span class="pill-dot" style="background:#1d9a5f"></span>15</div>
+        </div>
+        <div class="task-tabs">
+          <div class="tab active">Todas</div>
+          <div class="tab">Pendientes</div>
+          <div class="tab">En progreso</div>
+          <div class="tab">Hecho</div>
+        </div>
+        <div class="task-row">
+          <div class="task-dot" style="background:#2979d0"></div>
+          <span class="task-name">Diseño de interfaz</span>
+          <span class="task-badge badge-in-progress">En progreso</span>
+        </div>
+        <div class="task-row">
+          <div class="task-dot" style="background:#e07b00"></div>
+          <span class="task-name">Revisión de sprint</span>
+          <span class="task-badge badge-review">Revisión</span>
+        </div>
+        <div class="task-row">
+          <div class="task-dot" style="background:#1d9a5f"></div>
+          <span class="task-name">Deploy a producción</span>
+          <span class="task-badge badge-done">Listo</span>
+        </div>
+        <div class="task-row">
+          <div class="task-dot" style="background:#aaa"></div>
+          <span class="task-name">Documentación API</span>
+          <span class="task-badge badge-todo">Por hacer</span>
+        </div>
+      </div>
+
+      <!-- Mini calendar card -->
+      <div class="card-mock card-mini">
+        <div class="mini-title">Próximos eventos</div>
+        <div class="mini-row">
+          <div class="mini-indicator" style="background:#4a9eff"></div>
+          <div>
+            <div style="font-weight:600;color:#1a2a3a;font-size:.72rem;">Stand-up diario</div>
+            <div>9:00 AM</div>
+          </div>
+        </div>
+        <div class="mini-row">
+          <div class="mini-indicator" style="background:#ff6b6b"></div>
+          <div>
+            <div style="font-weight:600;color:#1a2a3a;font-size:.72rem;">Demo cliente</div>
+            <div>2:30 PM</div>
+          </div>
+        </div>
+        <div class="mini-row">
+          <div class="mini-indicator" style="background:#ffd166"></div>
+          <div>
+            <div style="font-weight:600;color:#1a2a3a;font-size:.72rem;">Retrospectiva</div>
+            <div>4:00 PM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teams Card -->
+      <div class="card-mock card-teams">
+        <div class="card-header">
+          <span class="card-title">Equipos</span>
+          <span style="font-size:.7rem;color:#888">Ver todos →</span>
+        </div>
+        <div class="teams-grid">
+          <div class="team-item">
+            <div class="avatar av-blue">🐻</div>
+            <span class="team-name">Diseño</span>
+          </div>
+          <div class="team-item">
+            <div class="avatar av-purple">🦊</div>
+            <span class="team-name">Backend</span>
+          </div>
+          <div class="team-item">
+            <div class="avatar av-pink">🐼</div>
+            <span class="team-name">Frontend</span>
+          </div>
+          <div class="team-item">
+            <div class="avatar av-yellow">🐧</div>
+            <span class="team-name">DevOps</span>
+          </div>
+          <div class="team-item">
+            <div class="avatar av-green">🦁</div>
+            <span class="team-name">QA</span>
+          </div>
+          <div class="team-item">
+            <div class="avatar av-orange">🐸</div>
+            <span class="team-name">Datos</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="features-header">
+      <span>¿Por qué HOR WORKS?</span>
+      <h2>Todo lo que tu equipo necesita</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,158,255,.15)">📋</div>
+        <h3>Gestión de tareas</h3>
+        <p>Organiza, prioriza y da seguimiento a cada tarea con vistas de tablero, lista y calendario.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(255,107,107,.15)">👥</div>
+        <h3>Equipos conectados</h3>
+        <p>Crea equipos, asigna roles y mantén a todos alineados con actualizaciones en tiempo real.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(255,209,102,.15)">📊</div>
+        <h3>Reportes y métricas</h3>
+        <p>Visualiza el progreso de tus proyectos con dashboards claros y exportables al instante.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">HOR WORKS</div>
+    <div>© 2026 HOR WORKS. Todos los derechos reservados.</div>
+    <div style="display:flex;gap:20px;">
+      <a href="#" style="color:inherit;text-decoration:none;">Privacidad</a>
+      <a href="#" style="color:inherit;text-decoration:none;">Términos</a>
+      <a href="#" style="color:inherit;text-decoration:none;">Contacto</a>
+    </div>
+  </footer>
+
+</body>
+</html>

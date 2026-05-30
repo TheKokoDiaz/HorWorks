@@ -20,7 +20,7 @@ def registro():
     # y enviarlas a la plantilla HTML usando render_template
     return render_template('/registro.html')
 
-@app.route('/home')
+@app.route('/')
 def home():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
