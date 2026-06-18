@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil | Linesync</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='../static/css/perfil.css') }}">
+    <title>Mi Perfil - HorWorks</title>
+
+    <!-- Hojas de Estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- Icono de página -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/shortCutIcon.png') }}">
 </head>
 <body>
 
@@ -107,6 +112,6 @@
         </main>
     </div>
 
-    <script src="{{ url_for('static', filename='../static/js/home.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 </body>
 </html>

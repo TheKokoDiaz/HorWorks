@@ -1,13 +1,16 @@
+# LIBRERÍAS
 from flask import Flask, render_template
 
+# INICIO
 app = Flask(__name__)
 
+# MÉTODOS FLASK
 @app.route('/')
 def index():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
     # return render_template('/index.html')
-    return render_template('/home.html')
+    return render_template('/login.html')
 
 @app.route('/') #@app.route('/')
 def login():

@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='../static/css/ajustes.css') }}">
-    <title>Document</title>
+    <title>Configuración - HorWorks</title>
+
+    <!-- Hojas de Estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ajustes.css') }}">
+
+    <!-- Icono de página -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/shortCutIcon.png') }}">
 </head>
 <body>
     <aside>
@@ -122,7 +127,7 @@
         </button>
 
         <button>
-            <img src="{{ url_for('static', filename='../static/images/user.png') }}">
+            <img src="{{ url_for('static', filename='images/user.png') }}">
 
             <span>Usuario</span>
         </button>
@@ -155,7 +160,7 @@
                     <div class="encabezado-tarjeta">Perfil</div>
                     <div class="cuerpo-tarjeta perfil-usuario">
                         <div class="contenedor-avatar">
-                            <img id="perfilFoto" src="{{ url_for('static', filename='../static/images/avatar-defecto.png') }}" alt="Avatar Usuario">
+                            <img id="perfilFoto" src="{{ url_for('static', filename='images/avatar-defecto.png') }}" alt="Avatar Usuario">
                         </div>
                         <div class="info-usuario">
                             <h2 id="perfilNombre">Pedro Angel Santos Bautista</h2>
@@ -172,7 +177,7 @@
                     <div class="encabezado-tarjeta">Auditoria</div>
                     <div class="cuerpo-tarjeta auditor-asignado">
                         <div class="contenedor-avatar">
-                            <img id="auditorFoto" src="{{ url_for('static', filename='../static/images/avatar-auditor.png') }}" alt="Avatar Auditor">
+                            <img id="auditorFoto" src="{{ url_for('static', filename='images/avatar-auditor.png') }}" alt="Avatar Auditor">
                         </div>
                         <div class="info-auditor">
                             <span>Auditor Asignado</span>
@@ -289,6 +294,6 @@
             </div>
         </div>
     </main>
-    <script src="{{ url_for('static', filename='../static/js/ajustes.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ajustes.js') }}"></script>
 </body>
 </html>
