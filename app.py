@@ -9,10 +9,9 @@ app = Flask(__name__)
 def index():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
-    # return render_template('/index.html')
-    return render_template('/login.html')
+    return render_template('/home.html')
 
-@app.route('/') #@app.route('/')
+@app.route('/login')
 def login():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
@@ -24,7 +23,7 @@ def registro():
     # y enviarlas a la plantilla HTML usando render_template
     return render_template('/registro.html')
 
-@app.route('/')
+@app.route('/home')
 def home():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
@@ -42,6 +41,6 @@ def perfil():
     # y enviarlas a la plantilla HTML usando render_template
     return render_template('/perfil.html')
 
-
+# MODO DEBUG
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

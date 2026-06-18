@@ -1,3 +1,4 @@
+// TAREA PRIORITARIA
 document.addEventListener("DOMContentLoaded", () => {
     // Simulación del contador de alta prioridad
     const timerElement = document.getElementById("countdown-timer");
