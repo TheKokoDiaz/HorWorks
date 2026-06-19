@@ -1,3 +1,12 @@
+/* 
+	DATOS DE CONEXIÓN:
+    host     = "127.0.0.1"
+	user     = "root"
+	password = ""
+	database = "DB_HORWORKS"
+	port     = 3306
+*/
+
 /* BASE DE DATOS */
 -- DROP DATABASE DB_HORWORKS;
 CREATE DATABASE DB_HORWORKS;
@@ -84,6 +93,27 @@ VALUES
 (4, 'naranja', 'es-MX', 'GMT-06:00', 12, 1, 1, 1, 1);
 
 /* PROCEDIMIENTOS ALMACENADOS */
+DELIMITER $$
+CREATE PROCEDURE SP_IniciarSesion(
+	IN INI_Correo 		VARCHAR(30),
+    IN INI_Contrasenia	VARCHAR(80)
+)
+BEGIN
+	IF EXISTS(SELECT 1 FROM HOR_Usuario WHERE USU_Correo = INI_Correo) THEN
+		SELECT 
+			USU_Id			Id,
+			USU_Nombre 		Nombre,
+			USU_Usuario		Usuario,
+			USU_Foto 		Foto,
+			USU_Estado 		Estado,
+			USU_Tickets 	Tickets
+		FROM HOR_Usuario WHERE USU_Correo = INI_Correo AND USU_Contrasenia = INI_Contrasenia;
+	ELSE
+		SELECT 0 Id;
+	END IF;
+END $$
+DELIMITER ;
+
 DELIMITER $$
 CREATE PROCEDURE SP_ObtenerAjustesUsuario(IN p_usuario_id INT)
     BEGIN

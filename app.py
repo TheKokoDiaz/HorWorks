@@ -1,49 +1,83 @@
-# LIBRERÍAS
-from flask import Flask, render_template
+""" CUENTA DE PRUEBAS """
+# carlos@horworks.com
+# 1234
 
-# INICIO
+""" LIBRERÍAS """
+import pymysql
+
+from flask import Flask, render_template, request, session
+
+""" INICIO """
 app = Flask(__name__)
 
-# MÉTODOS FLASK
+""" VARIABLES DE SESIÓN """
+app.secret_key = "poiuytrewqasdfghjklmnbvcxz"
 
-# Home es la pagina despues de iniciar sesion
+# Ejemplo para obtener un valor:
+# name = session.get("name")
+
+""" CONEXIÓN CON BASE DE DATOS """
+def get_db_connection():
+    return pymysql.connect(
+        host     = "127.0.0.1",
+        user     = "root",
+        password = "",
+        database = "DB_HORWORKS",
+        port     = 3306
+    )
+
+""" MÉTODOS FLASK """
+# Home es la pagina después de iniciar sesión
 @app.route('/')
 def index():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
-    return render_template('/home.html')
+    id = session.get("id")
+    print(f"ID: {id}")
 
-@app.route('/login')
+    if(id != 0 and id != None):
+        return render_template('/home.html')
+    else:
+        return render_template('/login.html')
+
+# Inicio de Sesión
+@app.route('/login', methods=["POST"])
 def login():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
-    return render_template('/login.html')
+    user     = request.form["email"]
+    password = request.form["password"]
+
+    if user == "" or password == "":
+        return render_template('/login.html')
+
+    conn   = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.callproc("SP_IniciarSesion", [user, password])
+    query = cursor.fetchall()[0]
+
+    cursor.close()
+    conn.close()
+
+    if query[0] != 0:
+        session["id"] = query[0]
+        session["name"] = query[1]
+
+        return render_template('/home.html')
+    else:
+        return render_template('/login.html')
 
 @app.route('/registro')
 def registro():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
     return render_template('/registro.html')
 
-
-# pagina de bienvenida al entrar a la pagina (esta fuera de los templates por alguna razon por lo que aun no funcion)
-# deberia ser la pagina principañ
-@app.route('/horworks')
-def home():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
-    return render_template('/horworks.html')
+@app.route('/welcome')
+def welcome():
+    return render_template('/welcome.html')
 
 @app.route('/ajustes')
 def ajustes():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
     return render_template('/ajustes.html')
 
 @app.route('/perfil')
 def perfil():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
     return render_template('/perfil.html')
 
 # MODO DEBUG
