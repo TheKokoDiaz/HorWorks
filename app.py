@@ -21,7 +21,7 @@ def get_db_connection():
     return pymysql.connect(
         host     = "127.0.0.1",
         user     = "root",
-        password = "",
+        password = "Pelusa12!",
         database = "DB_HORWORKS",
         port     = 3306
     )
@@ -76,9 +76,17 @@ def welcome():
 def ajustes():
     return render_template('/ajustes.html')
 
-@app.route('/perfil')
+@app.route('/home')
 def perfil():
-    return render_template('/perfil.html')
+    return render_template('/home.html')
+
+@app.route('/equipos')
+def equipos():
+    return render_template('/equipos.html')
+
+@app.route('/crear_equipo')
+def crear_equipo():
+    return render_template('/crear_equipo.html')
 
 # MODO DEBUG
 if __name__ == '__main__':

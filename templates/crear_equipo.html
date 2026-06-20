@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nuevo Equipo - HorWorks</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/crear_equipos.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body class="bg-full-gray">
+
+    <div class="crear-equipo-wrapper">
+        <div class="header-close">
+            <a href="/equipos" class="close-btn">X</a>
+        </div>
+
+        <h1 class="page-title">Crear nuevo equipo</h1>
+
+        <form action="/guardar_equipo" method="POST" enctype="multipart/form-data" class="form-layout">
+            
+            <div class="left-col">
+                <div class="image-box" id="image-preview-container">
+                    <span class="material-symbols-outlined icon-image">image</span>
+                </div>
+                <label for="foto-input" class="upload-link">Agregar foto al equipo</label>
+                <input type="file" id="foto-input" name="foto_equipo" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="right-col">
+                <div class="input-group">
+                    <label>Nombre del equipo</label>
+                    <input type="text" name="nombre_equipo" placeholder="Ej: Equipo 1" class="custom-input" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Agregar integrantes</label>
+                    <div class="add-member-row">
+                        <input type="text" id="member-input" placeholder="Nombre de usuario o Correo electrónico" class="custom-input">
+                        <button type="button" class="btn-add-circle" id="btn-add-member">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="members-list" id="members-container">
+                    <div class="member-row">
+                        <span class="material-symbols-outlined icon-star">stars</span>
+                        <div class="member-data">
+                            <span class="m-role">Usuario 1</span>
+                            <span class="m-name">Nombre del Usuario</span>
+                        </div>
+                        <button type="button" class="btn-remove" onclick="this.parentElement.remove()">
+                            <span class="material-symbols-outlined">arrow_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions-bottom">
+                <a href="/equipos" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-crear">Crear</button>
+            </div>
+            
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/crear_equipo.js') }}"></script>
+</body>
+</html>
