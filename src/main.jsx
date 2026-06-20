@@ -1,10 +1,15 @@
+// LIBRERÍAS
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+
+// HOJAS DE ESTILOS
+import './assets/css/main.css'
+
+// COMPONENTES
+import Sidebar from './components/sidebar.jsx'
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <App />
+        <Sidebar />
     </StrictMode>,
 )
