@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Equipos - HorWorks</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/equipos.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/shortCutIcon.png') }}">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="main-sidebar">
+            <div class="sidebar-top">
+                <div class="menu-icon" id="menu-toggle">
+                    <span class="material-symbols-outlined">menu</span>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="/home">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="text-link">Inicio</span>
+                    </a>
+                    <a href="/tareas">
+                        <span class="material-symbols-outlined">folder</span>
+                        <span class="text-link">Mis Tareas</span>
+                    </a>
+                    <a href="/calendario">
+                        <span class="material-symbols-outlined">calendar_today</span>
+                        <span class="text-link">Calendario</span>
+                    </a>
+                    <a href="/estadisticas">
+                        <span class="material-symbols-outlined">bar_chart</span>
+                        <span class="text-link">Estadísticas</span>
+                    </a>
+                    <a href="/equipos" class="active">
+                        <span class="material-symbols-outlined">group</span>
+                        <span class="text-link">Equipos</span>
+                    </a>        
+                    <a href="/perfil">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="text-link">Perfil</span>
+                    </a>
+                    <a href="/auditor">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        <span class="text-link">Auditor</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Pedro+Angel&background=fca5a5&color=fff" alt="Usuario">
+                    <span class="text-link">Pedro Angel</span>
+                </div>
+                <a href="/ajustes" class="settings-btn"><span class="material-symbols-outlined">settings</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content equipos-layout">
+            <header class="top-header">
+                <div class="user-info-icon">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </div>
+                <div class="header-actions">
+                    <span class="material-symbols-outlined icon-btn">notifications_active</span>
+                    <span class="material-symbols-outlined icon-btn">settings</span>
+                </div>
+            </header>
+
+            <div class="equipos-container">
+                <h1>Equipos</h1>
+
+                <div class="equipos-grid">
+                    <div class="equipo-card">
+                        <img src="https://ui-avatars.com/api/?name=Hor+Hor+Industries&background=random&size=200" alt="Hor Hor Industries" class="equipo-img">
+                        <div class="equipo-info">
+                            <h4>Hor Hor Industries</h4>
+                            <p>Peter's Team</p>
+                        </div>
+                    </div>
+
+                    <div class="equipo-card">
+                        <img src="https://ui-avatars.com/api/?name=Gestion+Desarrollo&background=random&size=200" alt="Gestión Desarrollo" class="equipo-img">
+                        <div class="equipo-info">
+                            <h4>Gestión Desarr...</h4>
+                            <p>César Iván's Team</p>
+                        </div>
+                    </div>
+
+                    <div class="equipo-card">
+                        <img src="https://ui-avatars.com/api/?name=Base+de+Datos&background=random&size=200" alt="Base de Datos" class="equipo-img">
+                        <div class="equipo-info">
+                            <h4>Base de Datos</h4>
+                            <p>Bryan Alexis's Team</p>
+                        </div>
+                    </div>
+
+                    <div class="equipo-card">
+                        <img src="https://ui-avatars.com/api/?name=Paginas+Web&background=random&size=200" alt="Páginas Web" class="equipo-img">
+                        <div class="equipo-info">
+                            <h4>Páginas Web</h4>
+                            <p>Jimena's Team</p>
+                        </div>
+                    </div>
+                    
+                    <div class="equipo-card">
+                        <img src="https://ui-avatars.com/api/?name=Animaciones&background=random&size=200" alt="Animaciones" class="equipo-img">
+                        <div class="equipo-info">
+                            <h4>Animaciones</h4>
+                            <p>Julio Alfredo's Team</p>
+                        </div>
+                    </div>
+
+                    <a href="/crear_equipo" class="equipo-card create-card">
+                        <div class="create-icon">
+                            <span class="material-symbols-outlined">add</span>
+                        </div>
+                        <div class="equipo-info">
+                            <h4>Nuevo Equipo</h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+</body>
+</html>
