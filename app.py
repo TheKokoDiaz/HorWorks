@@ -3,7 +3,7 @@ from flask import Flask, render_template
 
 # INICIO
 app = Flask(__name__)
-
+x
 # MÉTODOS FLASK
 
 # Home es la pagina despues de iniciar sesion
@@ -17,7 +17,7 @@ def index():
 def login():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
-    return render_template('/login.html')
+    return render_template('/home.html')
 
 @app.route('/registro')
 def registro():
@@ -27,7 +27,7 @@ def registro():
 
 
 # pagina de bienvenida al entrar a la pagina (esta fuera de los templates por alguna razon por lo que aun no funcion)
-# deberia ser la pagina principañ
+# deberia ser la pagina principal
 @app.route('/horworks')
 def home():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
@@ -45,6 +45,12 @@ def perfil():
     # Aquí en el futuro puedes hacer las consultas a la base de datos 
     # y enviarlas a la plantilla HTML usando render_template
     return render_template('/perfil.html')
+
+@app.route('/roadmap')
+def roadmap():
+    # Aquí en el futuro puedes hacer las consultas a la base de datos 
+    # y enviarlas a la plantilla HTML usando render_template
+    return render_template('/roadmap.html')
 
 # MODO DEBUG
 if __name__ == '__main__':

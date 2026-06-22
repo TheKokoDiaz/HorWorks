@@ -15,7 +15,6 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='icons/shortCutIcon.png') }}">
 </head>
 <body>
-
     <div class="app-container">
         <!-- Barra lateral -->
         <aside class="sidebar" id="main-sidebar">
@@ -142,66 +141,61 @@
                 </div>
 
                 <!-- COLUMNA IZQUIERDA -->
-<aside class="profile-summary-col">
-    <!-- Tu widget existente de Perfil (Avatar, username, tickets...) -->
-    <div class="widget" id="user-status-card">
-        <!-- ... (código que ya tenías del avatar y tickets) ... -->
-    </div>
+                <aside class="profile-summary-col">
+                    <!-- Tu widget existente de Perfil (Avatar, username, tickets...) -->
+                    <div class="widget" id="user-status-card"></div>
 
-    <!-- NUEVO: Widget de Auditor (Estilo basado en tu pantalla de Ajustes) -->
-    <div class="widget card-split mt-4" id="auditor-card">
-        <div class="card-header-blue">
-            <h3>Auditoría</h3>
-        </div>
-        <div class="card-body-center">
-            <img src="https://ui-avatars.com/api/?name=Ivan+Herrera&background=bfdbfe&color=1e3a8a&size=100" alt="Auditor" class="avatar-md">
-            <span class="text-muted italic">Auditor Asignado</span>
-            <h4 class="mt-1">Ivan Herrera Reyes</h4>
-            <p class="text-muted text-sm">233111913@upmh.edu.mx</p>
-            <a href="/auditor" class="btn-text mt-2">Ver panel de auditoría &rarr;</a>
-        </div>
-    </div>
-</aside>
+                        <!-- NUEVO: Widget de Auditor (Estilo basado en tu pantalla de Ajustes) -->
+                        <div class="widget card-split mt-4" id="auditor-card">
+                            <div class="card-header-blue">
+                                <h3>Auditoría</h3>
+                        </div>
+                        <div class="card-body-center">
+                            <img src="https://ui-avatars.com/api/?name=Ivan+Herrera&background=bfdbfe&color=1e3a8a&size=100" alt="Auditor" class="avatar-md">
+                            <span class="text-muted italic">Auditor Asignado</span>
+                            <h4 class="mt-1">Ivan Herrera Reyes</h4>
+                            <p class="text-muted text-sm">233111913@upmh.edu.mx</p>
+                            <a href="/auditor" class="btn-text mt-2">Ver panel de auditoría &rarr;</a>
+                        </div>
+                    </div>
+                </aside>
 
-<!-- COLUMNA DERECHA -->
-<section class="profile-details-col">
-    <!-- Tu widget existente de Datos Personales -->
-    <div class="widget" id="user-data-form">
-        <!-- ... (código que ya tenías del formulario) ... -->
-    </div>
+                <!-- COLUMNA DERECHA -->
+                <section class="profile-details-col">
+                    <!-- Tu widget existente de Datos Personales -->
+                    <div class="widget" id="user-data-form"></div>
+                    <!-- NUEVO: Widget de Equipos -->
+                    <div class="widget mt-4" id="user-teams-card">
+                        <h3>Mis Equipos</h3>
+                        <p class="subtitle">Gestiona tu participación y roles en proyectos colaborativos.</p>
 
-    <!-- NUEVO: Widget de Equipos -->
-    <div class="widget mt-4" id="user-teams-card">
-        <h3>Mis Equipos</h3>
-        <p class="subtitle">Gestiona tu participación y roles en proyectos colaborativos.</p>
+                        <div class="teams-list">
+                            <!-- Equipo 1 -->
+                            <div class="team-item">
+                                <div class="team-icon blue-bg"><span class="material-symbols-outlined">folder_shared</span></div>
+                                <div class="team-info">
+                                    <h4>Desarrollo Interfaz TECH</h4>
+                                    <span class="badge role-admin">Administrador</span>
+                                </div>
+                                <a href="/equipos/1" class="icon-btn"><span class="material-symbols-outlined">chevron_right</span></a>
+                            </div>
 
-        <div class="teams-list">
-            <!-- Equipo 1 -->
-            <div class="team-item">
-                <div class="team-icon blue-bg"><span class="material-symbols-outlined">folder_shared</span></div>
-                <div class="team-info">
-                    <h4>Desarrollo Interfaz TECH</h4>
-                    <span class="badge role-admin">Administrador</span>
-                </div>
-                <a href="/equipos/1" class="icon-btn"><span class="material-symbols-outlined">chevron_right</span></a>
-            </div>
+                            <!-- Equipo 2 -->
+                            <div class="team-item">
+                                <div class="team-icon purple-bg"><span class="material-symbols-outlined">group_work</span></div>
+                                <div class="team-info">
+                                    <h4>Campaña Marketing Q3</h4>
+                                    <span class="badge role-member">Colaborador</span>
+                                </div>
+                                <a href="/equipos/2" class="icon-btn"><span class="material-symbols-outlined">chevron_right</span></a>
+                            </div>
+                        </div>
 
-            <!-- Equipo 2 -->
-            <div class="team-item">
-                <div class="team-icon purple-bg"><span class="material-symbols-outlined">group_work</span></div>
-                <div class="team-info">
-                    <h4>Campaña Marketing Q3</h4>
-                    <span class="badge role-member">Colaborador</span>
-                </div>
-                <a href="/equipos/2" class="icon-btn"><span class="material-symbols-outlined">chevron_right</span></a>
-            </div>
-        </div>
-
-        <div class="form-actions">
-            <a href="/equipos" class="btn-secondary">Explorar todos los equipos</a>
-        </div>
-    </div>
-</section>
+                        <div class="form-actions">
+                            <a href="/equipos" class="btn-secondary">Explorar todos los equipos</a>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
@@ -209,5 +203,5 @@
     <!-- JAVASCRIPT -->
     <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/home.js') }}"></script>
-</body>
-</html>
+    </body>
+    </html>
