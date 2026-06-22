@@ -16,7 +16,7 @@
     align-items: center;
 
     padding: 2rem 0;
-    position: sticky;
+    position: fixed;
     top: 0;
     
     flex-shrink: 0;
@@ -24,6 +24,7 @@
 
     transition: width 0.3s ease;
     overflow-x: hidden;
+    z-index: 5;
 }
 
 .sidebar a {

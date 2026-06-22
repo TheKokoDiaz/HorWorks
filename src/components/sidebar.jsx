@@ -20,49 +20,49 @@ function Sidebar() {
     return (
         <>
             {/* Barra lateral */}
-            <aside id="main-sidebar" class={collapsed ? "sidebar collapsed" : "sidebar"}>
-                <div class="sidebar-top">
+            <aside id="main-sidebar" className={collapsed ? "sidebar collapsed" : "sidebar"}>
+                <div className="sidebar-top">
                     {/* Desplegar barra */}
-                    <div class="menu-icon" id="menu-toggle" onClick={toggleSidebar}>
-                        <span class="material-symbols-outlined">menu</span>
+                    <div className="menu-icon" id="menu-toggle" onClick={toggleSidebar}>
+                        <span className="material-symbols-outlined">menu</span>
                     </div>
 
                     {/* Enlaces directos */}
-                    <nav class="nav-links">
+                    <nav className="nav-links">
                         {/* Eliminé los enlaces temporalmente en lo que vemos como funciona la navegación aquí */}
-                        <a href="" class="active">
-                            <span class="material-symbols-outlined">home</span>
-                            <span class="text-link">Inicio</span>
+                        <a href="" className="active">
+                            <span className="material-symbols-outlined">home</span>
+                            <span className="text-link">Inicio</span>
                         </a>
                         <a href="">
-                            <span class="material-symbols-outlined">folder</span>
-                            <span class="text-link">Mis Tareas</span>
+                            <span className="material-symbols-outlined">folder</span>
+                            <span className="text-link">Mis Tareas</span>
                         </a>
                         <a href="">
-                            <span class="material-symbols-outlined">calendar_today</span>
-                            <span class="text-link">Calendario</span>
+                            <span className="material-symbols-outlined">calendar_today</span>
+                            <span className="text-link">Calendario</span>
                         </a>
                         <a href="">
-                            <span class="material-symbols-outlined">bar_chart</span>
-                            <span class="text-link">Estadísticas</span>
+                            <span className="material-symbols-outlined">bar_chart</span>
+                            <span className="text-link">Estadísticas</span>
                         </a>
                         <a href="">
-                            <span class="material-symbols-outlined">group</span>
-                            <span class="text-link">Equipos</span>
+                            <span className="material-symbols-outlined">group</span>
+                            <span className="text-link">Equipos</span>
                         </a>        
                         <a href="">
-                            <span class="material-symbols-outlined">person</span>
-                            <span class="text-link">Perfil</span>
+                            <span className="material-symbols-outlined">person</span>
+                            <span className="text-link">Perfil</span>
                         </a>
                     </nav>
                 </div>
 
-                <div class="sidebar-bottom">
-                    <div class="user-profile">
+                <div className="sidebar-bottom">
+                    <div className="user-profile">
                         <img src="https://ui-avatars.com/api/?name=Auditor&background=fca5a5&color=fff" alt="Usuario" />
-                        <span class="text-link">Usuario</span>
+                        <span className="text-link">Usuario</span>
                     </div>
-                    <a href="/ajustes" class="settings-btn"><span class="material-symbols-outlined">settings</span></a>
+                    <a href="/ajustes" className="settings-btn"><span className="material-symbols-outlined">settings</span></a>
                 </div>
             </aside>
         </>
