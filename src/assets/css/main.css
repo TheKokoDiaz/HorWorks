@@ -1,7 +1,7 @@
 /* VARIABLES */
 :root {
     --bg-primary: #0d3559;
-    --card-bg: #e2e3d7;
+    --login-card-bg: #e1e2d5;
     --text-primary: #1a1a1a;
     --text-muted: #555555;
     --input-bg: #ffffff;
@@ -16,17 +16,17 @@
 }
 
 /* GENERAL */
-@font-face{
+@font-face {
     font-family: 'Raleway';
     src: url('../fonts/Raleway.ttf');
 }
 
-*{
+* {
     font-family: var(--font-family);
     box-sizing: border-box;
     transition-duration: 400ms;
 }
 
-body{
+body {
     margin: 0;
 }
