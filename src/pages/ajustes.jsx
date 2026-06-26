@@ -27,16 +27,16 @@ function Ajustes() {
                         
                         {/* Tarjeta Perfil de Usuario */}
                         <section className="tarjeta-ajustes">
-                            <div className="encabezado-tarjeta">Editar Usuario</div>
-                            <div className="cuerpo-tarjeta">
-                                <div className="perfil-usuario">
-                                    <div className="contenedor-avatar">
+                            <div className="encabezado-tarjeta-ajustes">Editar Usuario</div>
+                            <div className="cuerpo-tarjeta-ajustes">
+                                <div className="perfil-usuario-ajustes">
+                                    <div className="contenedor-avatar-ajustes">
                                         <img src="https://ui-avatars.com/api/?name=Pedro+Angel+Santos+Bautista&background=1c558e&color=fff" alt="Avatar Pedro" />
                                     </div>
-                                    <div className="info-usuario">
+                                    <div className="info-usuario-ajustes">
                                         <h2>Pedro Angel Santos Bautista</h2>
                                         <p>233111534@upmh.edu.mx</p>
-                                        <button className="btn-azul-claro">
+                                        <button className="btn-azul-claro-ajustes">
                                             <span className="material-symbols-outlined">edit</span> Editar Perfil
                                         </button>
                                     </div>
@@ -46,13 +46,13 @@ function Ajustes() {
 
                         {/* Tarjeta Auditor Asignado */}
                         <section className="tarjeta-ajustes">
-                            <div className="encabezado-tarjeta">Auditoría</div>
-                            <div className="cuerpo-tarjeta">
-                                <div className="auditor-asignado">
-                                    <div className="contenedor-avatar">
+                            <div className="encabezado-tarjeta-ajustes">Auditoría</div>
+                            <div className="cuerpo-tarjeta-ajustes">
+                                <div className="auditor-asignado-ajustes">
+                                    <div className="contenedor-avatar-ajustes">
                                         <img src="https://ui-avatars.com/api/?name=Ivan+Herrera+Reyes&background=1c558e&color=fff" alt="Avatar Ivan" />
                                     </div>
-                                    <div className="info-auditor">
+                                    <div className="info-auditor-ajustes">
                                         <span>Auditor Asignado</span>
                                         <h2>Ivan Herrera Reyes</h2>
                                         <p>233111913@upmh.edu.mx</p>
@@ -63,20 +63,20 @@ function Ajustes() {
 
                         {/* Tarjeta Posponer Tickets */}
                         <section className="tarjeta-ajustes">
-                            <div className="encabezado-tarjeta">Posponer Actividades</div>
-                            <div className="cuerpo-tarjeta">
-                                <div className="posponer-tickets">
-                                    <div className="bloque-tickets">
-                                        <span className="numero-tickets">0</span>
-                                        <div className="ticket-badge">
+                            <div className="encabezado-tarjeta-ajustes">Posponer Actividades</div>
+                            <div className="cuerpo-tarjeta-ajustes">
+                                <div className="posponer-tickets-ajustes">
+                                    <div className="bloque-tickets-ajustes">
+                                        <span className="numero-tickets-ajustes">0</span>
+                                        <div className="ticket-badge-ajustes">
                                             <span>TICKETS</span>
                                             <span>DISPONIBLES</span>
                                         </div>
-                                        <span className="leyenda-tickets">No tienes más oportunidades</span>
+                                        <span className="leyenda-tickets-ajustes">No tienes más oportunidades</span>
                                     </div>
-                                    <div className="bloque-desafio">
-                                        <label>Intercambia un ticket para posponer tu actividad actual:</label>
-                                        <button className="btn-usar-ticket" disabled>Usar Ticket</button>
+                                    <div className="bloque-desafio-ajustes">
+                                        <label>Intercambia un ticket para posponer tu activity actual:</label>
+                                        <button className="btn-usar-ticket-ajustes" disabled>Usar Ticket</button>
                                     </div>
                                 </div>
                             </div>
@@ -88,51 +88,51 @@ function Ajustes() {
                         
                         {/* Tarjeta Preferencias Generales */}
                         <section className="tarjeta-ajustes">
-                            <div className="encabezado-tarjeta">Preferencias Generales</div>
-                            <div className="cuerpo-tarjeta">
+                            <div className="encabezado-tarjeta-ajustes">Preferencias Generales</div>
+                            <div className="cuerpo-tarjeta-ajustes">
                                 
-                                <div className="fila-preferencia">
-                                    <div className="etiqueta-icono">
+                                <div className="fila-preferencia-ajustes">
+                                    <div className="etiqueta-icono-ajustes">
                                         <span className="material-symbols-outlined">light_mode</span>
                                         <span>Tema</span>
                                     </div>
-                                    <div className="selectores-color">
-                                        <button className="btn-color azul activo"></button>
-                                        <button className="btn-color verde"></button>
-                                        <button className="btn-color morado"></button>
-                                        <button className="btn-color naranja"></button>
+                                    <div className="selectores-color-ajustes">
+                                        <button className="btn-color-ajustes azul activo"></button>
+                                        <button className="btn-color-ajustes verde"></button>
+                                        <button className="btn-color-ajustes morado"></button>
+                                        <button className="btn-color-ajustes naranja"></button>
                                     </div>
                                 </div>
 
-                                <div className="fila-preferencia">
-                                    <div className="etiqueta-icono">
+                                <div className="fila-preferencia-ajustes">
+                                    <div className="etiqueta-icono-ajustes">
                                         <span className="material-symbols-outlined">language</span>
                                         <span>Idioma</span>
                                     </div>
-                                    <select className="control-seleccion" defaultValue="es-MX">
+                                    <select className="control-seleccion-ajustes" defaultValue="es-MX">
                                         <option value="es-MX">Español (México)</option>
                                         <option value="en-US">English (US)</option>
                                     </select>
                                 </div>
 
-                                <div className="fila-preferencia">
-                                    <div className="etiqueta-icono">
+                                <div className="fila-preferencia-ajustes">
+                                    <div className="etiqueta-icono-ajustes">
                                         <span className="material-symbols-outlined">schedule</span>
                                         <span>Zona Horaria</span>
                                     </div>
-                                    <select className="control-seleccion" defaultValue="gmt-6">
+                                    <select className="control-seleccion-ajustes" defaultValue="gmt-6">
                                         <option value="gmt-6">(GMT-06:00) CDMX</option>
                                     </select>
                                 </div>
 
-                                <div className="fila-preferencia">
-                                    <div className="etiqueta-icono">
+                                <div className="fila-preferencia-ajustes">
+                                    <div className="etiqueta-icono-ajustes">
                                         <span className="material-symbols-outlined">hourglass_empty</span>
                                         <span>Formato de Hora</span>
                                     </div>
-                                    <div className="conmutador-horas">
-                                        <button className="btn-alternar">12 horas</button>
-                                        <button className="btn-alternar activo">24 horas</button>
+                                    <div className="conmutador-horas-ajustes">
+                                        <button className="btn-alternar-ajustes">12 horas</button>
+                                        <button className="btn-alternar-ajustes activo">24 horas</button>
                                     </div>
                                 </div>
 
@@ -141,28 +141,28 @@ function Ajustes() {
 
                         {/* Tarjeta Notificaciones */}
                         <section className="tarjeta-ajustes">
-                            <div className="encabezado-tarjeta">Notificaciones</div>
-                            <div className="cuerpo-tarjeta">
+                            <div className="encabezado-tarjeta-ajustes">Notificaciones</div>
+                            <div className="cuerpo-tarjeta-ajustes">
                                 
-                                <div className="fila-notificacion">
-                                    <div className="texto-notificacion">
+                                <div className="fila-notificacion-ajustes">
+                                    <div className="texto-notificacion-ajustes">
                                         <label>Correos electrónicos</label>
                                         <p>Recibir alertas de tareas vencidas en tu correo.</p>
                                     </div>
-                                    <label className="switch-control">
+                                    <label className="switch-control-ajustes">
                                         <input type="checkbox" checked={notifEmail} onChange={() => setNotifEmail(!notifEmail)} />
-                                        <span className="deslizador"></span>
+                                        <span className="deslizador-ajustes"></span>
                                     </label>
                                 </div>
 
-                                <div className="fila-notificacion">
-                                    <div className="texto-notificacion">
+                                <div className="fila-notificacion-ajustes">
+                                    <div className="texto-notificacion-ajustes">
                                         <label>Notificaciones Push</label>
                                         <p>Alertas de escritorio en tiempo real.</p>
                                     </div>
-                                    <label className="switch-control">
+                                    <label className="switch-control-ajustes">
                                         <input type="checkbox" checked={notifPush} onChange={() => setNotifPush(!notifPush)} />
-                                        <span className="deslizador"></span>
+                                        <span className="deslizador-ajustes"></span>
                                     </label>
                                 </div>
 
