@@ -1,5 +1,5 @@
 /* Fondo gris claro para toda la pantalla */
-.bg-full-gray {
+.crear-equipo-bg-full-gray {
     background-color: #e5e7eb;
     display: flex;
     justify-content: center;
@@ -15,13 +15,13 @@
 }
 
 /* Botón X superior */
-.header-close {
+.crear-equipo-header-close {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1rem;
 }
 
-.close-btn {
+.crear-equipo-close-btn {
     font-size: 2rem;
     font-weight: 700;
     color: var(--text-main);
@@ -29,7 +29,7 @@
     font-family: sans-serif;
 }
 
-.page-title {
+.crear-equipo-page-title {
     font-size: 2.2rem;
     color: var(--text-main);
     margin-bottom: 3rem;
@@ -37,14 +37,14 @@
 }
 
 /* Layout dividido en 2 columnas */
-.form-layout {
+.crear-equipo-form-layout {
     display: flex;
     flex-wrap: wrap; /* Permite que los botones bajen */
     gap: 4rem;
 }
 
 /* Columna Izquierda */
-.left-col {
+.crear-equipo-left-col {
     flex: 0 0 280px;
     display: flex;
     flex-direction: column;
@@ -52,7 +52,7 @@
     gap: 1.5rem;
 }
 
-.image-box {
+.crear-equipo-image-box {
     width: 200px;
     height: 200px;
     border: 3px solid var(--text-main);
@@ -63,12 +63,12 @@
     overflow: hidden;
 }
 
-.icon-image {
+.crear-equipo-icon-image {
     font-size: 6rem;
     color: var(--text-main);
 }
 
-.upload-link {
+.crear-equipo-upload-link {
     font-size: 1.2rem;
     color: #0284c7; /* Azul fuerte para el enlace */
     text-decoration: underline;
@@ -77,21 +77,21 @@
 }
 
 /* Columna Derecha */
-.right-col {
+.crear-equipo-right-col {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.input-group label {
+.crear-equipo-input-group label {
     display: block;
     font-size: 1rem;
     color: var(--text-main);
     margin-bottom: 0.5rem;
 }
 
-.custom-input {
+.crear-equipo-custom-input {
     width: 100%;
     padding: 1rem 1.2rem;
     border-radius: 12px;
@@ -102,13 +102,13 @@
     outline: none;
 }
 
-.add-member-row {
+.crear-equipo-add-member-row {
     display: flex;
     gap: 1rem;
     align-items: center;
 }
 
-.btn-add-circle {
+.crear-equipo-btn-add-circle {
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -121,46 +121,46 @@
     flex-shrink: 0;
 }
 
-.btn-add-circle span {
+.crear-equipo-btn-add-circle span {
     font-size: 1.5rem;
     color: var(--text-main);
 }
 
 /* Lista de Integrantes */
-.members-list {
+.crear-equipo-members-list {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     margin-top: 1rem;
 }
 
-.member-row {
+.crear-equipo-member-row {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.icon-star {
+.crear-equipo-icon-star {
     color: var(--text-muted);
 }
 
-.member-data {
+.crear-equipo-member-data {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
-.m-role {
+.crear-equipo-m-role {
     font-size: 0.75rem;
     color: var(--text-muted);
 }
 
-.m-name {
+.crear-equipo-m-name {
     font-size: 1rem;
     color: var(--text-main);
 }
 
-.btn-remove {
+.crear-equipo-btn-remove {
     background: none;
     border: none;
     cursor: pointer;
@@ -168,7 +168,7 @@
 }
 
 /* Botones Inferiores */
-.form-actions-bottom {
+.crear-equipo-form-actions-bottom {
     width: 100%; /* Ocupa todo el ancho abajo */
     display: flex;
     justify-content: center;
@@ -176,7 +176,7 @@
     margin-top: 2rem;
 }
 
-.btn-cancelar, .btn-crear {
+.crear-equipo-btn-cancelar, .crear-equipo-btn-crear {
     padding: 0.8rem 4rem;
     border-radius: 12px;
     font-size: 1.1rem;
@@ -188,10 +188,10 @@
     text-align: center;
 }
 
-.btn-cancelar {
+.crear-equipo-btn-cancelar {
     background-color: #ff0000;
 }
 
-.btn-crear {
+.crear-equipo-btn-crear {
     background-color: #3b82f6;
 }
