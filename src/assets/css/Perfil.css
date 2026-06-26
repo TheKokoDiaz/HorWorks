@@ -1,5 +1,22 @@
+/* VARIABLES */
+:root {
+    --prf-bg-color: #f8fafc;
+    --prf-sidebar-bg: #1a365d;
+    --prf-text-main: #334155;
+    --prf-text-muted: #64748b;
+    --prf-card-bg: #ffffff;
+    --prf-green: #10b981;
+    --prf-purple: #8b5cf6;
+    --prf-border-color: #e2e8f0;
+}
+
 /* CONTENEDOR PRINCIPAL */
-.profile-container {
+.prf-main-content{
+    margin-left: 100px;
+    margin-top: 3rem;
+}
+
+.prf-profile-container {
     padding: 2rem;
     max-width: 1100px;
     margin: 0 auto;
@@ -7,15 +24,15 @@
     margin-top: 0;
 }
 
-.section-header h2 {
+.prf-section-header h2 {
     font-size: 1.5rem;
-    color: var(--text-main);
+    color: var(--prf-text-main);
     margin-bottom: 1.5rem;
     font-weight: 700;
 }
 
 /* LAYOUT DE REJILLA (GRID) */
-.profile-grid {
+.prf-profile-grid {
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 2rem;
@@ -23,38 +40,38 @@
 }
 
 /* ESTILO DE TARJETAS (WIDGETS) IDÉNTICO AL INICIO */
-.widget {
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius-lg);
+.prf-widget {
+    background-color: var(--prf-card-bg);
+    border-radius: var(--border-radius-md);
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); /* Sombra muy suave */
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--prf-border-color);
 }
 
 /* --- TARJETA DE RESUMEN (IZQUIERDA) --- */
-.profile-summary {
+.prf-profile-summary {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.avatar-container {
+.prf-avatar-container {
     position: relative;
     margin-bottom: 1rem;
 }
 
-.profile-avatar-large {
+.prf-profile-avatar-large {
     border-radius: 50%;
-    border: 4px solid var(--bg-color);
+    border: 4px solid var(--prf-bg-color);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.btn-edit-avatar {
+.prf-btn-edit-avatar {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    background-color: var(--primary-blue);
+    background-color: var(--prf-sidebar-bg);
     color: white;
     border: none;
     border-radius: 50%;
@@ -66,13 +83,13 @@
     align-items: center;
 }
 
-.profile-username {
+.prf-profile-username {
     margin: 0.5rem 0;
-    color: var(--text-main);
+    color: var(--prf-text-main);
 }
 
-.badge.status-active {
-    background-color: var(--green-active);
+.prf-badge.prf-status-active {
+    background-color: var(--prf-green-active);
     color: white;
     padding: 4px 12px;
     border-radius: 20px;
@@ -80,99 +97,99 @@
     font-weight: bold;
 }
 
-.profile-stats-divider {
+.prf-profile-stats-divider {
     width: 100%;
     height: 1px;
-    background-color: var(--border-color);
+    background-color: var(--prf-border-color);
     margin: 1.5rem 0;
 }
 
-.stat-item {
+.prf-stat-item {
     display: flex;
     align-items: center;
     gap: 1rem;
     text-align: left;
 }
 
-.stat-icon.purple {
+.prf-stat-icon.prf-purple {
     background-color: rgba(139, 92, 246, 0.1); /* Fondo morado clarito */
-    color: var(--purple-icon);
+    color: var(--prf-purple-icon);
     padding: 10px;
     border-radius: var(--border-radius-md);
 }
 
-.stat-info span {
+.prf-stat-info span {
     display: block;
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--prf-text-muted);
 }
 
-.stat-info strong {
+.prf-stat-info strong {
     font-size: 1.2rem;
-    color: var(--purple-icon);
+    color: var(--prf-purple-icon);
 }
 
 /* --- FORMULARIO DE DATOS (DERECHA) --- */
-.profile-details h3 {
+.prf-profile-details h3 {
     margin-top: 0;
     margin-bottom: 0.2rem;
 }
 
-.subtitle {
-    color: var(--text-muted);
+.prf-subtitle {
+    color: var(--prf-text-muted);
     font-size: 0.9rem;
     margin-bottom: 2rem;
 }
 
-.form-row {
+.prf-form-row {
     display: flex;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
-.form-group {
+.prf-form-group {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.form-group label {
+.prf-form-group label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--text-muted);
+    color: var(--prf-text-muted);
 }
 
-.form-group input {
+.prf-form-group input {
     padding: 0.85rem 1rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--prf-border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Para que el input resalte sobre la tarjeta blanca */
-    color: var(--text-main);
+    background-color: var(--prf-bg-color); /* Para que el input resalte sobre la tarjeta blanca */
+    color: var(--prf-text-main);
     font-size: 0.95rem;
     outline: none;
 }
 
-.form-group input:focus {
-    border-color: var(--primary-blue);
+.prf-form-group input:focus {
+    border-color: var(--prf-sidebar-bg);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.section-divider {
+.prf-section-divider {
     margin-top: 2rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--prf-border-color);
 }
 
 /* BOTONES */
-.form-actions {
+.prf-form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
     margin-top: 2rem;
 }
 
-.btn-primary, .btn-secondary {
+.prf-btn-primary, .prf-btn-secondary {
     padding: 0.75rem 1.5rem;
     border-radius: var(--border-radius-md);
     font-weight: 600;
@@ -180,61 +197,61 @@
     font-size: 0.9rem;
 }
 
-.btn-primary {
-    background-color: var(--primary-blue);
+.prf-btn-primary {
+    background-color: var(--prf-sidebar-bg);
     color: white;
     border: none;
 }
 
-.btn-primary:hover {
+.prf-btn-primary:hover {
     background-color: #2563eb;
 }
 
-.btn-secondary {
+.prf-btn-secondary {
     background-color: transparent;
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
+    color: var(--prf-text-main);
+    border: 1px solid var(--prf-border-color);
 }
 
-.btn-secondary:hover {
-    background-color: var(--bg-color);
+.prf-btn-secondary:hover {
+    background-color: var(--prf-bg-color);
 }
 
-.btn-text {
+.prf-btn-text {
     background: none;
     border: none;
-    color: var(--primary-blue);
+    color: var(--prf-sidebar-bg);
     cursor: pointer;
     text-align: left;
     font-weight: 600;
     padding: 0;
 }
 /* Utilidades de espaciado */
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-4 { margin-top: 2rem; }
-.text-sm { font-size: 0.85rem; }
-.italic { font-style: italic; font-size: 0.85rem; }
+.prf-mt-1 { margin-top: 0.5rem; }
+.prf-mt-2 { margin-top: 1rem; }
+.prf-mt-4 { margin-top: 2rem; }
+.prf-text-sm { font-size: 0.85rem; }
+.prf-italic { font-style: italic; font-size: 0.85rem; }
 
 /* Tarjeta con encabezado azul (Estilo Ajustes) */
-.card-split {
+.prf-card-split {
     padding: 0; /* Quitamos el padding global para que el encabezado toque los bordes */
     overflow: hidden; /* Mantiene los bordes redondeados */
 }
 
-.card-header-blue {
-    background-color: var(--sidebar-bg); /* El azul oscuro de tu barra */
+.prf-card-header-blue {
+    background-color: var(--prf-sidebar-bg); /* El azul oscuro de tu barra */
     color: white;
     padding: 12px 20px;
 }
 
-.card-header-blue h3 {
+.prf-card-header-blue h3 {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
 }
 
-.card-body-center {
+.prf-card-body-center {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -242,7 +259,7 @@
     text-align: center;
 }
 
-.avatar-md {
+.prf-avatar-md {
     border-radius: 50%;
     width: 70px;
     height: 70px;
@@ -251,27 +268,27 @@
 }
 
 /* Lista de Equipos */
-.teams-list {
+.prf-teams-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     margin-top: 1.5rem;
 }
 
-.team-item {
+.prf-team-item {
     display: flex;
     align-items: center;
     padding: 1rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--prf-border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Un gris muy sutil para contrastar con la tarjeta blanca */
+    background-color: var(--prf-bg-color); /* Un gris muy sutil para contrastar con la tarjeta blanca */
 }
 
-.team-item:hover {
-    border-color: var(--primary-blue);
+.prf-team-item:hover {
+    border-color: var(--prf-sidebar-bg);
 }
 
-.team-icon {
+.prf-team-icon {
     width: 45px;
     height: 45px;
     border-radius: var(--border-radius-md);
@@ -282,43 +299,43 @@
     color: white;
 }
 
-.blue-bg { background-color: var(--primary-blue); }
-.purple-bg { background-color: #a855f7; }
+.prf-blue-bg { background-color: var(--prf-green); }
+.prf-purple-bg { background-color: var(--prf-purple); }
 
-.team-info {
+.prf-team-info {
     flex-grow: 1;
 }
 
-.team-info h4 {
+.prf-team-info h4 {
     margin: 0 0 0.3rem 0;
-    color: var(--text-main);
+    color: var(--prf-text-main);
     font-size: 1rem;
 }
 
 /* Badges de Roles */
-.badge {
+.prf-badge {
     padding: 4px 10px;
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 600;
 }
 
-.role-admin {
+.prf-role-admin {
     background-color: #fee2e2;
     color: #ef4444; /* Rojo/Rosado para destacar autoridad */
 }
 
-.role-member {
+.prf-role-member {
     background-color: #e0e7ff;
     color: #4f46e5; /* Azul índigo para colaboradores */
 }
 
-.icon-btn {
-    color: var(--text-muted);
+.prf-icon-btn {
+    color: var(--prf-text-muted);
     text-decoration: none;
     display: flex;
 }
 
-.icon-btn:hover {
-    color: var(--primary-blue);
+.prf-icon-btn:hover {
+    color: var(--prf-sidebar-bg);
 }

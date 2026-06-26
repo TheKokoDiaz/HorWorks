@@ -10,6 +10,8 @@ import Perfil from './pages/perfil'
 import CrearEquipo from './pages/crear_equipo'
 import Welcome from './pages/welcome'
 
+import Login from './pages/login'
+
 function App(){
     return(
         <BrowserRouter>
