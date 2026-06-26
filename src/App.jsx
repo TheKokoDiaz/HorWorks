@@ -7,6 +7,7 @@ import './assets/css/main.css'
 // PÁGINAS HTML
 import Home from './pages/home'
 import Perfil from './pages/perfil'
+import Equipos from './pages/equipos'
 import CrearEquipo from './pages/crear_equipo'
 import Welcome from './pages/welcome'
 
