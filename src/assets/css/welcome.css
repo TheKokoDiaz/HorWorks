@@ -5,20 +5,20 @@
 }
 
 :root {
-    --navy: #1a3a5c;
-    --navy-deep: #0f2540;
-    --navy-mid: #1e4a7a;
-    --accent: #4a9eff;
-    --accent2: #ff6b6b;
-    --accent3: #ffd166;
-    --white: #f0f6ff;
-    --text-muted: #8aa8c8;
+    --welcome-navy: #1a3a5c;
+    --welcome-navy-deep: #0f2540;
+    --welcome-navy-mid: #1e4a7a;
+    --welcome-accent: #4a9eff;
+    --welcome-accent2: #ff6b6b;
+    --welcome-accent3: #ffd166;
+    --welcome-white: #f0f6ff;
+    --welcome-text-muted: #8aa8c8;
 }
 
 .welcome-body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--navy-deep);
-    color: var(--white);
+    background: var(--welcome-navy-deep);
+    color: var(--welcome-white);
     overflow-x: hidden;
 }
 
@@ -40,7 +40,7 @@
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 1.35rem;
-    color: var(--navy-deep);
+    color: var(--welcome-navy-deep);
     letter-spacing: -0.5px;
 }
 
@@ -53,14 +53,14 @@
 
 .welcome-nav-links a {
     text-decoration: none;
-    color: var(--navy-deep);
+    color: var(--welcome-navy-deep);
     font-size: .9rem;
     font-weight: 500;
     transition: color .2s;
 }
 
 .welcome-nav-links a:hover {
-    color: var(--navy-mid);
+    color: var(--welcome-navy-mid);
 }
 
 .welcome-nav-links .welcome-dropdown {
@@ -73,11 +73,11 @@
 .welcome-nav-links .welcome-dropdown::after {
     content: '▾';
     font-size: .7rem;
-    color: var(--navy-mid);
+    color: var(--welcome-navy-mid);
 }
 
 .welcome-btn-login {
-    background: var(--navy-deep);
+    background: var(--welcome-navy-deep);
     color: #fff !important;
     padding: 8px 20px;
     border-radius: 8px;
@@ -85,7 +85,7 @@
 }
 
 .welcome-btn-login:hover {
-    background: var(--navy-mid) !important;
+    background: var(--welcome-navy-mid) !important;
 }
 
 /* ── HERO ── */
@@ -95,7 +95,7 @@
     align-items: center;
     min-height: calc(100vh - 64px);
     padding: 64px 48px 64px 72px;
-    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 60%, #1e5080 100%);
+    background: linear-gradient(135deg, var(--welcome-navy-deep) 0%, var(--welcome-navy) 60%, #1e5080 100%);
     position: relative;
     overflow: hidden;
 }
@@ -134,13 +134,13 @@
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -2px;
-    color: var(--white);
+    color: var(--welcome-white);
 }
 
 .welcome-hero-text p {
     margin-top: 20px;
     font-size: 1.05rem;
-    color: var(--text-muted);
+    color: var(--welcome-text-muted);
     max-width: 340px;
     line-height: 1.6;
 }
@@ -153,7 +153,7 @@
 }
 
 .welcome-btn-primary {
-    background: var(--accent);
+    background: var(--welcome-accent);
     color: #fff;
     border: none;
     padding: 13px 28px;
@@ -173,7 +173,7 @@
 
 .welcome-btn-ghost {
     background: transparent;
-    color: var(--white);
+    color: var(--welcome-white);
     border: 1.5px solid rgba(240, 246, 255, .25);
     padding: 13px 28px;
     border-radius: 10px;
@@ -185,7 +185,7 @@
 }
 
 .welcome-btn-ghost:hover {
-    border-color: var(--white);
+    border-color: var(--welcome-white);
     background: rgba(255, 255, 255, .05);
 }
 
@@ -454,7 +454,7 @@
 /* ── FEATURES ── */
 .welcome-features {
     background: #fff;
-    color: var(--navy-deep);
+    color: var(--welcome-navy-deep);
     padding: 80px 72px;
 }
 
@@ -468,7 +468,7 @@
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--welcome-accent);
 }
 
 .welcome-features-header h2 {
@@ -488,10 +488,10 @@
 }
 
 .welcome-feature-card {
-    background: var(--navy-deep);
+    background: var(--welcome-navy-deep);
     border-radius: 16px;
     padding: 28px;
-    color: var(--white);
+    color: var(--welcome-white);
     transition: transform .25s, box-shadow .25s;
     position: relative;
     overflow: hidden;
@@ -533,27 +533,27 @@
 
 .welcome-feature-card p {
     font-size: .83rem;
-    color: var(--text-muted);
+    color: var(--welcome-text-muted);
     line-height: 1.6;
 }
 
 /* ── FOOTER ── */
 .welcome-footer {
-    background: var(--navy-deep);
+    background: var(--welcome-navy-deep);
     border-top: 1px solid rgba(255, 255, 255, .06);
     padding: 32px 72px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: .8rem;
-    color: var(--text-muted);
+    color: var(--welcome-text-muted);
 }
 
 .welcome-footer-logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 1.1rem;
-    color: var(--white);
+    color: var(--welcome-white);
 }
 
 /* ── ANIMATIONS ── */
