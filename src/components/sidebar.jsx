@@ -1,15 +1,12 @@
-// LIBRERÍA
+// LIBRERÍAS
 import { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 // HOJAS DE ESTILOS
 import '../assets/css/sidebar.css'
 
-// IMAGENES
-// import reactLogo from './assets/react.svg'
-
 function Sidebar() {
     // JS
-    // Lo que antes iba en un archivo de JS, ahora se inserta aquí
     const [collapsed, setCollapsed] = useState(false);
 
     const toggleSidebar = () => {
