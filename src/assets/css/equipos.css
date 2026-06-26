@@ -1,0 +1,123 @@
+/* VARIABLES */
+:root {
+    --eqp-text-main: #334155;
+    --eqp-text-muted: #64748b;
+    --eqp-card-bg: #ffffff;
+    --eqp-border-color: #e2e8f0;
+}
+
+/* Ajustes para el contenedor principal de equipos */
+.eqp-equipos-layout {
+    margin-left: 100px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Reseteamos el padding para controlar la cabecera */
+}
+
+.eqp-icon-btn {
+    font-size: 1.5rem;
+    color: var(--eqp-text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.eqp-icon-btn:hover {
+    color: var(--eqp-text-main);
+}
+
+.eqp-equipos-container {
+    margin-top: 3rem;
+    padding: 1rem 3rem;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.eqp-equipos-container h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--eqp-text-main);
+    margin-bottom: 2rem;
+}
+
+/* Cuadrícula de equipos */
+.eqp-equipos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Tarjeta individual */
+.eqp-equipo-card {
+    background-color: var(--eqp-card-bg);
+    border-radius: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    border: 1px solid var(--eqp-border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.eqp-equipo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+}
+
+.eqp-equipo-img {
+    width: 100%;
+    aspect-ratio: 1; /* Cuadrado perfecto */
+    object-fit: cover;
+    border-radius: 12px;
+    background-color: #f1f5f9;
+}
+
+.eqp-equipo-info {
+    padding: 0.8rem 0.2rem 0.2rem;
+    text-align: left;
+}
+
+.eqp-equipo-info h4 {
+    margin: 0 0 0.2rem 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--eqp-text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.eqp-equipo-info p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--eqp-text-muted);
+}
+
+/* Tarjeta "Nuevo Equipo" */
+.eqp-create-card {
+    background-color: #e2e8f0;
+    border: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.eqp-create-icon {
+    font-size: 5rem;
+    color: var(--eqp-text-muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 1rem;
+}
+
+.eqp-create-icon span {
+    font-size: 5rem; /* Tamaño de la cruz gris gigante del mockup */
+}
+
+.eqp-create-card .eqp-equipo-info {
+    text-align: center;
+    width: 100%;
+}
