@@ -1,8 +1,11 @@
-// LIBRERÍA
-import { useState, useEffect } from 'react'
+// LIBRERÍAS
+import { useState, useEffect } from 'react';
 
 // HOJAS DE ESTILOS
-import '../assets/css/home.css'
+import '../assets/css/home.css';
+
+// LAYOUT DE LA BARRA LATERAL
+import SidebarLayout from '../layouts/SidebarLayout';
 
 function Home() {
     // ACTUALIZACIÓN DEL TIEMPO
@@ -34,7 +37,7 @@ function Home() {
 
     // HTML
     return (
-        <>
+        <SidebarLayout>
             <main className="main-content">
                 <div className="center-column">
                     <section className="banner-priority" id="banner-high-priority">
@@ -174,7 +177,7 @@ function Home() {
 
                 </aside>
             </main>
-        </>
+        </SidebarLayout>
     )
 }
 
