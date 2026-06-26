@@ -42,12 +42,12 @@
     letter-spacing: -0.5px;
 }
 
-.form-group {
+.login-form-group {
     text-align: left;
     margin-bottom: 1.5rem;
 }
 
-.form-label {
+.login-form-label {
     display: block;
     font-size: 0.95rem;
     font-weight: 600;
@@ -55,12 +55,12 @@
     margin-bottom: 0.6rem;
 }
 
-.input-wrapper {
+.login-input-wrapper {
     position: relative;
     width: 100%;
 }
 
-.form-input {
+.login-form-input {
     width: 100%;
     background-color: var(--input-bg);
     border: 2px solid transparent;
@@ -72,17 +72,17 @@
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.form-input:focus {
+.login-form-input:focus {
     border-color: var(--link-color);
     box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.15);
 }
 
 /* Espacio en el input para el botón de revelar contraseña */
-.form-input-password {
+.login-form-input-password {
     padding-right: 3rem;
 }
 
-.password-toggle {
+.login-password-toggle {
     position: absolute;
     right: 1rem;
     top: 50%;
@@ -99,22 +99,22 @@
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.password-toggle:hover {
+.login-password-toggle:hover {
     opacity: 1;
     transform: translateY(-50%) scale(1.1);
 }
 
-.password-toggle:active {
+.login-password-toggle:active {
     transform: translateY(-50%) scale(0.95);
 }
 
-.password-toggle svg {
+.login-password-toggle svg {
     width: 22px;
     height: 22px;
     display: block;
 }
 
-.form-actions {
+.login-form-actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -124,7 +124,7 @@
 }
 
 /* Checkbox personalizado */
-.checkbox-container {
+.login-checkbox-container {
     display: flex;
     align-items: center;
     position: relative;
@@ -135,7 +135,7 @@
     font-weight: 600;
 }
 
-.checkbox-container input {
+.login-checkbox-container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -143,7 +143,7 @@
     width: 0;
 }
 
-.checkmark {
+.login-checkmark {
     position: absolute;
     top: 50%;
     left: 0;
@@ -156,26 +156,26 @@
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.checkbox-container:hover input~.checkmark {
+.login-checkbox-container:hover input~.login-checkmark {
     border-color: var(--link-color);
 }
 
-.checkbox-container input:checked~.checkmark {
+.login-checkbox-container input:checked~.login-checkmark {
     background-color: var(--btn-bg);
     border-color: var(--btn-bg);
 }
 
-.checkmark::after {
+.login-checkmark::after {
     content: "";
     position: absolute;
     display: none;
 }
 
-.checkbox-container input:checked~.checkmark::after {
+.login-checkbox-container input:checked~.login-checkmark::after {
     display: block;
 }
 
-.checkbox-container .checkmark::after {
+.login-checkbox-container .login-checkmark::after {
     left: 5px;
     top: 1px;
     width: 4px;
@@ -185,19 +185,19 @@
     transform: rotate(45deg);
 }
 
-.forgot-link {
+.login-forgot-link {
     color: var(--link-color);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.2s ease, text-decoration 0.2s ease;
 }
 
-.forgot-link:hover {
+.login-forgot-link:hover {
     color: var(--link-hover);
     text-decoration: underline;
 }
 
-.btn-submit {
+.login-btn-submit {
     width: 100%;
     background-color: var(--btn-bg);
     color: var(--btn-text);
@@ -211,20 +211,20 @@
     margin-bottom: 1.5rem;
 }
 
-.btn-submit:hover {
+.login-btn-submit:hover {
     background-color: var(--btn-hover);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.btn-submit:active {
+.login-btn-submit:active {
     transform: scale(0.985);
 }
 
-.signup-container {
+.login-signup-container {
     margin-top: 1rem;
 }
 
-.signup-link {
+.login-signup-link {
     color: var(--link-color);
     text-decoration: none;
     font-weight: 700;
@@ -233,7 +233,7 @@
     display: inline-block;
 }
 
-.signup-link:hover {
+.login-signup-link:hover {
     color: var(--link-hover);
     text-decoration: underline;
 }
@@ -251,7 +251,7 @@
         margin-bottom: 2rem;
     }
 
-    .form-actions {
+    .login-form-actions {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;

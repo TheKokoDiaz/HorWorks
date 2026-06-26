@@ -23,14 +23,14 @@ function Login() {
 
                 <form id="loginForm" autoComplete="on" onSubmit={handleLogin} action="/home">
                     {/* Grupo: Correo Electrónico */}
-                    <div className="form-group">
-                        <label htmlFor="email" className="form-label">Correo electrónico</label>
-                        <div className="input-wrapper">
+                    <div className="login-form-group">
+                        <label htmlFor="email" className="login-form-label">Correo electrónico</label>
+                        <div className="login-input-wrapper">
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
-                                className="form-input"
+                                className="login-form-input"
                                 required
                                 placeholder="tu@correo.com"
                                 autoComplete="email"
@@ -39,14 +39,14 @@ function Login() {
                     </div>
 
                     {/* Grupo: Contraseña */}
-                    <div className="form-group">
-                        <label htmlFor="password" className="form-label">Contraseña</label>
-                        <div className="input-wrapper">
+                    <div className="login-form-group">
+                        <label htmlFor="password" className="login-form-label">Contraseña</label>
+                        <div className="login-input-wrapper">
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 id="password"
                                 name="password"
-                                className="form-input form-input-password"
+                                className="login-form-input login-form-input-password"
                                 required
                                 placeholder="••••••••"
                                 autoComplete="current-password"
@@ -55,7 +55,7 @@ function Login() {
                             <button
                                 type="button"
                                 id="togglePassword"
-                                className="password-toggle"
+                                className="login-password-toggle"
                                 aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                                 onClick={() => setShowPassword(!showPassword)}
                             >
@@ -74,21 +74,21 @@ function Login() {
                     </div>
 
                     {/* Acciones secundarias: Recordarme y Olvidé Contraseña */}
-                    <div className="form-actions">
-                        <label className="checkbox-container">
+                    <div className="login-form-actions">
+                        <label className="login-checkbox-container">
                             Recordarme
                             <input type="checkbox" id="remember" name="remember" />
-                            <span className="checkmark"></span>
+                            <span className="login-checkmark"></span>
                         </label>
-                        <a href="#" className="forgot-link">¿Olvidaste tu contraseña?</a>
+                        <a href="#" className="login-forgot-link">¿Olvidaste tu contraseña?</a>
                     </div>
 
                     {/* Botón de Envío */}
-                    <button type="submit" className="btn-submit">Ingresar</button>
+                    <button type="submit" className="login-btn-submit">Ingresar</button>
                 </form>
 
-                <div className="signup-container">
-                    <a href="/registro" className="signup-link">Registrarse</a>
+                <div className="login-signup-container">
+                    <a href="/registro" className="login-signup-link">Registrarse</a>
                 </div>
             </main>
         </div>
