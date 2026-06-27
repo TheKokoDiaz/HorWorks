@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 // COMPONENTES
-import Sidebar from '../components/sidebar'
+import SidebarLayout from '../layouts/SidebarLayout';
 
 // HOJAS DE ESTILOS
 import '../assets/css/ajustes.css'
@@ -15,7 +15,7 @@ function Ajustes() {
     return (
         <div className="layout-ajustes-container">
             {/* Agregamos tu barra lateral global aquí */}
-            <Sidebar />
+            <SidebarLayout />
 
             {/* Contenedor del contenido principal de Ajustes */}
             <main className="contenedor-ajustes">
