@@ -1,5 +1,6 @@
 // LIBRERÍA
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 // HOJAS DE ESTILOS
 import '../assets/css/perfil.css'
@@ -126,7 +127,7 @@ function Perfil() {
                             </div>
 
                             <div className="prf-form-actions">
-                                <a href="/equipos" className="prf-btn-secondary">Explorar todos los equipos</a>
+                                <Link to="/equipos" className="prf-btn-secondary">Explorar todos los equipos</Link>
                             </div>
                         </div>
                     </section>

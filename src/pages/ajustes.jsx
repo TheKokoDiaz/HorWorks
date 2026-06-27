@@ -36,6 +36,7 @@ function Ajustes() {
                                     <div className="info-usuario-ajustes">
                                         <h2>Pedro Angel Santos Bautista</h2>
                                         <p>233111534@upmh.edu.mx</p>
+                                        {/* NOS FALTA QUE ESTE BOTON TE REDIRIJA A /PERFIL */}
                                         <button className="btn-azul-claro-ajustes">
                                             <span className="material-symbols-outlined">edit</span> Editar Perfil
                                         </button>

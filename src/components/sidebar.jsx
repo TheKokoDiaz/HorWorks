@@ -7,7 +7,7 @@ import '../assets/css/sidebar.css'
 
 function Sidebar() {
     // JS
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
 
     const toggleSidebar = () => {
         setCollapsed(prev => !prev);
@@ -27,39 +27,41 @@ function Sidebar() {
                     {/* Enlaces directos */}
                     <nav className="nav-links">
                         {/* Eliminé los enlaces temporalmente en lo que vemos como funciona la navegación aquí */}
-                        <a href="" className="active">
+                        <Link to="/" className="active">
                             <span className="material-symbols-outlined">home</span>
                             <span className="text-link">Inicio</span>
-                        </a>
-                        <a href="">
+                        </Link>
+                        <Link to="">
                             <span className="material-symbols-outlined">folder</span>
                             <span className="text-link">Mis Tareas</span>
-                        </a>
-                        <a href="">
+                        </Link>
+                        <Link to="/calendario">
                             <span className="material-symbols-outlined">calendar_today</span>
                             <span className="text-link">Calendario</span>
-                        </a>
-                        <a href="">
+                        </Link>
+                        {/* <Link to="">
                             <span className="material-symbols-outlined">bar_chart</span>
                             <span className="text-link">Estadísticas</span>
-                        </a>
-                        <a href="">
+                        </Link> */}
+                        <Link to="/equipos">
                             <span className="material-symbols-outlined">group</span>
                             <span className="text-link">Equipos</span>
-                        </a>        
-                        <a href="">
+                        </Link>        
+                        <Link to="/perfil">
                             <span className="material-symbols-outlined">person</span>
                             <span className="text-link">Perfil</span>
-                        </a>
+                        </Link>
                     </nav>
                 </div>
 
                 <div className="sidebar-bottom">
-                    <div className="user-profile">
+                    <Link to="/perfil" className="user-profile">
                         <img src="https://ui-avatars.com/api/?name=Auditor&background=fca5a5&color=fff" alt="Usuario" />
                         <span className="text-link">Usuario</span>
-                    </div>
-                    <a href="/ajustes" className="settings-btn"><span className="material-symbols-outlined">settings</span></a>
+                    </Link>
+                    <Link to="/ajustes" className="settings-btn">
+                        <span className="material-symbols-outlined">settings</span>
+                    </Link>
                 </div>
             </aside>
         </>

@@ -1,5 +1,6 @@
 // LIBRERÍAS
 import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 // HOJAS DE ESTILOS
 import '../assets/css/crear_equipo.css';
@@ -41,7 +42,7 @@ function CrearEquipo() {
             <div className="crear-equipo-bg-full-gray"> {/* Añadí un contenedor para tu fondo gris */}
                 <div className="crear-equipo-wrapper">
                     <div className="crear-equipo-header-close">
-                        <a href="/equipos" className="crear-equipo-close-btn">X</a>
+                        <Link to="/equipos" className="crear-equipo-close-btn">X</Link>
                     </div>
 
                     <h1 className="crear-equipo-page-title">Crear nuevo equipo</h1>

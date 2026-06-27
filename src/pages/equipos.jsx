@@ -1,3 +1,6 @@
+// LIBRERÍAS
+import { Link } from 'react-router-dom';
+
 // HOJAS DE ESTILOS
 import '../assets/css/equipos.css';
 
@@ -52,14 +55,14 @@ function Equipos(){
                             </div>
                         </div>
 
-                        <a href="/crear_equipo" className="eqp-equipo-card eqp-create-card">
+                        <Link to="/crear_equipo" className="eqp-equipo-card eqp-create-card">
                             <div className="eqp-create-icon">
                                 <span className="material-symbols-outlined">add</span>
                             </div>
                             <div className="eqp-equipo-info">
                                 <h4>Nuevo Equipo</h4>
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </main>
