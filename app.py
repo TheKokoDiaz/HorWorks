@@ -65,9 +65,7 @@ def doLogin():
         [0]  USU_Id			    Id,
         [1]  USU_Nombre 		Nombre,
         [2]  USU_Usuario		Usuario,
-        [3]  USU_Foto 		    Foto,
-        [4]  USU_Estado 		Estado,
-        [5]  USU_Tickets 	    Tickets
+        [3]  USU_Foto 		    Foto
     """
 
     # Comprobamos que se haya obtenido un ID
