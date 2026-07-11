@@ -30,12 +30,24 @@ def get_db_connection():
     )
 
 """ FUNCIONES """
-def revisarTareas():
+def verTareasPendientes():
     id = session.get("id")
 
     conn   = get_db_connection()
     cursor = conn.cursor()
     cursor.callproc("SP_VerTareasPendientes", [id])
+    query = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return query
+
+def verTareasCompletas():
+    id = session.get("id")
+
+    conn   = get_db_connection()
+    cursor = conn.cursor()
+    cursor.callproc("SP_VerTareasCompletas", [id])
     query = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -88,7 +100,7 @@ def doLogin():
         session["nombre"] = query[1]
         session["foto"] = query[3]
 
-        tareas = revisarTareas()
+        tareas = verTareasPendientes()
 
         return render_template('/home.html', tareas = tareas)
     else:
@@ -104,9 +116,18 @@ def registro():
 @app.route('/home')
 def home():
     # Se revisan las tareas pendientes
-    tareas = revisarTareas()
+    tareas = verTareasPendientes()
 
     return render_template('/home.html', tareas = tareas)
+
+# Todas las tareas
+@app.route('/tareas')
+def tareas():
+    # Se revisan todas las tareas
+    pendientes = verTareasPendientes()
+    completas = verTareasCompletas()
+
+    return render_template('/tareas.html', pendientes = pendientes, completas = completas)
 
 @app.route('/ajustes')
 def ajustes():

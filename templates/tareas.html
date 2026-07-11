@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas - HorWorks</title>
+
+    <!-- Hojas de Estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tareas.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- Icono de página -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/shortCutIcon.png') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Barra lateral -->
+        <aside class="sidebar" id="main-sidebar">
+            <div class="sidebar-top">
+                <!-- Desplegar barra -->
+                <div class="menu-icon" id="menu-toggle">
+                    <span class="material-symbols-outlined">menu</span>
+                </div>
+
+                <!-- Enlaces directos -->
+                <nav class="nav-links">
+                    <a href="/home">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="text-link">Inicio</span>
+                    </a>
+                    <a href="/tareas" class="active">
+                        <span class="material-symbols-outlined">folder</span>
+                        <span class="text-link">Mis Tareas</span>
+                    </a>
+                    <!-- OCULTAMOS LAS VENTANAS NO PROGRAMADAS -->
+                    <!-- <a href="/calendario">
+                        <span class="material-symbols-outlined">calendar_today</span>
+                        <span class="text-link">Calendario</span>
+                    </a>
+                    <a href="/estadisticas">
+                        <span class="material-symbols-outlined">bar_chart</span>
+                        <span class="text-link">Estadísticas</span>
+                    </a>
+                    <a href="/equipos">
+                        <span class="material-symbols-outlined">group</span>
+                        <span class="text-link">Equipos</span>
+                    </a>
+                    <a href="/perfil">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="text-link">Perfil</span>
+                    </a>
+                    <a href="/auditor">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        <span class="text-link">Auditor</span>
+                    </a> -->
+                </nav>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Auditor&background=fca5a5&color=fff" alt="Auditor">
+                    <span class="text-link">Auditor</span>
+                </div>
+                <a href="/ajustes" class="settings-btn"><span class="material-symbols-outlined">settings</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="center-column">
+                <section class="tasks-section" id="tasks-container">
+                    <div class="section-header">
+                        <h2>Tareas Pendientes</h2>
+                        <button class="btn-add" id="btn-add-task" title="Añadir tarea"><span class="material-symbols-outlined">add</span></button>
+                    </div>
+
+                    {% for tarea in pendientes %}
+                        <ul class="task-list" id="task-list-items">
+                            <li class="task-item" data-task-id="{{ tarea[0] }}">
+                                <!-- <div class="task-icon placeholder"></div> -->
+                                <div class="task-details">
+                                    <h4>{{ tarea[1] }}</h4>
+                                    <p>{{ tarea[2] }}</p>
+                                </div>
+                                <div class="task-actions">
+                                    <button><span class="material-symbols-outlined" title="Completar">assignment_turned_in</span></button>
+                                    <button><span class="material-symbols-outlined" title="Editar">edit</span></button>
+                                    <button><span class="material-symbols-outlined" title="Opciones">more_vert</span></button>
+                                </div>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="task-list" id="task-list-items">
+                            <li class="task-item" data-task-id="0">
+                                <div class="task-details">
+                                    <h4>¡Wow! Terminaste con tus pendientes</h4>
+                                    <p>¡Estas al día! Añade otra tarea para mantener tu productividad.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </section>
+                
+                <section class="tasks-section" id="tasks-container">
+                    <div class="section-header">
+                        <h2>Tareas Completas</h2>
+                    </div>
+
+                    {% for tarea in completas %}
+                        <ul class="task-list" id="task-list-items">
+                            <li class="task-item" data-task-id="{{ tarea[0] }}">
+                                <!-- <div class="task-icon placeholder"></div> -->
+                                <div class="task-details">
+                                    <h4>{{ tarea[1] }}</h4>
+                                    <p>{{ tarea[2] }}</p>
+                                </div>
+                                <!-- Por el momento, no creo que haya necesidad de modificar tareas completas -->
+                                <!-- <div class="task-actions">
+                                    <button><span class="material-symbols-outlined" title="Completar">assignment_turned_in</span></button>
+                                    <button><span class="material-symbols-outlined" title="Editar">edit</span></button>
+                                    <button><span class="material-symbols-outlined" title="Opciones">more_vert</span></button>
+                                </div> -->
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="task-list" id="task-list-items">
+                            <li class="task-item" data-task-id="0">
+                                <div class="task-details">
+                                    <h4>Parace que jamás has terminado una tarea</h4>
+                                    <p>¡Vamos! Hoy va a ser un día muy productivo.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+</body>
+</html>

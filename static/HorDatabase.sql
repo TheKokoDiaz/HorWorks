@@ -141,13 +141,25 @@ BEGIN
 	SELECT 
 		TAR_Id				Id,
         TAR_Nombre			Nombre,
-        TAR_Descripcion		Descripcion,
-        TAR_Completada		Completada
-	FROM HOR_Tarea WHERE USU_Id = SP_Usuario_Id;
+        TAR_Descripcion		Descripcion
+	FROM HOR_Tarea WHERE USU_Id = SP_Usuario_Id AND TAR_Completada = FALSE;
 END $$
 DELIMITER ;
 
 -- CALL SP_VerTareasPendientes(6);
+
+DELIMITER $$
+CREATE PROCEDURE SP_VerTareasCompletas(
+	IN SP_Usuario_Id	INT
+)
+BEGIN
+	SELECT 
+		TAR_Id				Id,
+        TAR_Nombre			Nombre,
+        TAR_Descripcion		Descripcion
+	FROM HOR_Tarea WHERE USU_Id = SP_Usuario_Id AND TAR_Completada = TRUE;
+END $$
+DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE SP_CrearTarea(
