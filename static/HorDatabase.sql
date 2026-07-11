@@ -99,7 +99,7 @@ CREATE PROCEDURE SP_IniciarSesion(
     IN INI_Contrasenia	VARCHAR(80)
 )
 BEGIN
-	IF EXISTS(SELECT 1 FROM HOR_Usuario WHERE USU_Correo = INI_Correo) THEN
+	IF EXISTS(SELECT 1 FROM HOR_Usuario WHERE USU_Correo = INI_Correo AND USU_Contrasenia = INI_Contrasenia) THEN
 		SELECT 
 			USU_Id			Id,
 			USU_Nombre 		Nombre,
