@@ -27,3 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Actualizar cada segundo
     setInterval(updateTimer, 1000);
 });
+
+// AÑADIR TAREA
+function addTask(){
+    window.location.href = "/crear_tarea";
+}

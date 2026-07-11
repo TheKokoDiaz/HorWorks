@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Tarea - HorWorks</title>
+
+    <!-- Hojas de Estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/crear_tarea.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- Icono de página -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/shortCutIcon.png') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Barra lateral -->
+        <aside class="sidebar" id="main-sidebar">
+            <div class="sidebar-top">
+                <!-- Desplegar barra -->
+                <div class="menu-icon" id="menu-toggle">
+                    <span class="material-symbols-outlined">menu</span>
+                </div>
+
+                <!-- Enlaces directos -->
+                <nav class="nav-links">
+                    <a href="/home" class="active">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="text-link">Inicio</span>
+                    </a>
+                    <a href="/tareas">
+                        <span class="material-symbols-outlined">folder</span>
+                        <span class="text-link">Mis Tareas</span>
+                    </a>
+                    <!-- OCULTAMOS LAS VENTANAS NO PROGRAMADAS -->
+                    <!-- <a href="/calendario">
+                        <span class="material-symbols-outlined">calendar_today</span>
+                        <span class="text-link">Calendario</span>
+                    </a>
+                    <a href="/estadisticas">
+                        <span class="material-symbols-outlined">bar_chart</span>
+                        <span class="text-link">Estadísticas</span>
+                    </a>
+                    <a href="/equipos">
+                        <span class="material-symbols-outlined">group</span>
+                        <span class="text-link">Equipos</span>
+                    </a>
+                    <a href="/perfil">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="text-link">Perfil</span>
+                    </a>
+                    <a href="/auditor">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        <span class="text-link">Auditor</span>
+                    </a> -->
+                </nav>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Auditor&background=fca5a5&color=fff" alt="Auditor">
+                    <span class="text-link">Auditor</span>
+                </div>
+                <a href="/ajustes" class="settings-btn"><span class="material-symbols-outlined">settings</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <form action="/nueva_tarea" method="post">
+                <h1>Crear nueva tarea</h1>
+                <fieldset>
+                    <span class="field c2">
+                        <label for="nombre">Título</label>
+                        <input type="text" name="nombre" id="nombre" placeholder="Título de la tarea" required>
+                    </span>
+
+                    <span class="field c2">
+                        <label for="equipos">Equipo:</label>
+                        <select name="equipos" id="equipos">
+                            <option value="NULL">Ninguno</option>
+                        </select>
+                    </span>
+                    
+                    <span class="field c1">
+                        <label for="descripcion">Descripción</label>
+                        <textarea name="descripcion" id="descripcion" placeholder="Detalles de tu tarea"></textarea>
+                    </span>
+
+                    <span class="button">
+                        <input type="submit" value="Crear Tarea">
+                    </span>
+                </fieldset>
+            </form>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+</body>
+</html>

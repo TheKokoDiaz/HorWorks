@@ -129,6 +129,32 @@ def tareas():
 
     return render_template('/tareas.html', pendientes = pendientes, completas = completas)
 
+@app.route('/nueva_tarea', methods=["POST"])
+def nueva_tarea():
+    id = session.get("id")
+
+    # Recuperamos los datos del formulario
+    nombre = request.form["nombre"]
+    descripcion = request.form["descripcion"]
+
+    # Procedimiento almacenado
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.callproc("SP_CrearTarea", [id, nombre, descripcion, None])
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # Se revisan todas las tareas
+    pendientes = verTareasPendientes()
+    completas = verTareasCompletas()
+
+    return render_template('/tareas.html', pendientes = pendientes, completas = completas)
+
+@app.route('/crear_tarea')
+def crear_tarea():
+    return render_template('/crear_tarea.html')
+
 @app.route('/ajustes')
 def ajustes():
     return render_template('/ajustes.html')

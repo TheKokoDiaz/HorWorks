@@ -72,7 +72,7 @@
                 <section class="tasks-section" id="tasks-container">
                     <div class="section-header">
                         <h2>Tareas Pendientes</h2>
-                        <button class="btn-add" id="btn-add-task" title="Añadir tarea"><span class="material-symbols-outlined">add</span></button>
+                        <button class="btn-add" id="btn-add-task" title="Añadir tarea" onclick="addTask()"><span class="material-symbols-outlined">add</span></button>
                     </div>
 
                     {% for tarea in pendientes %}
@@ -104,7 +104,7 @@
                 
                 <section class="tasks-section" id="tasks-container">
                     <div class="section-header">
-                        <h2>Tareas Completas</h2>
+                        <h2>Tareas Completadas</h2>
                     </div>
 
                     {% for tarea in completas %}
@@ -140,5 +140,6 @@
 
     <!-- JAVASCRIPT -->
     <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tareas.js') }}"></script>
 </body>
 </html>
