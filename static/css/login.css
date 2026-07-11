@@ -1,5 +1,4 @@
 /* Estilos específicos para la página de Inicio de Sesión */
-
 body {
     background-color: var(--bg-primary);
     min-height: 100vh;
@@ -43,6 +42,14 @@ body {
 .form-group {
     text-align: left;
     margin-bottom: 1.5rem;
+}
+
+.alert{
+    width: 100%;
+    border-radius: 16px;
+    color: rgb(150, 0, 0);
+    background-color: rgb(255, 180, 180);
+    padding: 0.5rem 0.8rem;
 }
 
 .form-label {

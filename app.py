@@ -80,7 +80,7 @@ def doLogin():
         return render_template('/home.html')
     else:
         # Fallido, se reintenta el login
-        return render_template('/login.html')
+        return render_template('/login.html', alert=True)
 
 # Registro
 @app.route('/registro')
@@ -111,6 +111,11 @@ def crear_equipo():
 @app.route('/roadmap')
 def roadmap():
     return render_template('/roadmap.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('/login.html')
 
 # MODO DEBUG
 if __name__ == '__main__':

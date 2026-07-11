@@ -18,6 +18,13 @@
         <h1 class="login-title">Inicia Sesión</h1>
         
         <form id="loginForm" autocomplete="on" method="post" action="/doLogin">
+            <!-- Alerta -->
+            {% if(alert | default(False)) %}
+            <div class="form-group" style="text-align: center;">
+                <span class="alert">Correo o Contraseña incorrectos</span>
+            </div>
+            {% endif %}
+
             <!-- Grupo: Correo Electrónico -->
             <div class="form-group">
                 <label for="email" class="form-label">Correo electrónico</label>
