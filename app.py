@@ -29,6 +29,19 @@ def get_db_connection():
         port     = 3306
     )
 
+""" FUNCIONES """
+def revisarTareas():
+    id = session.get("id")
+
+    conn   = get_db_connection()
+    cursor = conn.cursor()
+    cursor.callproc("SP_VerTareasPendientes", [id])
+    query = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return query
+
 """ MÉTODOS FLASK """
 # Home es la pagina después de iniciar sesión
 @app.route('/')
@@ -75,7 +88,9 @@ def doLogin():
         session["nombre"] = query[1]
         session["foto"] = query[3]
 
-        return render_template('/home.html')
+        tareas = revisarTareas()
+
+        return render_template('/home.html', tareas = tareas)
     else:
         # Fallido, se reintenta el login
         return render_template('/login.html', alert=True)
@@ -88,7 +103,10 @@ def registro():
 # Dashboard / Página inicial
 @app.route('/home')
 def home():
-    return render_template('/home.html')
+    # Se revisan las tareas pendientes
+    tareas = revisarTareas()
+
+    return render_template('/home.html', tareas = tareas)
 
 @app.route('/ajustes')
 def ajustes():

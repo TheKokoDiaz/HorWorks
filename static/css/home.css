@@ -212,6 +212,8 @@ body {
     border: none;
     cursor: pointer;
     color: var(--text-muted);
+
+    gap: 0.4rem;
 }
 
 /* --- COLUMNA DERECHA (Widgets) --- */

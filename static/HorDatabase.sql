@@ -134,7 +134,7 @@ DELIMITER ;
 
 -- TAREAS
 DELIMITER $$
-CREATE PROCEDURE SP_VerTareas(
+CREATE PROCEDURE SP_VerTareasPendientes(
 	IN SP_Usuario_Id	INT
 )
 BEGIN
@@ -147,7 +147,7 @@ BEGIN
 END $$
 DELIMITER ;
 
--- CALL SP_VerTareas(6);
+-- CALL SP_VerTareasPendientes(6);
 
 DELIMITER $$
 CREATE PROCEDURE SP_CrearTarea(
