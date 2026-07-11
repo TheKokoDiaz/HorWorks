@@ -66,7 +66,8 @@ VALUES
 ('Carlos Mendoza', 'carlos_auditor', 'carlos@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos', 1, 5),
 ('Ana Rodríguez', 'ana_auditora', 'ana@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ana', 1, 3),
 ('Juan Pérez', 'juan_dev', 'juan@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan', 1, 10),
-('Sofía López', 'sofia_design', 'sofia@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia', 1, 2);
+('Sofía López', 'sofia_design', 'sofia@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia', 1, 2),
+("0", "Koko", "Koko", "koko@gmail.com", "1234567890", NULL, 1, 5);
 
 -- EN HOR_Equipo
 -- Enlazamos EQU_Auditor con los IDs de Carlos (1) y Ana (2)

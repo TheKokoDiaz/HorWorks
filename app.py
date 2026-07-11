@@ -1,3 +1,6 @@
+""" COMANDO DE EJECUCIÓN """
+# flask --app app run
+
 """ CUENTA DE PRUEBAS """
 # carlos@horworks.com
 # 1234
@@ -31,40 +34,71 @@ def get_db_connection():
 @app.route('/')
 def index():
     id = session.get("id")
-    print(f"ID: {id}")
 
     if(id != 0 and id != None):
         return render_template('/home.html')
     else:
         return render_template('/login.html')
 
-# Inicio de Sesión
-@app.route('/login', methods=["POST"])
+# Ir a Inicio de Sesión
+@app.route('/login')
 def login():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
-    return render_template('/home.html')
+    return render_template('/login.html')
 
+# Comprobar credenciales
+@app.route('/doLogin', methods=["POST"])
+def doLogin():
+    # Recuperamos los datos del formulario
+    email = request.form["email"]
+    password = request.form["password"]
+
+    # Ejecutamos nuestro procedimiento almacenado
+    conn   = get_db_connection()
+    cursor = conn.cursor()
+    cursor.callproc("SP_IniciarSesion", [email, password])
+    query = cursor.fetchall()[0] # Recuperamos la fila resultante
+    cursor.close()
+    conn.close()
+
+    """ 
+        VALORES DEL QUERY:
+        [0]  USU_Id			    Id,
+        [1]  USU_Nombre 		Nombre,
+        [2]  USU_Usuario		Usuario,
+        [3]  USU_Foto 		    Foto,
+        [4]  USU_Estado 		Estado,
+        [5]  USU_Tickets 	    Tickets
+    """
+
+    # Comprobamos que se haya obtenido un ID
+    if(query[0] != 0):
+        # Exito, guardamos los datos
+        session["id"] = query[0]
+        session["nombre"] = query[1]
+        session["foto"] = query[3]
+
+        return render_template('/home.html')
+    else:
+        # Fallido, se reintenta el login
+        return render_template('/login.html')
+
+# Registro
 @app.route('/registro')
 def registro():
     return render_template('/registro.html')
 
-
-# pagina de bienvenida al entrar a la pagina (esta fuera de los templates por alguna razon por lo que aun no funcion)
-# deberia ser la pagina principal
-@app.route('/horworks')
+# Dashboard / Página inicial
+@app.route('/home')
 def home():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
-    return render_template('/horworks.html')
+    return render_template('/home.html')
 
 @app.route('/ajustes')
 def ajustes():
     return render_template('/ajustes.html')
 
-@app.route('/home')
+@app.route('/perfil')
 def perfil():
-    return render_template('/home.html')
+    return render_template('/perfil.html')
 
 @app.route('/equipos')
 def equipos():
@@ -76,8 +110,6 @@ def crear_equipo():
 
 @app.route('/roadmap')
 def roadmap():
-    # Aquí en el futuro puedes hacer las consultas a la base de datos 
-    # y enviarlas a la plantilla HTML usando render_template
     return render_template('/roadmap.html')
 
 # MODO DEBUG

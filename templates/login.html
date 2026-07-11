@@ -17,7 +17,7 @@
     <main class="login-card">
         <h1 class="login-title">Inicia Sesión</h1>
         
-        <form id="loginForm" autocomplete="on" onsubmit="handleLogin(event)" action="/home">
+        <form id="loginForm" autocomplete="on" method="post" action="/doLogin">
             <!-- Grupo: Correo Electrónico -->
             <div class="form-group">
                 <label for="email" class="form-label">Correo electrónico</label>
@@ -113,23 +113,6 @@
                 togglePasswordButton.setAttribute('aria-label', 'Mostrar contraseña');
             }
         });
-
-        function handleLogin(event) {
-            // 1. Evitamos que el formulario intente hacer un envío real y recargue la página
-            event.preventDefault(); 
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Mensaje en consola para verificar los datos capturados
-            console.log('Intento de Login:', { email, password });
-            
-            // 2. Simulamos una validación exitosa (puedes cambiar este mensaje)
-            alert('¡Inicio de sesión simulado con éxito!\nBienvenido: ' + email);
-            
-            // 3. Redirigimos a la ruta del dashboard (/home) usando la sintaxis de Flask
-            window.location.href = "/";
-        }
     </script>
 </body>
 </html>
