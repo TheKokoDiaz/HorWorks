@@ -1,6 +1,6 @@
 // LIBRERÍAS
 import { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // HOJAS DE ESTILOS
 import '../assets/css/sidebar.css'
@@ -8,6 +8,7 @@ import '../assets/css/sidebar.css'
 function Sidebar() {
     // JS
     const [collapsed, setCollapsed] = useState(true);
+    const location = useLocation();
 
     const toggleSidebar = () => {
         setCollapsed(prev => !prev);
@@ -26,28 +27,27 @@ function Sidebar() {
 
                     {/* Enlaces directos */}
                     <nav className="nav-links">
-                        {/* Eliminé los enlaces temporalmente en lo que vemos como funciona la navegación aquí */}
-                        <Link to="/" className="active">
+                        <Link to="/" className={location.pathname === '/' ? "active" : ""}>
                             <span className="material-symbols-outlined">home</span>
                             <span className="text-link">Inicio</span>
                         </Link>
-                        <Link to="">
+                        <Link to="/tareas" className={location.pathname === '/tareas' ? "active" : ""}>
                             <span className="material-symbols-outlined">folder</span>
                             <span className="text-link">Mis Tareas</span>
                         </Link>
-                        <Link to="/calendario">
+                        <Link to="/calendario" className={location.pathname === '/calendario' ? "active" : ""}>
                             <span className="material-symbols-outlined">calendar_today</span>
                             <span className="text-link">Calendario</span>
                         </Link>
-                        {/* <Link to="">
+                        {/* <Link to="/estadisticas">
                             <span className="material-symbols-outlined">bar_chart</span>
                             <span className="text-link">Estadísticas</span>
                         </Link> */}
-                        <Link to="/equipos">
+                        <Link to="/equipos" className={location.pathname === '/equipos' ? "active" : ""}>
                             <span className="material-symbols-outlined">group</span>
                             <span className="text-link">Equipos</span>
-                        </Link>        
-                        <Link to="/perfil">
+                        </Link>
+                        <Link to="/perfil" className={location.pathname === '/perfil' ? "active" : ""}>
                             <span className="material-symbols-outlined">person</span>
                             <span className="text-link">Perfil</span>
                         </Link>
