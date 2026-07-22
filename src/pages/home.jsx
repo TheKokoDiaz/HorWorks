@@ -10,6 +10,24 @@ import SidebarLayout from '../layouts/SidebarLayout';
 function Home() {
     // ACTUALIZACIÓN DEL TIEMPO
     const [timeInSeconds, setTimeInSeconds] = useState((45 * 60) + 37);
+    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+    const [historyFilter, setHistoryFilter] = useState('todos');
+
+    const fullHistoryItems = [
+        { id: 1, type: 'green', icon: 'check_circle', title: 'Completaste', desc: 'Hacer ejercicio', time: 'Hace 10 min', category: 'completadas' },
+        { id: 2, type: 'purple', icon: 'schedule', title: 'Pospusiste', desc: 'Reunión con el equipo', time: 'Hace 15 min', category: 'pospuestas' },
+        { id: 3, type: 'blue', icon: 'photo_camera', title: 'Evidencia subida', desc: 'Gym.png', time: 'Hace 20 min', category: 'evidencias' },
+        { id: 4, type: 'red', icon: 'warning', title: 'Alerta de desvío', desc: 'Detectamos inactividad', time: 'Hace 25 min', category: 'alertas' },
+        { id: 5, type: 'green', icon: 'check_circle', title: 'Completaste', desc: 'Avance de prototipo Figma', time: 'Hace 1 hora', category: 'completadas' },
+        { id: 6, type: 'blue', icon: 'description', title: 'Evidencia subida', desc: 'Reporte_Semanal.pdf', time: 'Hace 2 horas', category: 'evidencias' },
+        { id: 7, type: 'purple', icon: 'schedule', title: 'Pospusiste', desc: 'Revisión de Base de Datos', time: 'Hace 3 horas', category: 'pospuestas' },
+        { id: 8, type: 'green', icon: 'check_circle', title: 'Completaste', desc: 'Lectura de requerimientos', time: 'Ayer, 4:30 PM', category: 'completadas' },
+        { id: 9, type: 'red', icon: 'warning', title: 'Alerta de desvío', desc: 'Uso prolongado de redes sociales', time: 'Ayer, 2:15 PM', category: 'alertas' }
+    ];
+
+    const filteredHistory = historyFilter === 'todos'
+        ? fullHistoryItems
+        : fullHistoryItems.filter(item => item.category === historyFilter);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -150,7 +168,13 @@ function Home() {
                                 <span className="home-time">Hace 25 min</span>
                             </li>
                         </ul>
-                        <a href="#" className="home-view-history">Ver historial completo</a>
+                        <button
+                            type="button"
+                            className="home-view-history-btn"
+                            onClick={() => setIsHistoryModalOpen(true)}
+                        >
+                            Ver historial completo
+                        </button>
                     </div>
 
                     <div className="home-widget home-stats-widget" id="daily-stats">
@@ -174,9 +198,85 @@ function Home() {
                             </div>
                         </div>
                     </div>
-
                 </aside>
             </main>
+
+            {/* MODAL HISTORIAL COMPLETO DE ACTIVIDAD */}
+            {isHistoryModalOpen && (
+                <div className="home-modal-overlay" onClick={() => setIsHistoryModalOpen(false)}>
+                    <div className="home-modal-container" onClick={e => e.stopPropagation()}>
+                        <div className="home-modal-header">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span className="material-symbols-outlined" style={{ color: '#3b82f6' }}>history</span>
+                                <h2>Historial Completo de Actividades</h2>
+                            </div>
+                            <button className="home-modal-close" onClick={() => setIsHistoryModalOpen(false)}>
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        {/* FILTROS */}
+                        <div className="home-history-filters">
+                            <button
+                                className={`filter-btn ${historyFilter === 'todos' ? 'active' : ''}`}
+                                onClick={() => setHistoryFilter('todos')}
+                            >
+                                Todos
+                            </button>
+                            <button
+                                className={`filter-btn ${historyFilter === 'completadas' ? 'active' : ''}`}
+                                onClick={() => setHistoryFilter('completadas')}
+                            >
+                                Completadas
+                            </button>
+                            <button
+                                className={`filter-btn ${historyFilter === 'pospuestas' ? 'active' : ''}`}
+                                onClick={() => setHistoryFilter('pospuestas')}
+                            >
+                                Pospuestas
+                            </button>
+                            <button
+                                className={`filter-btn ${historyFilter === 'evidencias' ? 'active' : ''}`}
+                                onClick={() => setHistoryFilter('evidencias')}
+                            >
+                                Evidencias
+                            </button>
+                            <button
+                                className={`filter-btn ${historyFilter === 'alertas' ? 'active' : ''}`}
+                                onClick={() => setHistoryFilter('alertas')}
+                            >
+                                Alertas
+                            </button>
+                        </div>
+
+                        {/* LISTA DE ACTIVIDADES EXPANDIDA */}
+                        <div className="home-history-scroll-list">
+                            {filteredHistory.length > 0 ? (
+                                <ul className="home-activity-list">
+                                    {filteredHistory.map(item => (
+                                        <li key={item.id}>
+                                            <div className={`home-activity-icon home-${item.type}`}>
+                                                <span className="material-symbols-outlined">{item.icon}</span>
+                                            </div>
+                                            <div className="home-activity-text">
+                                                <strong className={item.type === 'red' ? 'home-text-red' : ''}>
+                                                    {item.title}
+                                                </strong>
+                                                <span>{item.desc}</span>
+                                            </div>
+                                            <span className="home-time">{item.time}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p style={{ textAlign: 'center', color: '#64748b', margin: '2rem 0' }}>
+                                    No se encontraron actividades en esta categoría.
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </SidebarLayout>
     )
 }
