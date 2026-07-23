@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: horworks_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: DB_HORWORKS
+      MYSQL_ROOT_PASSWORD: Pelusa12!
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Al arrancar por primera vez, ejecuta automáticamente tu script SQL
+      - ./database/HorDatabase.sql:/docker-entrypoint-initdb.d/HorDatabase.sql
+    ports:
+      - "3306:3306"
+
+  # 2. Backend Flask API
+  backend:
+    build: ./backend
+    container_name: horworks_backend
+    restart: always
+    environment:
+      # URL de conexión a MySQL en Flask
+      - DATABASE_URL=mysql+pymysql://root:Pelusa12!@db:3306/horworks_db
+      - FLASK_ENV=production
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  # 3. Frontend React
+  frontend:
+    build: ./frontend
+    container_name: horworks_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
