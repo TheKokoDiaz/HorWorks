@@ -4,11 +4,11 @@ services:
   # 1. Base de Datos MySQL
   db:
     image: mysql:8.0
-    container_name: horworks_db
+    container_name: DB_HORWORKS
     restart: always
     environment:
-      MYSQL_DATABASE: DB_HORWORKS
-      MYSQL_ROOT_PASSWORD: Pelusa12!
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
       # Al arrancar por primera vez, ejecuta automáticamente tu script SQL
@@ -23,8 +23,9 @@ services:
     restart: always
     environment:
       # URL de conexión a MySQL en Flask
-      - DATABASE_URL=mysql+pymysql://root:Pelusa12!@db:3306/horworks_db
-      - FLASK_ENV=production
+      - DATABASE_URL=mysql+pymysql://root:${DB_PASSWORD}@db:3306/${DB_NAME}
+      - FLASK_ENV=${FLASK_ENV}
+      - SECRET_KEY=${SECRET_KEY}
     ports:
       - "5000:5000"
     depends_on:

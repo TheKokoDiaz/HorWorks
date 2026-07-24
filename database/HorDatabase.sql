@@ -58,6 +58,21 @@ CREATE TABLE HOR_Ajustes(
     FOREIGN KEY(USU_Id) REFERENCES HOR_Usuario(USU_Id)
 );
 
+CREATE TABLE HOR_Tareas(
+    TAR_Id INT AUTO_INCREMENT,
+    TAR_Titulo NVARCHAR(100) NOT NULL,
+    TAR_Descripcion TEXT,
+    TAR_Prioridad NVARCHAR(20),
+    TAR_TiempoEstimado NVARCHAR(50),
+    TAR_FechaLimite NVARCHAR(50),
+    TAR_HoraLimite NVARCHAR(50),
+    TAR_Estado NVARCHAR(20) DEFAULT 'Pendiente',
+    TAR_Bookmarked BOOL DEFAULT 0,
+    USU_Id INT NOT NULL, /* Para saber de quién es la tarea */
+    PRIMARY KEY(TAR_Id),
+    FOREIGN KEY(USU_Id) REFERENCES HOR_Usuario(USU_Id)
+);
+
 /* REGISTROS */
 -- HOR_Usuario
 -- Nota: Insertamos 4 usuarios. Los dos primeros actuarán como auditores.
