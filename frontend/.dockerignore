@@ -4,3 +4,5 @@ dist
 __pycache__
 .git
 .env
+.env.local
+npm-debug.log

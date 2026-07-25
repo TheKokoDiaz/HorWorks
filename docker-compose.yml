@@ -14,7 +14,7 @@ services:
       # Al arrancar por primera vez, ejecuta automáticamente tu script SQL
       - ./database/HorDatabase.sql:/docker-entrypoint-initdb.d/HorDatabase.sql
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
   # 2. Backend Flask API
   backend:
@@ -37,7 +37,7 @@ services:
     container_name: horworks_frontend
     restart: always
     ports:
-      - "80:80"
+      - "3000:80"
     depends_on:
       - backend
 

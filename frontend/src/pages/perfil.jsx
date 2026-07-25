@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // HOJAS DE ESTILOS
-import '../assets/css/perfil.css'
+import '../assets/css/Perfil.css'
 
 // LAYOUT DE LA BARRA LATERAL
 import SidebarLayout from '../layouts/SidebarLayout';
