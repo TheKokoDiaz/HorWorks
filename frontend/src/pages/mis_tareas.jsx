@@ -1,5 +1,5 @@
 // LIBRERÍAS
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // HOJAS DE ESTILOS
 import '../assets/css/mis_tareas.css';
@@ -8,137 +8,18 @@ import '../assets/css/mis_tareas.css';
 import SidebarLayout from '../layouts/SidebarLayout';
 
 const INITIAL_TASKS = [
-    {
-        id: 1,
-        title: 'Tarea 1',
-        subtitle: 'Supporting line text lorem ipsum dolor sit amet...',
-        badgeType: 'time',
-        badgeText: 'en 10 min',
-        icon: 'dataset',
-        priority: 'Media',
-        estimatedTime: '45 min',
-        description: 'Revision inicial de los requisitos y asignación de actividades.',
-        deadlineDate: '22 de mayo 2026',
-        deadlineTime: '6:00 PM',
-        createdDate: '15 mayo 2026',
-        createdTime: '10:00 AM',
-        status: 'En Proceso',
-        bookmarked: false
-    },
-    {
-        id: 2,
-        title: 'Realizar interfaz para TECH',
-        subtitle: 'Supporting line text lorem ipsum...',
-        badgeType: 'ticket',
-        badgeText: 'Pospuesta',
-        icon: 'menu_book',
-        priority: 'Alta',
-        estimatedTime: '1 h 30 min',
-        description: 'Realizar un diseño de la interfaz de usuario (páginas principales) de la aplicación WEB propuesta, al menos 6 interfaces.',
-        deadlineDate: '22 de mayo 2026',
-        deadlineTime: '11:00 PM',
-        createdDate: '13 mayo 2026',
-        createdTime: '2:00 PM',
-        status: 'Pendiente',
-        bookmarked: true
-    },
-    {
-        id: 3,
-        title: 'Reporte de Arquitectura',
-        subtitle: 'Supporting line text lorem ipsum...',
-        badgeType: 'time',
-        badgeText: 'en 1 hr',
-        icon: 'analytics',
-        priority: 'Media',
-        estimatedTime: '2 h 00 min',
-        description: 'Elaboración del diagrama de arquitectura e infraestructura del sistema.',
-        deadlineDate: '23 de mayo 2026',
-        deadlineTime: '4:00 PM',
-        createdDate: '14 mayo 2026',
-        createdTime: '11:30 AM',
-        status: 'Pendiente',
-        bookmarked: false
-    },
-    {
-        id: 4,
-        title: 'Realizar integración backend',
-        subtitle: 'Supporting line text lorem ipsum...',
-        badgeType: 'time',
-        badgeText: 'en 1.5 hr',
-        icon: 'code',
-        priority: 'Alta',
-        estimatedTime: '3 h 00 min',
-        description: 'Conexión de los endpoints REST de tareas y usuarios con la base de datos SQL.',
-        deadlineDate: '23 de mayo 2026',
-        deadlineTime: '8:00 PM',
-        createdDate: '12 mayo 2026',
-        createdTime: '9:00 AM',
-        status: 'En Proceso',
-        bookmarked: false
-    },
-    {
-        id: 5,
-        title: 'Revisión urgente de Bugs',
-        subtitle: 'Supporting line text',
-        badgeType: 'urgent',
-        badgeText: 'Urgente',
-        icon: 'warning',
-        priority: 'Alta',
-        estimatedTime: '1 h 00 min',
-        description: 'Corregir fallos críticos reportados en la prueba de login y sesión.',
-        deadlineDate: '22 de mayo 2026',
-        deadlineTime: '5:00 PM',
-        createdDate: '22 mayo 2026',
-        createdTime: '1:00 PM',
-        status: 'Urgente',
-        bookmarked: true
-    },
-    {
-        id: 6,
-        title: 'Pruebas de Usabilidad',
-        subtitle: 'Supporting line text lorem ipsum...',
-        badgeType: 'time',
-        badgeText: 'mañana',
-        icon: 'fact_check',
-        priority: 'Baja',
-        estimatedTime: '2 h 30 min',
-        description: 'Ejecución de pruebas A/B con usuarios de prueba y recolección de feedback.',
-        deadlineDate: '24 de mayo 2026',
-        deadlineTime: '12:00 PM',
-        createdDate: '16 mayo 2026',
-        createdTime: '3:15 PM',
-        status: 'Pendiente',
-        bookmarked: false
-    },
-    {
-        id: 7,
-        title: 'Documentación API',
-        subtitle: 'Supporting line text lorem ipsum...',
-        badgeType: 'time',
-        badgeText: 'mañana',
-        icon: 'description',
-        priority: 'Baja',
-        estimatedTime: '1 h 15 min',
-        description: 'Redacción de la documentación Swagger/Postman de la API.',
-        deadlineDate: '24 de mayo 2026',
-        deadlineTime: '6:00 PM',
-        createdDate: '17 mayo 2026',
-        createdTime: '10:00 AM',
-        status: 'Pendiente',
-        bookmarked: false
-    }
 ];
 
 function MisTareas() {
-    const [tasks, setTasks] = useState(INITIAL_TASKS);
-    const [selectedTaskId, setSelectedTaskId] = useState(2); // Inicia con Tarea 2 como en el mockup
+    const [tasks, setTasks] = useState([]);
+    const [selectedTaskId, setSelectedTaskId] = useState(null);
 
     // Estado para Evidencia subida
     const [evidenceFile, setEvidenceFile] = useState(null);
 
     // Estados para Modales
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isPostponeModalOpen, setIsPostponeModalOpen] = useState(false);
+    const [isPostponeModalOpen, setIsPostponeModalOpen] = useState(false);  
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
 
@@ -157,6 +38,20 @@ function MisTareas() {
         deadlineDate: '25 de mayo 2026',
         deadlineTime: '11:00 PM'
     });
+
+    // 2. AQUÍ VA EL USEEFFECT
+    useEffect(() => {
+        // Sustituye TU_IP por la de tu lan inalámbrica (ej. 192.168.1.50)
+        fetch('http://172.28.17.17:5000/api/tareas/')
+            .then(response => response.json())
+            .then(data => {
+                setTasks(data); // Guardamos las tareas de la base de datos
+                if (data.length > 0) {
+                    setSelectedTaskId(data[0].id); // Seleccionamos la primera por defecto
+                }
+            })
+            .catch(error => console.error("Error al cargar las tareas:", error));
+    }, []);
 
     const activeTask = tasks.find(t => t.id === selectedTaskId) || tasks[0];
 
@@ -224,34 +119,44 @@ function MisTareas() {
     // Crear Nueva Tarea
     const handleCreateNewTask = (e) => {
         e.preventDefault();
-        const newTask = {
-            id: Date.now(),
-            title: newTaskForm.title || 'Nueva Tarea',
-            subtitle: 'Tarea agregada recientemente...',
-            badgeType: 'time',
-            badgeText: 'en 2 hrs',
-            icon: 'assignment',
+        
+        // Creamos el paquete de datos
+        const tareaData = {
+            title: newTaskForm.title,
+            description: newTaskForm.description,
             priority: newTaskForm.priority,
             estimatedTime: newTaskForm.estimatedTime,
-            description: newTaskForm.description || 'Sin descripción.',
             deadlineDate: newTaskForm.deadlineDate,
             deadlineTime: newTaskForm.deadlineTime,
-            createdDate: 'Hoy',
-            createdTime: 'Ahora',
-            status: 'Pendiente',
-            bookmarked: false
+            status: 'Pendiente'
         };
-        setTasks([newTask, ...tasks]);
-        setSelectedTaskId(newTask.id);
-        setIsNewTaskModalOpen(false);
-        setNewTaskForm({
-            title: '',
-            description: '',
-            priority: 'Alta',
-            estimatedTime: '1 h 00 min',
-            deadlineDate: '25 de mayo 2026',
-            deadlineTime: '11:00 PM'
-        });
+
+        // Sustituye TU_IP por la misma IP de tu backend
+        fetch('http://172.28.17.17:5000/api/tareas/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tareaData)
+        })
+        .then(response => response.json())
+        .then(nuevaTarea => {
+            // Actualizamos la pantalla con la tarea real creada en MySQL
+            setTasks([nuevaTarea, ...tasks]);
+            setSelectedTaskId(nuevaTarea.id);
+            setIsNewTaskModalOpen(false);
+            
+            // Limpiamos el formulario
+            setNewTaskForm({
+                title: '',
+                description: '',
+                priority: 'Alta',
+                estimatedTime: '1 h 00 min',
+                deadlineDate: '25 de mayo 2026',
+                deadlineTime: '11:00 PM'
+            });
+        })
+        .catch(error => console.error("Error al crear la tarea:", error));
     };
 
     return (
