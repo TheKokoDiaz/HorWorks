@@ -9,6 +9,7 @@ COPY . .
 RUN npm run build
 # ETAPA 2: Servidor web ligero en Producción
 FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copiar estáticos generados por Vite a la carpeta pública de Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
