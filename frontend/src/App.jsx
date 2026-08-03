@@ -20,25 +20,23 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
+                {/* 1. Al abrir la app en la raíz (/), mandamos directo al Login */}
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+
+                {/* 2. Pantalla principal del sistema después del Login */}
+                <Route path="/home" element={<Home />} />
+
                 {/* Páginas que requieren sesión */}
-                <Route path="/" element={<Home />} />
-
                 <Route path="/tareas" element={<MisTareas />} />
-
                 <Route path="/calendario" element={<Roadmap />} />
-
                 <Route path="/equipos" element={<Equipos />} />
-
                 <Route path="/crear_equipo" element={<CrearEquipo />} />
-
                 <Route path="/perfil" element={<Perfil />} />
-
                 <Route path="/ajustes" element={<Ajustes />} />
 
                 {/* Páginas para invitados */}
                 <Route path="/bienvenida" element={<Welcome />} />
-
-                <Route path="/login" element={<Login />} />
             </Routes>
         </BrowserRouter>
     )

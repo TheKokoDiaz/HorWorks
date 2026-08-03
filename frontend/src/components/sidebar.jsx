@@ -27,7 +27,7 @@ function Sidebar() {
 
                     {/* Enlaces directos */}
                     <nav className="nav-links">
-                        <Link to="/" className={location.pathname === '/' ? "active" : ""}>
+                        <Link to="/home" className={location.pathname === '/home' ? "active" : ""}>
                             <span className="material-symbols-outlined">home</span>
                             <span className="text-link">Inicio</span>
                         </Link>

@@ -4,16 +4,36 @@ import '../assets/css/login.css';
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
 
         const email = event.target.email.value;
         const password = event.target.password.value;
 
-        console.log('Intento de Login:', { email, password });
-        alert('¡Inicio de sesión simulado con éxito!\nBienvenido: ' + email);
+        try {
+            // Reemplaza localhost por tu IP local si pruebas en red (ej. http://192.168.1.80:5000/api/login)
+            const response = await fetch('http://localhost:5000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include', // IMPORTANTE: Para que el navegador guarde la cookie de sesión
+                body: JSON.stringify({ email, password })
+            });
 
-        window.location.href = "/";
+            const data = await response.json();
+
+            if (response.ok) {
+                // Si el backend responde 200 OK, redirigimos a la pantalla de tareas
+                window.location.href = "/home";
+            } else {
+                // Si el backend responde 401 u otro error, avisamos al usuario
+                alert(data.error || "Error al iniciar sesión");
+            }
+        } catch (error) {
+            console.error("Error en la petición de login:", error);
+            alert("No se pudo conectar con el servidor.");
+        }
     };
 
     return (
@@ -21,7 +41,7 @@ function Login() {
             <main className="login-card">
                 <h1 className="login-title">Inicia Sesión</h1>
 
-                <form id="loginForm" autoComplete="on" onSubmit={handleLogin} action="/home">
+                <form id="loginForm" autoComplete="on" onSubmit={handleLogin} >
                     {/* Grupo: Correo Electrónico */}
                     <div className="login-form-group">
                         <label htmlFor="email" className="login-form-label">Correo electrónico</label>

@@ -42,7 +42,7 @@ function MisTareas() {
     // 2. AQUÍ VA EL USEEFFECT
     useEffect(() => {
         // Sustituye TU_IP por la de tu lan inalámbrica (ej. 192.168.1.50)
-        fetch('http://172.28.17.17:5000/api/tareas/')
+        fetch('http://localhost:5000/api/tareas/')
             .then(response => response.json())
             .then(data => {
                 setTasks(data); // Guardamos las tareas de la base de datos
@@ -132,7 +132,7 @@ function MisTareas() {
         };
 
         // Sustituye TU_IP por la misma IP de tu backend
-        fetch('http://172.28.17.17:5000/api/tareas/', {
+        fetch('http://localhost:5000/api/tareas/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
