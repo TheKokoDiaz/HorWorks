@@ -12,14 +12,17 @@ def get_tareas():
 @tarea_bp.route('/', methods=['POST'])
 def create_tarea():
     data = request.json
+    
+    # ✅ CORREGIDO: Usamos TAR_Nombre y TAR_Completada sin comillas a la izquierda
     nueva_tarea = Tarea(
-        TAR_Titulo=data.get('title', 'Nueva Tarea'),
+        TAR_Nombre=data.get('title', 'Nueva Tarea'),       # <-- Antes decía TAR_Titulo
         TAR_Descripcion=data.get('description', ''),
         TAR_Prioridad=data.get('priority', 'Media'),
         TAR_TiempoEstimado=data.get('estimatedTime', '1h'),
         TAR_FechaLimite=data.get('deadlineDate', ''),
-        TAR_HoraLimite=data.get('deadlineTime', ''),
-        TAR_Estado=data.get('status', 'Pendiente'),
+        TAR_HoraLimite=data.get('deadlineTime', ''),    
+        TAR_Completada=False,                              # <-- Antes decía TAR_Estado
+        TAR_Bookmarked=data.get('bookmarked', False),
         USU_Id=1 
     )
     db.session.add(nueva_tarea)
