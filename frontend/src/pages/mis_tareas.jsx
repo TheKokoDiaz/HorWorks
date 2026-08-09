@@ -7,15 +7,25 @@ import '../assets/css/mis_tareas.css';
 // LAYOUT DE LA BARRA LATERAL
 import SidebarLayout from '../layouts/SidebarLayout';
 
-const INITIAL_TASKS = [
+// CATÁLOGO DE 12 ÍCONOS MATERIAL SYMBOLS
+const TASK_ICONS = [
+    { id: 'folder', name: 'Carpeta / General' },
+    { id: 'menu_book', name: 'Estudio / Lectura' },
+    { id: 'code', name: 'Programación' },
+    { id: 'design_services', name: 'Diseño UI/UX' },
+    { id: 'bug_report', name: 'Corrección de Bugs' },
+    { id: 'terminal', name: 'Consola / Servidores' },
+    { id: 'dataset', name: 'Base de Datos' },
+    { id: 'science', name: 'Investigación' },
+    { id: 'event', name: 'Reunión / Evento' },
+    { id: 'school', name: 'Académico / Escuela' },
+    { id: 'work', name: 'Trabajo / Proyecto' },
+    { id: 'build', name: 'Mantenimiento / Config' }
 ];
 
 function MisTareas() {
     const [tasks, setTasks] = useState([]);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
-
-    // Estado para Evidencia subida
-    const [evidenceFile, setEvidenceFile] = useState(null);
 
     // Estados para Modales
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -23,31 +33,39 @@ function MisTareas() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
 
-    // Formulario de edición
-    const [editForm, setEditForm] = useState({ title: '', description: '', priority: '', deadlineDate: '' });
+    // Formulario de edición (incluye icon)
+    const [editForm, setEditForm] = useState({
+        title: '',
+        description: '',
+        priority: 'Media',
+        estimatedTime: '',
+        deadlineDate: '',
+        deadlineTime: '',
+        icon: 'folder'
+    });
 
     // Formulario de posponer
     const [postponeOption, setPostponeOption] = useState('30 min');
 
-    // Formulario de nueva tarea
+    // Formulario de nueva tarea (incluye icon)
     const [newTaskForm, setNewTaskForm] = useState({
         title: '',
         description: '',
         priority: 'Alta',
         estimatedTime: '1 h 00 min',
-        deadlineDate: '25 de mayo 2026',
-        deadlineTime: '11:00 PM'
+        deadlineDate: '',
+        deadlineTime: '',
+        icon: 'folder'
     });
 
-    // 2. AQUÍ VA EL USEEFFECT
+    // Cargar tareas al iniciar
     useEffect(() => {
-        // Sustituye TU_IP por la de tu lan inalámbrica (ej. 192.168.1.50)
         fetch('http://localhost:5000/api/tareas/')
             .then(response => response.json())
             .then(data => {
-                setTasks(data); // Guardamos las tareas de la base de datos
+                setTasks(data);
                 if (data.length > 0) {
-                    setSelectedTaskId(data[0].id); // Seleccionamos la primera por defecto
+                    setSelectedTaskId(data[0].id);
                 }
             })
             .catch(error => console.error("Error al cargar las tareas:", error));
@@ -55,64 +73,148 @@ function MisTareas() {
 
     const activeTask = tasks.find(t => t.id === selectedTaskId) || tasks[0];
 
-    // Alternar Bookmark
-    const toggleBookmark = (id) => {
+    // Alternar Bookmark en Backend y Frontend
+    const toggleBookmark = async (id) => {
+        const targetTask = tasks.find(t => t.id === id);
+        if (!targetTask) return;
+
+        const nuevoEstado = !targetTask.bookmarked;
+
+        // Actualización inmediata visual
         setTasks(prev => prev.map(task =>
-            task.id === id ? { ...task, bookmarked: !task.bookmarked } : task
+            task.id === id ? { ...task, bookmarked: nuevoEstado } : task
         ));
+
+        // Persistencia en BD
+        try {
+            await fetch(`http://localhost:5000/api/tareas/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ bookmarked: nuevoEstado })
+            });
+        } catch (err) {
+            console.error("Error al guardar marcador en BD:", err);
+        }
     };
 
-    // Subir evidencia simulada
-    const handleEvidenceUpload = (e) => {
+    // Subir evidencia
+    const handleEvidenceUpload = async (e) => {
         const file = e.target.files?.[0];
-        if (file) {
-            setEvidenceFile(file.name);
-        } else {
-            setEvidenceFile('Evidencia_Interfaz_TECH.pdf');
+        if (!file || !activeTask) return;
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/tareas/${activeTask.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ evidence: file.name })
+            });
+
+            if (res.ok) {
+                const tareaActualizada = await res.json();
+                setTasks(prev => prev.map(task =>
+                    task.id === activeTask.id ? tareaActualizada : task
+                ));
+            }
+        } catch (err) {
+            console.error("Error al guardar la evidencia:", err);
+        }
+    };
+
+    // Eliminar evidencia
+    const handleRemoveEvidence = async () => {
+        if (!activeTask) return;
+        try {
+            const res = await fetch(`http://localhost:5000/api/tareas/${activeTask.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ evidence: null })
+            });
+
+            if (res.ok) {
+                const tareaActualizada = await res.json();
+                setTasks(prev => prev.map(task =>
+                    task.id === activeTask.id ? tareaActualizada : task
+                ));
+            }
+        } catch (err) {
+            console.error("Error al eliminar evidencia:", err);
         }
     };
 
     // Abrir Modal de Edición
     const openEditModal = () => {
-        if (!activeTask) return;
+        if (!activeTask || activeTask.completed) return;
         setEditForm({
-            title: activeTask.title,
-            description: activeTask.description,
-            priority: activeTask.priority,
-            deadlineDate: activeTask.deadlineDate
+            title: activeTask.title || '',
+            description: activeTask.description || '',
+            priority: activeTask.priority || 'Media',
+            estimatedTime: activeTask.estimatedTime || '',
+            deadlineDate: activeTask.deadlineDate || '',
+            deadlineTime: activeTask.deadlineTime || '',
+            icon: activeTask.icon || 'folder'
         });
         setIsEditModalOpen(true);
     };
 
-    // Guardar Edición
-    const handleSaveEdit = (e) => {
+    // Guardar Edición en la Base de Datos (PUT)
+    const handleSaveEdit = async (e) => {
         e.preventDefault();
-        setTasks(prev => prev.map(task =>
-            task.id === selectedTaskId
-                ? { ...task, title: editForm.title, description: editForm.description, priority: editForm.priority, deadlineDate: editForm.deadlineDate }
-                : task
-        ));
-        setIsEditModalOpen(false);
+        try {
+            const res = await fetch(`http://localhost:5000/api/tareas/${selectedTaskId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(editForm)
+            });
+
+            if (res.ok) {
+                const tareaActualizada = await res.json();
+                setTasks(prev => prev.map(task =>
+                    task.id === selectedTaskId ? tareaActualizada : task
+                ));
+                setIsEditModalOpen(false);
+            }
+        } catch (err) {
+            console.error("Error al editar tarea:", err);
+        }
     };
 
     // Guardar Posponer
-    const handleSavePostpone = (e) => {
+    const handleSavePostpone = async (e) => {
         e.preventDefault();
-        setTasks(prev => prev.map(task =>
-            task.id === selectedTaskId
-                ? { ...task, status: 'Pospuesta', badgeType: 'ticket', badgeText: `Pospuesta +${postponeOption}` }
-                : task
-        ));
-        setIsPostponeModalOpen(false);
+        try {
+            const res = await fetch(`http://localhost:5000/api/tareas/${selectedTaskId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: `Pospuesta +${postponeOption}` })
+            });
+
+            if (res.ok) {
+                const tareaActualizada = await res.json();
+                setTasks(prev => prev.map(task =>
+                    task.id === selectedTaskId ? tareaActualizada : task
+                ));
+                setIsPostponeModalOpen(false);
+            }
+        } catch (err) {
+            console.error("Error al posponer tarea:", err);
+        }
     };
 
     // Confirmar Eliminar
-    const handleDeleteTask = () => {
-        const remaining = tasks.filter(t => t.id !== selectedTaskId);
-        setTasks(remaining);
-        setIsDeleteModalOpen(false);
-        if (remaining.length > 0) {
-            setSelectedTaskId(remaining[0].id);
+    const handleDeleteTask = async () => {
+        try {
+            const res = await fetch(`http://localhost:5000/api/tareas/${selectedTaskId}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                const remaining = tasks.filter(t => t.id !== selectedTaskId);
+                setTasks(remaining);
+                setIsDeleteModalOpen(false);
+                setSelectedTaskId(remaining.length > 0 ? remaining[0].id : null);
+            }
+        } catch (err) {
+            console.error("Error al eliminar tarea:", err);
         }
     };
 
@@ -120,7 +222,6 @@ function MisTareas() {
     const handleCreateNewTask = (e) => {
         e.preventDefault();
         
-        // Creamos el paquete de datos
         const tareaData = {
             title: newTaskForm.title,
             description: newTaskForm.description,
@@ -128,35 +229,41 @@ function MisTareas() {
             estimatedTime: newTaskForm.estimatedTime,
             deadlineDate: newTaskForm.deadlineDate,
             deadlineTime: newTaskForm.deadlineTime,
+            icon: newTaskForm.icon,
             status: 'Pendiente'
         };
 
-        // Sustituye TU_IP por la misma IP de tu backend
         fetch('http://localhost:5000/api/tareas/', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(tareaData)
         })
         .then(response => response.json())
         .then(nuevaTarea => {
-            // Actualizamos la pantalla con la tarea real creada en MySQL
             setTasks([nuevaTarea, ...tasks]);
             setSelectedTaskId(nuevaTarea.id);
             setIsNewTaskModalOpen(false);
             
-            // Limpiamos el formulario
             setNewTaskForm({
                 title: '',
                 description: '',
                 priority: 'Alta',
                 estimatedTime: '1 h 00 min',
-                deadlineDate: '25 de mayo 2026',
-                deadlineTime: '11:00 PM'
+                deadlineDate: '',
+                deadlineTime: '',
+                icon: 'folder'
             });
         })
         .catch(error => console.error("Error al crear la tarea:", error));
+    };
+
+    // Auxiliar para asignar color de clase CSS según prioridad
+    const getPriorityClass = (task) => {
+        if (task.completed) return 'completada';
+        const p = (task.priority || '').toLowerCase();
+        if (p === 'alta') return 'prioridad-alta';
+        if (p === 'baja') return 'prioridad-baja';
+        return 'prioridad-media';
     };
 
     return (
@@ -178,11 +285,10 @@ function MisTareas() {
                     <div className="tareas-cards-container">
                         {tasks.map((task) => {
                             const isSelected = task.id === selectedTaskId;
-                            const isUrgent = task.badgeType === 'urgent';
+                            const priorityClass = getPriorityClass(task);
 
-                            let cardClassName = 'task-item-card';
+                            let cardClassName = `task-item-card ${priorityClass}`;
                             if (isSelected) cardClassName += ' selected';
-                            if (isUrgent && !isSelected) cardClassName += ' urgent';
 
                             return (
                                 <div
@@ -196,24 +302,22 @@ function MisTareas() {
                                         </div>
                                         <div className="task-item-info">
                                             <h4 className="task-item-title">{task.title}</h4>
-                                            <p className="task-item-sub">{task.subtitle}</p>
+                                            <p className="task-item-sub">{task.description ? task.description.substring(0, 35) + '...' : ''}</p>
                                         </div>
                                     </div>
 
-                                    <div className="task-item-right">
-                                        {task.badgeType === 'ticket' ? (
-                                            <div className="task-status-ticket">
-                                                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>confirmation_number</span>
-                                                {task.badgeText}
-                                            </div>
-                                        ) : task.badgeType === 'urgent' ? (
-                                            <div className="task-status-urgent-badge">
-                                                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>warning</span>
-                                                {task.badgeText}
-                                            </div>
-                                        ) : (
-                                            <span className="task-time-badge">{task.badgeText}</span>
+                                    <div className="task-item-right" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        {/* ÍCONO NEGRO DE MARCADOR SI ES IMPORTANTE */}
+                                        {task.bookmarked && (
+                                            <span 
+                                                className="material-symbols-outlined" 
+                                                style={{ color: '#000000', fontSize: '20px' }} 
+                                                title="Tarea importante"
+                                            >
+                                                bookmark
+                                            </span>
                                         )}
+                                        <span className="task-time-badge">{task.estimatedTime || 'Sin tiempo'}</span>
                                     </div>
                                 </div>
                             );
@@ -235,74 +339,78 @@ function MisTareas() {
                                 </div>
 
                                 <div className="tarea-header-actions">
+                                    {/* BOTÓN DE BOOKMARK NEGRO SÓLIDO Y SIN LOS 3 PUNTOS */}
                                     <button
-                                        className={`btn-icon-action ${activeTask.bookmarked ? 'bookmarked' : ''}`}
+                                        className={`btn-icon-action ${activeTask.bookmarked ? 'bookmarked-black' : ''}`}
                                         onClick={() => toggleBookmark(activeTask.id)}
-                                        title={activeTask.bookmarked ? 'Guardada' : 'Guardar tarea'}
+                                        title={activeTask.bookmarked ? 'Marcada como importante' : 'Guardar como importante'}
                                     >
                                         <span className="material-symbols-outlined">
                                             {activeTask.bookmarked ? 'bookmark' : 'bookmark_border'}
                                         </span>
                                     </button>
-                                    <button className="btn-icon-action" title="Más opciones">
-                                        <span className="material-symbols-outlined">more_vert</span>
-                                    </button>
                                 </div>
                             </div>
 
-                            {/* BLOQUE PRINCIPAL TAREA (ÍCONO, TÍTULO, BADGES) */}
+                            {/* BLOQUE PRINCIPAL TAREA */}
                             <div className="tarea-main-hero">
                                 <div className="tarea-big-icon-box">
-                                    <span className="material-symbols-outlined">{activeTask.icon || 'menu_book'}</span>
+                                    <span className="material-symbols-outlined">{activeTask.icon || 'folder'}</span>
                                 </div>
                                 <div className="tarea-hero-details">
-                                    <h2 className="tarea-hero-title">{activeTask.title}</h2>
+                                    <h2 className="tarea-hero-title" style={activeTask.completed ? { textDecoration: 'line-through', color: '#64748b' } : {}}>
+                                        {activeTask.title}
+                                    </h2>
                                     <div className="tarea-badges-row">
                                         <span className="badge-pill-priority">{activeTask.priority}</span>
                                         <span className="badge-pill-time">{activeTask.estimatedTime}</span>
+                                        {activeTask.completed && (
+                                            <span className="badge-pill-time" style={{ backgroundColor: '#e2e8f0', color: '#475569' }}>
+                                                Completada
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </div>
 
                             {/* DESCRIPCIÓN */}
                             <p className="tarea-description-text">
-                                {activeTask.description}
+                                {activeTask.description || 'Sin descripción disponible.'}
                             </p>
 
-                            {/* METADATA GRID (3 TARJETAS) */}
+                            {/* METADATA GRID */}
                             <div className="tarea-metadata-grid">
                                 <div className="tarea-meta-card">
                                     <h4>Fecha Límite</h4>
-                                    <p className="tarea-meta-value">{activeTask.deadlineDate}</p>
-                                    <p className="tarea-meta-subvalue">{activeTask.deadlineTime}</p>
+                                    <p className="tarea-meta-value">{activeTask.deadlineDate || 'Sin fecha'}</p>
+                                    <p className="tarea-meta-subvalue">{activeTask.deadlineTime || ''}</p>
                                 </div>
 
                                 <div className="tarea-meta-card">
-                                    <h4>Creada</h4>
-                                    <p className="tarea-meta-value">{activeTask.createdDate}</p>
-                                    <p className="tarea-meta-subvalue">{activeTask.createdTime}</p>
+                                    <h4>Tiempo Estimado</h4>
+                                    <p className="tarea-meta-value">{activeTask.estimatedTime || 'N/A'}</p>
                                 </div>
 
                                 <div className="tarea-meta-card">
                                     <h4>Estado</h4>
-                                    <p className="tarea-meta-value">{activeTask.status}</p>
+                                    <p className="tarea-meta-value">{activeTask.status || 'Pendiente'}</p>
                                 </div>
                             </div>
 
-                            {/* SECCIÓN EVIDENCIA */}
+                            {/* SECCIÓN EVIDENCIA Y COMPLETAR TAREA */}
                             <div className="tarea-evidence-card">
-                                <h4>Evidencia</h4>
-                                <p>Sube tu evidencia de la tarea o haz un resumen de la tarea que elaboraste</p>
+                                <h4>Evidencia y Entrega</h4>
+                                <p>Sube tu evidencia para validar la tarea o márcala como terminada.</p>
 
-                                {evidenceFile ? (
+                                {activeTask.evidence ? (
                                     <div className="evidence-file-active">
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <span className="material-symbols-outlined">task</span>
-                                            <span>{evidenceFile}</span>
+                                            <span className="material-symbols-outlined" style={{ color: '#10b981' }}>check_circle</span>
+                                            <span>{activeTask.evidence}</span>
                                         </div>
                                         <button
-                                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0369a1' }}
-                                            onClick={() => setEvidenceFile(null)}
+                                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#dc2626' }}
+                                            onClick={handleRemoveEvidence}
                                             title="Eliminar evidencia"
                                         >
                                             <span className="material-symbols-outlined">close</span>
@@ -316,21 +424,71 @@ function MisTareas() {
                                             onChange={handleEvidenceUpload}
                                         />
                                         <div className="tarea-evidence-icon">
-                                            <span className="material-symbols-outlined">folder</span>
+                                            <span className="material-symbols-outlined">upload_file</span>
                                         </div>
-                                        <span style={{ fontSize: '0.85rem', color: '#475569' }}>Clic para seleccionar archivo</span>
+                                        <span style={{ fontSize: '0.85rem', color: '#475569' }}>
+                                            Haz clic para seleccionar archivo de evidencia
+                                        </span>
                                     </label>
                                 )}
+
+                                {/* BOTÓN DE COMPLETAR TAREA (NO ELIMINA, SOLO CAMBIA ESTADO) */}
+                                <div style={{ marginTop: '15px' }}>
+                                    <button
+                                        type="button"
+                                        className="btn-primary-blue"
+                                        style={{
+                                            width: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '8px',
+                                            backgroundColor: activeTask.completed ? '#475569' : '#0284c7'
+                                        }}
+                                        onClick={async () => {
+                                            const nuevoEstado = !activeTask.completed;
+                                            try {
+                                                const res = await fetch(`http://localhost:5000/api/tareas/${activeTask.id}`, {
+                                                    method: 'PUT',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({
+                                                        completed: nuevoEstado,
+                                                        status: nuevoEstado ? 'Completada' : 'Pendiente'
+                                                    })
+                                                });
+                                                if (res.ok) {
+                                                    const tareaActualizada = await res.json();
+                                                    setTasks(prev => prev.map(t => t.id === activeTask.id ? tareaActualizada : t));
+                                                }
+                                            } catch (err) {
+                                                console.error("Error al completar la tarea:", err);
+                                            }
+                                        }}
+                                    >
+                                        <span className="material-symbols-outlined">
+                                            {activeTask.completed ? 'undo' : 'task_alt'}
+                                        </span>
+                                        <span>{activeTask.completed ? 'Reabrir Tarea' : 'Marcar como Completada'}</span>
+                                    </button>
+                                </div>
                             </div>
 
-                            {/* BOTONES INFERIORES PASTEL */}
+                            {/* BOTONES INFERIORES: EDITAR Y POSPONER SE DESACTIVAN SI ESTÁ COMPLETADA */}
                             <div className="tarea-actions-grid">
-                                <button className="tarea-action-card-btn btn-pastel-edit" onClick={openEditModal}>
+                                <button 
+                                    className="tarea-action-card-btn btn-pastel-edit" 
+                                    onClick={openEditModal}
+                                    disabled={activeTask.completed}
+                                >
                                     <span className="material-symbols-outlined">edit</span>
                                     <span className="btn-label">Editar</span>
                                 </button>
 
-                                <button className="tarea-action-card-btn btn-pastel-postpone" onClick={() => setIsPostponeModalOpen(true)}>
+                                <button 
+                                    className="tarea-action-card-btn btn-pastel-postpone" 
+                                    onClick={() => setIsPostponeModalOpen(true)}
+                                    disabled={activeTask.completed}
+                                >
                                     <span className="material-symbols-outlined">alarm</span>
                                     <span className="btn-label">Posponer</span>
                                 </button>
@@ -349,7 +507,7 @@ function MisTareas() {
                 </section>
             </main>
 
-            {/* MODAL EDITAR */}
+            {/* MODAL EDITAR (Ahora incluye Selector de Ícono) */}
             {isEditModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content-box">
@@ -367,6 +525,17 @@ function MisTareas() {
                                 onChange={e => setEditForm({ ...editForm, title: e.target.value })}
                                 required
                             />
+
+                            <label>Ícono de la Tarea</label>
+                            <select
+                                className="modal-select"
+                                value={editForm.icon}
+                                onChange={e => setEditForm({ ...editForm, icon: e.target.value })}
+                            >
+                                {TASK_ICONS.map(i => (
+                                    <option key={i.id} value={i.id}>{i.name}</option>
+                                ))}
+                            </select>
 
                             <label>Descripción</label>
                             <textarea
@@ -387,12 +556,34 @@ function MisTareas() {
                                 <option value="Baja">Baja</option>
                             </select>
 
-                            <label>Fecha Límite</label>
+                            <label>Tiempo Estimado</label>
                             <input
                                 className="modal-input"
-                                value={editForm.deadlineDate}
-                                onChange={e => setEditForm({ ...editForm, deadlineDate: e.target.value })}
+                                placeholder="Ej. 2 horas"
+                                value={editForm.estimatedTime}
+                                onChange={e => setEditForm({ ...editForm, estimatedTime: e.target.value })}
                             />
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                                <div>
+                                    <label>Fecha Límite</label>
+                                    <input
+                                        type="date"
+                                        className="modal-input"
+                                        value={editForm.deadlineDate}
+                                        onChange={e => setEditForm({ ...editForm, deadlineDate: e.target.value })}
+                                    />
+                                </div>
+                                <div>
+                                    <label>Hora Límite</label>
+                                    <input
+                                        type="time"
+                                        className="modal-input"
+                                        value={editForm.deadlineTime}
+                                        onChange={e => setEditForm({ ...editForm, deadlineTime: e.target.value })}
+                                    />
+                                </div>
+                            </div>
 
                             <div className="modal-footer">
                                 <button type="button" className="btn-secondary" onClick={() => setIsEditModalOpen(false)}>Cancelar</button>
@@ -461,7 +652,7 @@ function MisTareas() {
                 </div>
             )}
 
-            {/* MODAL NUEVA TAREA */}
+            {/* MODAL NUEVA TAREA (Ahora con Selector de Ícono) */}
             {isNewTaskModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content-box">
@@ -480,6 +671,17 @@ function MisTareas() {
                                 onChange={e => setNewTaskForm({ ...newTaskForm, title: e.target.value })}
                                 required
                             />
+
+                            <label>Ícono de la Tarea</label>
+                            <select
+                                className="modal-select"
+                                value={newTaskForm.icon}
+                                onChange={e => setNewTaskForm({ ...newTaskForm, icon: e.target.value })}
+                            >
+                                {TASK_ICONS.map(i => (
+                                    <option key={i.id} value={i.id}>{i.name}</option>
+                                ))}
+                            </select>
 
                             <label>Descripción</label>
                             <textarea
@@ -508,6 +710,27 @@ function MisTareas() {
                                 value={newTaskForm.estimatedTime}
                                 onChange={e => setNewTaskForm({ ...newTaskForm, estimatedTime: e.target.value })}
                             />
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                                <div>
+                                    <label>Fecha Límite</label>
+                                    <input
+                                        type="date"
+                                        className="modal-input"
+                                        value={newTaskForm.deadlineDate}
+                                        onChange={e => setNewTaskForm({ ...newTaskForm, deadlineDate: e.target.value })}
+                                    />
+                                </div>
+                                <div>
+                                    <label>Hora Límite</label>
+                                    <input
+                                        type="time"
+                                        className="modal-input"
+                                        value={newTaskForm.deadlineTime}
+                                        onChange={e => setNewTaskForm({ ...newTaskForm, deadlineTime: e.target.value })}
+                                    />
+                                </div>
+                            </div>
 
                             <div className="modal-footer">
                                 <button type="button" className="btn-secondary" onClick={() => setIsNewTaskModalOpen(false)}>Cancelar</button>

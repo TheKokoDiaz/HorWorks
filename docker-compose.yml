@@ -21,7 +21,7 @@ services:
     restart: always
     environment:
       # URL de conexión a MySQL en Flask
-      - DATABASE_URL=mysql+pymysql://root:${DB_PASSWORD}@db:3306/${DB_NAME}
+      - DATABASE_URL=mysql+pymysql://root:${DB_PASSWORD}@db:3306/${DB_NAME}?charset=utf8mb4
       - FLASK_ENV=${FLASK_ENV}
       - SECRET_KEY=${SECRET_KEY}
     ports:

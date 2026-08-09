@@ -9,8 +9,12 @@
 
 /* BASE DE DATOS */
 DROP DATABASE IF EXISTS DB_HORWORKS;
-CREATE DATABASE DB_HORWORKS;
+CREATE DATABASE DB_HORWORKS CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE DB_HORWORKS;
+
+-- Obligamos a la sesión a hablar en UTF-8
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
 
 /* =========================================================
    1. CREACIÓN DE TABLAS
@@ -23,6 +27,7 @@ CREATE TABLE HOR_Usuario(
     USU_Correo          NVARCHAR(80)    NOT NULL    UNIQUE,
     USU_Contrasenia     NVARCHAR(80)    NOT NULL,
     USU_Foto            NVARCHAR(255),
+    USU_Rol             NVARCHAR(20)    NOT NULL    DEFAULT 'Alumno',
     USU_Estado          BOOL            NOT NULL    DEFAULT 1,
     USU_Tickets         INT(1)          DEFAULT 5,
     
@@ -46,16 +51,17 @@ CREATE TABLE HOR_Grupos(
     FOREIGN KEY(EQU_Id) REFERENCES HOR_Equipo(EQU_Id)
 );
 
-/* Tabla de Tareas con mejoras de equipo Y columnas de prioridad/fechas conservadas */
 CREATE TABLE HOR_Tarea(
     TAR_Id              INT             AUTO_INCREMENT,
     TAR_Nombre          NVARCHAR(100)   NOT NULL,
+    TAR_Icono           NVARCHAR(50)    DEFAULT 'folder',
     TAR_Descripcion     TEXT,
     TAR_Completada      BOOL            DEFAULT FALSE,
     TAR_Prioridad       NVARCHAR(20)    DEFAULT 'Media',
     TAR_TiempoEstimado  NVARCHAR(50),
     TAR_FechaLimite     NVARCHAR(50),
     TAR_HoraLimite      NVARCHAR(50),
+    TAR_Evidencia       NVARCHAR(255)   NULL,
     TAR_Bookmarked      BOOL            DEFAULT FALSE,
     USU_Id              INT             NOT NULL,
     EQU_Id              INT             NULL,
@@ -85,14 +91,14 @@ CREATE TABLE HOR_Ajustes(
 ========================================================= */
 
 -- HOR_Usuario
-INSERT INTO HOR_Usuario (USU_Nombre, USU_Usuario, USU_Correo, USU_Contrasenia, USU_Foto, USU_Estado, USU_Tickets)
+INSERT INTO HOR_Usuario (USU_Nombre, USU_Usuario, USU_Correo, USU_Contrasenia, USU_Foto, USU_Rol, USU_Estado, USU_Tickets)
 VALUES 
-('Carlos Mendoza', 'carlos_auditor', 'carlos@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos', 1, 5),
-('Ana Rodríguez', 'ana_auditora', 'ana@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ana', 1, 3),
-('Juan Pérez', 'juan_dev', 'juan@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan', 1, 10),
-('Sofía López', 'sofia_design', 'sofia@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia', 1, 2),
-('Cliente', 'cliente_prueba', 'cliente@gmail.com', '1234567890', NULL, 1, 5),
-('Koko Díaz', 'kokko70128', 'koko@gmail.com', '1234567890', NULL, 1, 5);
+('Carlos Mendoza', 'carlos_auditor', 'carlos@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos', 'Auditor', 1, 5),
+('Ana Rodríguez', 'ana_auditora', 'ana@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ana', 'Auditor', 1, 3),
+('Juan Pérez', 'juan_dev', 'juan@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan', 'Alumno', 1, 10),
+('Sofía López', 'sofia_design', 'sofia@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia', 'Alumno', 1, 2),
+('Cliente', 'cliente_prueba', 'cliente@gmail.com', '1234567890', NULL, 'Alumno', 1, 5),
+('Koko Díaz', 'kokko70128', 'koko@gmail.com', '1234567890', NULL, 'Alumno', 1, 5);
 
 -- HOR_Equipo
 INSERT INTO HOR_Equipo (EQU_Nombre, EQU_Foto, EQU_Auditor)
@@ -103,10 +109,10 @@ VALUES
 -- HOR_Grupos
 INSERT INTO HOR_Grupos (USU_Id, EQU_Id)
 VALUES 
-(1, 1), -- Carlos en el Equipo Backend
-(3, 1), -- Juan en el Equipo Backend
-(2, 2), -- Ana en el Equipo de Diseño
-(4, 2); -- Sofía en el Equipo de Diseño
+(1, 1),
+(3, 1),
+(2, 2),
+(4, 2);
 
 -- HOR_Ajustes
 INSERT INTO HOR_Ajustes (USU_Id, AJU_Tema, AJU_Idioma, AJU_ZonaHoraria, AJU_FormatoHora, AJU_NotiPersistente, AJU_NotiSonido, AJU_NotiDesvio, AJU_NotiCorreo)
@@ -118,18 +124,18 @@ VALUES
 (5, 'azul', 'es-MX', 'GMT-06:00', 24, 1, 1, 1, 1),
 (6, 'azul', 'es-MX', 'GMT-06:00', 24, 1, 1, 1, 1);
 
--- HOR_Tarea (Registros de prueba usando las nuevas columnas)
-INSERT INTO HOR_Tarea (TAR_Nombre, TAR_Descripcion, TAR_Completada, TAR_Prioridad, TAR_TiempoEstimado, TAR_FechaLimite, TAR_HoraLimite, TAR_Bookmarked, USU_Id, EQU_Id) 
+-- HOR_Tarea
+INSERT INTO HOR_Tarea (TAR_Nombre, TAR_Descripcion, TAR_Completada, TAR_Prioridad, TAR_TiempoEstimado, TAR_FechaLimite, TAR_HoraLimite, TAR_Evidencia, TAR_Bookmarked, USU_Id, EQU_Id) 
 VALUES
-('MVP', 'Crea un mínimo entregable del proyecto', FALSE, 'Alta', '2 horas', '2026-08-10', '18:00', TRUE, 6, NULL),
-('Diseño de FrontEnd', 'Ponte creativo y realiza la interfaz', FALSE, 'Media', '4 horas', '2026-08-15', '23:59', FALSE, 6, NULL);
+('MVP', 'Crea un mínimo entregable del proyecto', FALSE, 'Alta', '2 horas', '2026-08-10', '18:00', NULL, TRUE, 6, NULL),
+('Diseño de FrontEnd', 'Ponte creativo y realiza la interfaz', FALSE, 'Media', '4 horas', '2026-08-15', '23:59', NULL, FALSE, 6, NULL);
 
 /* =========================================================
    3. PROCEDIMIENTOS ALMACENADOS (STORED PROCEDURES)
 ========================================================= */
 
--- AUTENTICACIÓN
 DELIMITER $$
+
 CREATE PROCEDURE SP_IniciarSesion(
     IN INI_Correo       VARCHAR(80),
     IN INI_Contrasenia  VARCHAR(80)
@@ -142,6 +148,7 @@ BEGIN
             USU_Usuario     Usuario,
             USU_Correo      Correo,
             USU_Foto        Foto,
+            USU_Rol         Rol,
             USU_Estado      Estado,
             USU_Tickets     Tickets
         FROM HOR_Usuario 
@@ -150,10 +157,11 @@ BEGIN
         SELECT 0 Id;
     END IF;
 END $$
+
 DELIMITER ;
 
--- GESTIÓN DE TAREAS (Incluyendo Prioridades y Fechas)
 DELIMITER $$
+
 CREATE PROCEDURE SP_VerTareasPendientes(
     IN p_Usuario_Id INT
 )
@@ -166,14 +174,17 @@ BEGIN
         TAR_TiempoEstimado  TiempoEstimado,
         TAR_FechaLimite     FechaLimite,
         TAR_HoraLimite      HoraLimite,
+        TAR_Evidencia       Evidencia,
         TAR_Bookmarked      Bookmarked,
         EQU_Id              EquipoId
     FROM HOR_Tarea 
     WHERE USU_Id = p_Usuario_Id AND TAR_Completada = FALSE;
 END $$
+
 DELIMITER ;
 
 DELIMITER $$
+
 CREATE PROCEDURE SP_VerTareasCompletas(
     IN p_Usuario_Id INT
 )
@@ -186,14 +197,17 @@ BEGIN
         TAR_TiempoEstimado  TiempoEstimado,
         TAR_FechaLimite     FechaLimite,
         TAR_HoraLimite      HoraLimite,
+        TAR_Evidencia       Evidencia,
         TAR_Bookmarked      Bookmarked,
         EQU_Id              EquipoId
     FROM HOR_Tarea 
     WHERE USU_Id = p_Usuario_Id AND TAR_Completada = TRUE;
 END $$
+
 DELIMITER ;
 
 DELIMITER $$
+
 CREATE PROCEDURE SP_CrearTarea(
     IN p_Usuario_Id         INT,
     IN p_Nombre             NVARCHAR(100),
@@ -202,6 +216,7 @@ CREATE PROCEDURE SP_CrearTarea(
     IN p_TiempoEstimado     NVARCHAR(50),
     IN p_FechaLimite        NVARCHAR(50),
     IN p_HoraLimite         NVARCHAR(50),
+    IN p_Evidencia          NVARCHAR(255),
     IN p_Bookmarked         BOOL,
     IN p_Equipo_Id          INT
 )
@@ -213,7 +228,8 @@ BEGIN
         TAR_Prioridad, 
         TAR_TiempoEstimado, 
         TAR_FechaLimite, 
-        TAR_HoraLimite, 
+        TAR_HoraLimite,
+        TAR_Evidencia, 
         TAR_Bookmarked, 
         USU_Id, 
         EQU_Id
@@ -224,16 +240,18 @@ BEGIN
         IFNULL(p_Prioridad, 'Media'), 
         p_TiempoEstimado, 
         p_FechaLimite, 
-        p_HoraLimite, 
+        p_HoraLimite,
+        p_Evidencia, 
         IFNULL(p_Bookmarked, FALSE), 
         p_Usuario_Id, 
         p_Equipo_Id
     );
 END $$
+
 DELIMITER ;
 
--- AJUSTES Y PREFERENCIAS
 DELIMITER $$
+
 CREATE PROCEDURE SP_ObtenerAjustesUsuario(IN p_usuario_id INT)
 BEGIN
     SELECT 
@@ -247,11 +265,12 @@ BEGIN
     LEFT JOIN HOR_Equipo e ON g.EQU_Id = e.EQU_Id
     LEFT JOIN HOR_Usuario aud ON e.EQU_Auditor = aud.USU_Id
     WHERE u.USU_Id = p_usuario_id;
-END$$
+END $$
+
 DELIMITER ;
 
--- ¡PROCEDIMIENTO CORREGIDO! (Ahora actualiza HOR_Ajustes en lugar de HOR_Usuario)
 DELIMITER $$
+
 CREATE PROCEDURE SP_ActualizarPreferencias(
     IN p_usuario_id INT,
     IN p_tema VARCHAR(20),
@@ -273,5 +292,6 @@ BEGIN
         AJU_NotiDesvio = p_desvio,
         AJU_NotiCorreo = p_correo
     WHERE USU_Id = p_usuario_id;
-END$$
+END $$
+
 DELIMITER ;
