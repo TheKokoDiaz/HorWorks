@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models.tarea import Tarea
+from app.models.tarea import Tarea, Evidencia
 from app import db 
 
 tarea_bp = Blueprint('tarea_bp', __name__)
@@ -37,17 +37,21 @@ def update_tarea(id):
         return jsonify({"error": "Tarea no encontrada"}), 404
 
     data = request.json
-    tarea.TAR_Nombre = data.get('title', tarea.TAR_Nombre)
-    tarea.TAR_Icono = data.get('icon', tarea.TAR_Icono)
-    tarea.TAR_Descripcion = data.get('description', tarea.TAR_Descripcion)
-    tarea.TAR_Prioridad = data.get('priority', tarea.TAR_Prioridad)
-    tarea.TAR_TiempoEstimado = data.get('estimatedTime', tarea.TAR_TiempoEstimado)
-    tarea.TAR_FechaLimite = data.get('deadlineDate', tarea.TAR_FechaLimite)
-    tarea.TAR_HoraLimite = data.get('deadlineTime', tarea.TAR_HoraLimite)
     
-    # Si se envía una evidencia, la actualizamos
-    if 'evidence' in data:
-        tarea.TAR_Evidencia = data['evidence']
+    # Campos de texto y fechas
+    if 'title' in data: tarea.TAR_Nombre = data['title']
+    if 'icon' in data: tarea.TAR_Icono = data['icon']
+    if 'description' in data: tarea.TAR_Descripcion = data['description']
+    if 'priority' in data: tarea.TAR_Prioridad = data['priority']
+    if 'estimatedTime' in data: tarea.TAR_TiempoEstimado = data['estimatedTime']
+    if 'deadlineDate' in data: tarea.TAR_FechaLimite = data['deadlineDate']
+    if 'deadlineTime' in data: tarea.TAR_HoraLimite = data['deadlineTime']
+    if 'evidence' in data: tarea.TAR_Evidencia = data['evidence']
+
+    # 👇 AQUÍ ESTÁ LA MAGIA QUE FALTABA PARA LOS BOOLEANOS 👇
+    if 'completed' in data: tarea.TAR_Completada = data['completed']
+    if 'bookmarked' in data: tarea.TAR_Bookmarked = data['bookmarked']
+    if 'deleted' in data: tarea.TAR_Eliminada = data['deleted']
 
     try:
         db.session.commit()
@@ -64,3 +68,45 @@ def delete_tarea(id):
         db.session.commit()
         return jsonify({"message": "Tarea eliminada"}), 200
     return jsonify({"error": "Tarea no encontrada"}), 404
+
+
+# ---- EVIDENCIAS (varias por tarea, con datos para previsualizar) ----
+
+@tarea_bp.route('/<int:id>/evidencias', methods=['POST'])
+def add_evidencias(id):
+    tarea = Tarea.query.get(id)
+    if not tarea:
+        return jsonify({"error": "Tarea no encontrada"}), 404
+
+    data = request.json or {}
+    archivos = data.get('files', [])
+    if not archivos:
+        return jsonify({"error": "No se enviaron archivos"}), 400
+
+    for f in archivos:
+        db.session.add(Evidencia(
+            TAR_Id=id,
+            EVI_Nombre=f.get('name', 'archivo'),
+            EVI_Tipo=f.get('type', ''),
+            EVI_Data=f.get('data', '')
+        ))
+
+    try:
+        db.session.commit()
+        return jsonify(tarea.to_dict()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@tarea_bp.route('/<int:id>/evidencias/<int:evidencia_id>', methods=['DELETE'])
+def delete_evidencia(id, evidencia_id):
+    evidencia = Evidencia.query.filter_by(EVI_Id=evidencia_id, TAR_Id=id).first()
+    if not evidencia:
+        return jsonify({"error": "Evidencia no encontrada"}), 404
+
+    db.session.delete(evidencia)
+    db.session.commit()
+
+    tarea = Tarea.query.get(id)
+    return jsonify(tarea.to_dict()), 200

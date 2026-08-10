@@ -29,7 +29,7 @@ CREATE TABLE HOR_Usuario(
     USU_Foto            NVARCHAR(255),
     USU_Rol             NVARCHAR(20)    NOT NULL    DEFAULT 'Alumno',
     USU_Estado          BOOL            NOT NULL    DEFAULT 1,
-    USU_Tickets         INT(1)          DEFAULT 5,
+    USU_Tickets         INT             DEFAULT 5,
     
     PRIMARY KEY(USU_Id)
 );
@@ -63,12 +63,25 @@ CREATE TABLE HOR_Tarea(
     TAR_HoraLimite      NVARCHAR(50),
     TAR_Evidencia       NVARCHAR(255)   NULL,
     TAR_Bookmarked      BOOL            DEFAULT FALSE,
+    TAR_Eliminada       BOOL            DEFAULT FALSE,
     USU_Id              INT             NOT NULL,
     EQU_Id              INT             NULL,
     
     PRIMARY KEY(TAR_Id),
     FOREIGN KEY(USU_Id) REFERENCES HOR_Usuario(USU_Id),
     FOREIGN KEY(EQU_Id) REFERENCES HOR_Equipo(EQU_Id)
+);
+
+CREATE TABLE HOR_Evidencia(
+    EVI_Id              INT             AUTO_INCREMENT,
+    TAR_Id              INT             NOT NULL,
+    EVI_Nombre          NVARCHAR(255)   NOT NULL,
+    EVI_Tipo            NVARCHAR(100),
+    EVI_Data            LONGTEXT        NOT NULL,
+    EVI_FechaSubida     DATETIME        DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY(EVI_Id),
+    FOREIGN KEY(TAR_Id) REFERENCES HOR_Tarea(TAR_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE HOR_Ajustes(
@@ -90,7 +103,6 @@ CREATE TABLE HOR_Ajustes(
    2. INSERCIÓN DE REGISTROS DE PRUEBA
 ========================================================= */
 
--- HOR_Usuario
 INSERT INTO HOR_Usuario (USU_Nombre, USU_Usuario, USU_Correo, USU_Contrasenia, USU_Foto, USU_Rol, USU_Estado, USU_Tickets)
 VALUES 
 ('Carlos Mendoza', 'carlos_auditor', 'carlos@horworks.com', '1234', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos', 'Auditor', 1, 5),
@@ -100,13 +112,11 @@ VALUES
 ('Cliente', 'cliente_prueba', 'cliente@gmail.com', '1234567890', NULL, 'Alumno', 1, 5),
 ('Koko Díaz', 'kokko70128', 'koko@gmail.com', '1234567890', NULL, 'Alumno', 1, 5);
 
--- HOR_Equipo
 INSERT INTO HOR_Equipo (EQU_Nombre, EQU_Foto, EQU_Auditor)
 VALUES 
 ('Equipo de Desarrollo Backend', 'https://api.dicebear.com/7.x/identicon/svg?seed=Backend', 1),
 ('Equipo de Diseño UI/UX', 'https://api.dicebear.com/7.x/identicon/svg?seed=Design', 2);
 
--- HOR_Grupos
 INSERT INTO HOR_Grupos (USU_Id, EQU_Id)
 VALUES 
 (1, 1),
@@ -114,7 +124,6 @@ VALUES
 (2, 2),
 (4, 2);
 
--- HOR_Ajustes
 INSERT INTO HOR_Ajustes (USU_Id, AJU_Tema, AJU_Idioma, AJU_ZonaHoraria, AJU_FormatoHora, AJU_NotiPersistente, AJU_NotiSonido, AJU_NotiDesvio, AJU_NotiCorreo)
 VALUES 
 (1, 'verde', 'es-MX', 'GMT-06:00', 24, 1, 1, 1, 1),
@@ -124,7 +133,6 @@ VALUES
 (5, 'azul', 'es-MX', 'GMT-06:00', 24, 1, 1, 1, 1),
 (6, 'azul', 'es-MX', 'GMT-06:00', 24, 1, 1, 1, 1);
 
--- HOR_Tarea
 INSERT INTO HOR_Tarea (TAR_Nombre, TAR_Descripcion, TAR_Completada, TAR_Prioridad, TAR_TiempoEstimado, TAR_FechaLimite, TAR_HoraLimite, TAR_Evidencia, TAR_Bookmarked, USU_Id, EQU_Id) 
 VALUES
 ('MVP', 'Crea un mínimo entregable del proyecto', FALSE, 'Alta', '2 horas', '2026-08-10', '18:00', NULL, TRUE, 6, NULL),
@@ -156,11 +164,7 @@ BEGIN
     ELSE
         SELECT 0 Id;
     END IF;
-END $$
-
-DELIMITER ;
-
-DELIMITER $$
+END$$
 
 CREATE PROCEDURE SP_VerTareasPendientes(
     IN p_Usuario_Id INT
@@ -179,11 +183,7 @@ BEGIN
         EQU_Id              EquipoId
     FROM HOR_Tarea 
     WHERE USU_Id = p_Usuario_Id AND TAR_Completada = FALSE;
-END $$
-
-DELIMITER ;
-
-DELIMITER $$
+END$$
 
 CREATE PROCEDURE SP_VerTareasCompletas(
     IN p_Usuario_Id INT
@@ -202,17 +202,13 @@ BEGIN
         EQU_Id              EquipoId
     FROM HOR_Tarea 
     WHERE USU_Id = p_Usuario_Id AND TAR_Completada = TRUE;
-END $$
-
-DELIMITER ;
-
-DELIMITER $$
+END$$
 
 CREATE PROCEDURE SP_CrearTarea(
     IN p_Usuario_Id         INT,
     IN p_Nombre             NVARCHAR(100),
-    IN p_Descripcion        TEXT,
-    IN p_Prioridad          NVARCHAR(20),
+    IN p_Descripcion         TEXT,
+    IN p_Prioridad           NVARCHAR(20),
     IN p_TiempoEstimado     NVARCHAR(50),
     IN p_FechaLimite        NVARCHAR(50),
     IN p_HoraLimite         NVARCHAR(50),
@@ -246,11 +242,7 @@ BEGIN
         p_Usuario_Id, 
         p_Equipo_Id
     );
-END $$
-
-DELIMITER ;
-
-DELIMITER $$
+END$$
 
 CREATE PROCEDURE SP_ObtenerAjustesUsuario(IN p_usuario_id INT)
 BEGIN
@@ -265,11 +257,7 @@ BEGIN
     LEFT JOIN HOR_Equipo e ON g.EQU_Id = e.EQU_Id
     LEFT JOIN HOR_Usuario aud ON e.EQU_Auditor = aud.USU_Id
     WHERE u.USU_Id = p_usuario_id;
-END $$
-
-DELIMITER ;
-
-DELIMITER $$
+END$$
 
 CREATE PROCEDURE SP_ActualizarPreferencias(
     IN p_usuario_id INT,
@@ -292,6 +280,6 @@ BEGIN
         AJU_NotiDesvio = p_desvio,
         AJU_NotiCorreo = p_correo
     WHERE USU_Id = p_usuario_id;
-END $$
+END$$
 
 DELIMITER ;

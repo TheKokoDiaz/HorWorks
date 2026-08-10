@@ -712,3 +712,239 @@
     pointer-events: none !important;
     filter: grayscale(1);
 }
+
+/* --- ALERTAS DE TIEMPO (lista) --- */
+.time-green { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.time-orange { background-color: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
+.time-red { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; font-weight: bold; }
+.time-expired { background-color: #475569; color: #ffffff; text-decoration: line-through; }
+
+/* --- CONTADOR DE TIEMPO GRANDE (panel de detalle) --- */
+@keyframes urgentPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+.tarea-countdown-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border: 1.5px solid transparent;
+}
+
+.tarea-countdown-card .material-symbols-outlined {
+    font-size: 30px;
+}
+
+.tarea-countdown-card.time-green { border-color: #bbf7d0; }
+.tarea-countdown-card.time-orange { border-color: #fed7aa; }
+.tarea-countdown-card.time-red {
+    border-color: #fca5a5;
+    animation: urgentPulse 1.4s ease-in-out infinite;
+}
+.tarea-countdown-card.time-expired { border-color: #334155; }
+
+.tarea-countdown-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.tarea-countdown-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.tarea-countdown-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* --- INSIGNIA DE PRIORIDAD ALTA (llamativa, en la lista) --- */
+@keyframes highPriorityBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+.priority-flag-alta {
+    color: #ef4444;
+    font-size: 18px !important;
+    animation: highPriorityBlink 1.6s ease-in-out infinite;
+}
+
+/* --- GRID DE EVIDENCIAS MÚLTIPLES --- */
+.evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.evidence-item {
+    position: relative;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #f8fafc;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.evidence-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.evidence-item iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+}
+
+.evidence-item-generic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #64748b;
+    padding: 8px;
+    text-align: center;
+}
+
+.evidence-item-generic span.material-symbols-outlined {
+    font-size: 30px;
+    color: #0284c7;
+}
+
+.evidence-item-name {
+    font-size: 0.65rem;
+    word-break: break-all;
+    line-height: 1.2;
+}
+
+.evidence-item-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: rgba(15, 23, 42, 0.65);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.evidence-item-remove .material-symbols-outlined {
+    font-size: 14px;
+}
+
+.evidence-pending-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.evidence-pending-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    color: #334155;
+}
+
+.evidence-pending-chip button {
+    background: none;
+    border: none;
+    color: #dc2626;
+    cursor: pointer;
+    display: flex;
+}
+
+/* --- BOTÓN RESTAURAR (tarea en papelera) --- */
+.btn-pastel-restore {
+    background-color: #e0f2fe;
+    border: 1px solid #bae6fd;
+}
+.btn-pastel-restore .material-symbols-outlined {
+    color: #0284c7;
+    font-size: 2.4rem;
+}
+.btn-pastel-restore span.btn-label {
+    color: #0369a1;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* --- TAREA EN PAPELERA (SOFT-DELETE) --- gris, no rojo: el rojo se reserva para el borrado definitivo */
+.task-item-card.eliminada {
+    background-color: #f1f5f9 !important;
+    border-left: 5px solid #94a3b8 !important;
+    opacity: 0.55;
+}
+.task-item-card.eliminada .task-item-title {
+    text-decoration: line-through;
+    color: #64748b;
+}
+
+.task-trash-badge {
+    background-color: #e2e8f0;
+    color: #475569;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* --- ANIMACIÓN: BORRADO DEFINITIVO (swipe a la izquierda + rojo) --- */
+.task-item-card.removing {
+    transform: translateX(-130%) scale(0.96);
+    opacity: 0;
+    background-color: #fecaca !important;
+    border-color: #dc2626 !important;
+    border-left: 5px solid #dc2626 !important;
+    transition: transform 0.38s cubic-bezier(0.55, 0, 0.85, 0.35), opacity 0.32s ease, background-color 0.15s ease;
+    pointer-events: none;
+}
+
+/* --- ANIMACIÓN: BOOKMARK (pulso al marcar) --- */
+@keyframes bookmarkPulse {
+    0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.55); }
+    70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+}
+.task-item-card.just-bookmarked {
+    animation: bookmarkPulse 0.7s ease-out;
+}
+
+/* --- ANIMACIÓN: ENVIAR A PAPELERA (destello gris) --- */
+@keyframes trashFade {
+    0% { box-shadow: 0 0 0 0 rgba(100, 116, 139, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(100, 116, 139, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(100, 116, 139, 0); }
+}
+.task-item-card.just-trashed {
+    animation: trashFade 0.7s ease-out;
+}
