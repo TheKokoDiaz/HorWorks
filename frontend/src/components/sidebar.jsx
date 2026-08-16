@@ -5,10 +5,23 @@ import { Link, useLocation } from 'react-router-dom';
 // HOJAS DE ESTILOS
 import '../assets/css/sidebar.css'
 
+// SESIÓN
+import { useAuth } from '../context/AuthContext';
+
 function Sidebar() {
     // JS
     const [collapsed, setCollapsed] = useState(true);
     const location = useLocation();
+    const { usuario, logout } = useAuth();
+
+    const nombreUsuario = usuario?.nombre || usuario?.email || 'Usuario';
+    const avatarUrl = usuario?.foto
+        || `https://ui-avatars.com/api/?name=${encodeURIComponent(nombreUsuario)}&background=fca5a5&color=fff`;
+
+    const handleLogout = (event) => {
+        event.preventDefault();
+        logout();
+    };
 
     const toggleSidebar = () => {
         setCollapsed(prev => !prev);
@@ -56,12 +69,15 @@ function Sidebar() {
 
                 <div className="sidebar-bottom">
                     <Link to="/perfil" className="user-profile">
-                        <img src="https://ui-avatars.com/api/?name=Auditor&background=fca5a5&color=fff" alt="Usuario" />
-                        <span className="text-link">Usuario</span>
+                        <img src={avatarUrl} alt={nombreUsuario} />
+                        <span className="text-link">{nombreUsuario}</span>
                     </Link>
                     <Link to="/ajustes" className="settings-btn">
                         <span className="material-symbols-outlined">settings</span>
                     </Link>
+                    <a href="/login" className="settings-btn" onClick={handleLogout} title="Cerrar sesión">
+                        <span className="material-symbols-outlined">logout</span>
+                    </a>
                 </div>
             </aside>
         </>
