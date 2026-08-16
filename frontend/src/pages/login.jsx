@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import '../assets/css/login.css';
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const { login } = useAuth();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -10,29 +13,21 @@ function Login() {
         const email = event.target.email.value;
         const password = event.target.password.value;
 
+        setSubmitting(true);
         try {
-            // Reemplaza localhost por tu IP local si pruebas en red (ej. http://192.168.1.80:5000/api/login)
-            const response = await fetch('http://localhost:5000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include', // IMPORTANTE: Para que el navegador guarde la cookie de sesión
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Si el backend responde 200 OK, redirigimos a la pantalla de tareas
-                window.location.href = "/home";
-            } else {
-                // Si el backend responde 401 u otro error, avisamos al usuario
-                alert(data.error || "Error al iniciar sesión");
-            }
+            // login() llama a /api/login y, si es exitoso, guarda el
+            // access_token/refresh_token en localStorage para que el resto
+            // de la app (fetch a /api/tareas, /api/proyectos, etc.) pueda
+            // mandarlos en el header Authorization.
+            await login(email, password);
+            window.location.href = "/home";
         } catch (error) {
-            console.error("Error en la petición de login:", error);
-            alert("No se pudo conectar con el servidor.");
+            // login() lanza un Error con el mensaje que mandó el backend
+            // (ej. "Correo o contraseña incorrectos") o uno genérico si no
+            // pudo ni conectar.
+            alert(error.message || "No se pudo conectar con el servidor.");
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -104,7 +99,9 @@ function Login() {
                     </div>
 
                     {/* Botón de Envío */}
-                    <button type="submit" className="login-btn-submit">Ingresar</button>
+                    <button type="submit" className="login-btn-submit" disabled={submitting}>
+                        {submitting ? 'Ingresando…' : 'Ingresar'}
+                    </button>
                 </form>
 
                 <div className="login-signup-container">

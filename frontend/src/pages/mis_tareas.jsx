@@ -7,6 +7,9 @@ import '../assets/css/mis_tareas.css';
 // LAYOUT DE LA BARRA LATERAL
 import SidebarLayout from '../layouts/SidebarLayout';
 
+// CLIENTE HTTP (agrega el Authorization: Bearer <token> a cada request)
+import { authFetch, authFetchJson } from '../api/client';
+
 const TASK_ICONS = [
     { id: 'folder', name: 'Carpeta / General' },
     { id: 'menu_book', name: 'Estudio / Lectura' },
@@ -52,9 +55,12 @@ function MisTareas() {
     const prevPositions = useRef({});
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/tareas/')
-            .then(response => response.json())
+        authFetchJson('/tareas/')
             .then(data => {
+                if (!Array.isArray(data)) {
+                    console.error("Respuesta inesperada al cargar tareas:", data);
+                    return;
+                }
                 setTasks(data);
                 if (data.length > 0) setSelectedTaskId(data[0].id);
             })
@@ -152,7 +158,7 @@ function MisTareas() {
         }
 
         try {
-            await fetch(`http://localhost:5000/api/tareas/${id}`, {
+            await authFetch(`/tareas/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ bookmarked: nuevoEstado })
@@ -179,7 +185,7 @@ function MisTareas() {
                 data: await fileToDataUrl(file)
             })));
 
-            const res = await fetch(`http://localhost:5000/api/tareas/${activeTask.id}/evidencias`, {
+            const res = await authFetch(`/tareas/${activeTask.id}/evidencias`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ files: payload })
@@ -196,7 +202,7 @@ function MisTareas() {
     const handleRemoveEvidence = async (evidenciaId) => {
         if (!activeTask) return;
         try {
-            const res = await fetch(`http://localhost:5000/api/tareas/${activeTask.id}/evidencias/${evidenciaId}`, {
+            const res = await authFetch(`/tareas/${activeTask.id}/evidencias/${evidenciaId}`, {
                 method: 'DELETE'
             });
             if (res.ok) {
@@ -228,7 +234,7 @@ function MisTareas() {
         if (!activeTask) return;
         const nuevoEstado = !activeTask.completed;
         try {
-            const res = await fetch(`http://localhost:5000/api/tareas/${activeTask.id}`, {
+            const res = await authFetch(`/tareas/${activeTask.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ completed: nuevoEstado })
@@ -261,7 +267,7 @@ function MisTareas() {
         const newTime = newDt.toTimeString().substring(0, 5);
 
         try {
-            const res = await fetch(`http://localhost:5000/api/tareas/${selectedTaskId}`, {
+            const res = await authFetch(`/tareas/${selectedTaskId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ deadlineDate: newDate, deadlineTime: newTime })
@@ -279,7 +285,7 @@ function MisTareas() {
         if (!activeTask.deleted) {
             // Paso 1: Soft Delete (mover a papelera) — pulso gris, baja al final de la lista
             try {
-                const res = await fetch(`http://localhost:5000/api/tareas/${selectedTaskId}`, {
+                const res = await authFetch(`/tareas/${selectedTaskId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ deleted: true })
@@ -301,7 +307,7 @@ function MisTareas() {
 
             setTimeout(async () => {
                 try {
-                    const res = await fetch(`http://localhost:5000/api/tareas/${idToRemove}`, { method: 'DELETE' });
+                    const res = await authFetch(`/tareas/${idToRemove}`, { method: 'DELETE' });
                     if (res.ok) {
                         const remaining = tasks.filter(t => t.id !== idToRemove);
                         setTasks(remaining);
@@ -317,7 +323,7 @@ function MisTareas() {
     const handleRestoreTask = async () => {
         if (!activeTask) return;
         try {
-            const res = await fetch(`http://localhost:5000/api/tareas/${activeTask.id}`, {
+            const res = await authFetch(`/tareas/${activeTask.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ deleted: false })
@@ -342,7 +348,7 @@ function MisTareas() {
     const handleSaveEdit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch(`http://localhost:5000/api/tareas/${selectedTaskId}`, {
+            const res = await authFetch(`/tareas/${selectedTaskId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(editForm)
@@ -362,7 +368,7 @@ function MisTareas() {
             deadlineDate: newTaskForm.deadlineDate, deadlineTime: newTaskForm.deadlineTime, icon: newTaskForm.icon
         };
         try {
-            const res = await fetch('http://localhost:5000/api/tareas/', {
+            const res = await authFetch('/tareas/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(tareaData)
@@ -371,7 +377,7 @@ function MisTareas() {
 
             // Si el usuario ya adjuntó evidencias antes de crear la tarea, se suben ahora
             if (pendingEvidenceFiles.length > 0) {
-                const evRes = await fetch(`http://localhost:5000/api/tareas/${nuevaTarea.id}/evidencias`, {
+                const evRes = await authFetch(`/tareas/${nuevaTarea.id}/evidencias`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ files: pendingEvidenceFiles })
