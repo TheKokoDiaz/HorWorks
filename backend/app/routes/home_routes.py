@@ -29,6 +29,7 @@ from sqlalchemy import func, or_
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models.home import Usuario, Equipo, Grupo, Tarea, Evidencia, Actividad
+from app.services import google_calendar_service as gcal
 
 home_bp = Blueprint('home_bp', __name__)
 
@@ -99,6 +100,13 @@ def create_tarea():
     )
     db.session.add(nueva_tarea)
     db.session.commit()
+
+    # Best-effort: si el usuario tiene Google Calendar conectado y la tarea
+    # trae fecha límite, se crea el evento correspondiente.
+    usuario = Usuario.query.get(usuario_id)
+    gcal.sync_tarea(usuario, nueva_tarea)
+    db.session.commit()
+
     return jsonify(nueva_tarea.to_dict()), 201
 
 
@@ -155,6 +163,11 @@ def update_tarea(id):
 
     try:
         db.session.commit()
+        # Best-effort: crea, actualiza o borra el evento de Google Calendar
+        # según cómo haya quedado la tarea (fecha límite, eliminada, etc.)
+        usuario = Usuario.query.get(usuario_id)
+        gcal.sync_tarea(usuario, tarea)
+        db.session.commit()
         return jsonify(tarea.to_dict()), 200
     except Exception as e:
         db.session.rollback()
@@ -170,6 +183,11 @@ def delete_tarea(id):
         return jsonify({"error": "Tarea no encontrada"}), 404
     if not _puede_acceder_tarea(tarea, usuario_id):
         return jsonify({"error": "No tienes permiso sobre esta tarea"}), 403
+
+    # Best-effort: si había un evento de Google Calendar asociado, se borra
+    # antes de destruir la tarea (después ya no tendríamos el eventId).
+    usuario = Usuario.query.get(usuario_id)
+    gcal.delete_tarea_sync(usuario, tarea)
 
     db.session.delete(tarea)
     db.session.commit()
@@ -229,44 +247,13 @@ def delete_evidencia(id, evidencia_id):
 
 
 # =========================================================
-# PROYECTOS (equipos colaborativos)
 # =========================================================
-@home_bp.route('/proyectos/', methods=['GET'])
-@jwt_required()
-def get_proyectos():
-    """Equipos (proyectos colaborativos) a los que pertenece el usuario actual."""
-    usuario_id = int(get_jwt_identity())
-    equipos_ids = _equipos_del_usuario(usuario_id)
-    equipos = Equipo.query.filter(Equipo.EQU_Id.in_(equipos_ids)).all() if equipos_ids else []
-
-    resultado = []
-    for equipo in equipos:
-        data = equipo.to_dict()
-        data["pendingTasks"] = Tarea.query.filter_by(
-            EQU_Id=equipo.EQU_Id, TAR_Completada=False, TAR_Eliminada=False
-        ).count()
-        resultado.append(data)
-
-    return jsonify(resultado), 200
-
-
-@home_bp.route('/proyectos/<int:id>', methods=['GET'])
-@jwt_required()
-def get_proyecto_detalle(id):
-    """Detalle completo para la ventana flotante: equipo, tu rol, miembros y tareas asociadas."""
-    usuario_id = int(get_jwt_identity())
-    equipo = Equipo.query.get(id)
-    if not equipo:
-        return jsonify({"error": "Proyecto no encontrado"}), 404
-    if id not in _equipos_del_usuario(usuario_id):
-        return jsonify({"error": "No perteneces a este proyecto"}), 403
-
-    data = equipo.to_dict(incluir_detalle=True, usuario_actual_id=usuario_id)
-
-    tareas = Tarea.query.filter_by(EQU_Id=id, TAR_Eliminada=False).order_by(Tarea.TAR_FechaLimite.asc()).all()
-    data["tasks"] = [t.to_dict() for t in tareas]
-
-    return jsonify(data), 200
+# NOTA: las rutas /proyectos/ y /proyectos/<id> (GET) vivían antes aquí.
+# Se movieron a app/routes/equipo_routes.py junto con el resto de "equipos"
+# (crear/editar/eliminar/invitar/miembros) para no tener el mismo endpoint
+# registrado en dos blueprints a la vez (eso rompía cuál lógica corría
+# realmente). No las regreses aquí.
+# =========================================================
 
 
 # =========================================================
@@ -457,3 +444,88 @@ def get_actividad():
 
     actividades = query.order_by(Actividad.ACT_Fecha.desc()).limit(limit).all()
     return jsonify([a.to_dict() for a in actividades]), 200
+
+
+# =========================================================
+# ROADMAP (vista de línea de tiempo por equipo/mes, para roadmap.jsx)
+# =========================================================
+def _estado_roadmap(tarea):
+    """Traduce completed/eliminada/fecha a uno de los estados que pinta el roadmap."""
+    if tarea.TAR_Eliminada:
+        return 'cancelado'
+    if tarea.TAR_Completada:
+        return 'completado'
+    deadline = _parse_deadline(tarea)
+    if deadline and deadline < datetime.now():
+        return 'retraso'
+    return 'pendiente'
+
+
+def _tarea_a_item_roadmap(tarea):
+    fecha = None
+    mes = None
+    if tarea.TAR_FechaLimite:
+        try:
+            fecha = datetime.strptime(tarea.TAR_FechaLimite, "%Y-%m-%d").date()
+            mes = fecha.month
+        except ValueError:
+            pass
+
+    return {
+        "id": tarea.TAR_Id,
+        "title": tarea.TAR_Nombre,
+        "priority": tarea.TAR_Prioridad,
+        "icon": tarea.TAR_Icono or "folder",
+        "deadlineDate": tarea.TAR_FechaLimite,
+        "deadlineTime": tarea.TAR_HoraLimite,
+        "month": mes,               # 1-12, o None si no tiene fecha límite
+        "day": fecha.day if fecha else None,
+        "status": _estado_roadmap(tarea),
+        "syncedWithGoogle": bool(tarea.TAR_GoogleEventId),
+    }
+
+
+@home_bp.route('/roadmap/', methods=['GET'])
+@jwt_required()
+def get_roadmap():
+    """
+    Datos para pintar roadmap.jsx: una fila "Mis tareas" (tareas personales
+    del usuario, sin equipo) + una fila por cada equipo al que pertenece,
+    con sus tareas del año pedido (por default, el año actual).
+
+    GET /api/roadmap/?year=2026
+    """
+    usuario_id = int(get_jwt_identity())
+    year = request.args.get('year', default=datetime.now().year, type=int)
+
+    prefijo_fecha = f"{year}-"
+
+    tareas_personales = Tarea.query.filter(
+        Tarea.USU_Id == usuario_id,
+        Tarea.EQU_Id.is_(None),
+        Tarea.TAR_Eliminada.is_(False),
+        Tarea.TAR_FechaLimite.like(f"{prefijo_fecha}%")
+    ).all()
+
+    filas = [{
+        "id": "personal",
+        "label": "Mis tareas",
+        "tasks": [_tarea_a_item_roadmap(t) for t in tareas_personales]
+    }]
+
+    equipos_ids = _equipos_del_usuario(usuario_id)
+    if equipos_ids:
+        equipos = Equipo.query.filter(Equipo.EQU_Id.in_(equipos_ids)).all()
+        for equipo in equipos:
+            tareas_equipo = Tarea.query.filter(
+                Tarea.EQU_Id == equipo.EQU_Id,
+                Tarea.TAR_Eliminada.is_(False),
+                Tarea.TAR_FechaLimite.like(f"{prefijo_fecha}%")
+            ).all()
+            filas.append({
+                "id": f"equipo-{equipo.EQU_Id}",
+                "label": equipo.EQU_Nombre,
+                "tasks": [_tarea_a_item_roadmap(t) for t in tareas_equipo]
+            })
+
+    return jsonify({"year": year, "rows": filas}), 200

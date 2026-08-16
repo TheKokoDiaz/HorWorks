@@ -26,6 +26,8 @@ class Equipo(db.Model):
     EQU_Id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     EQU_Nombre = db.Column(db.String(40), nullable=False)
     EQU_Foto = db.Column(db.String(255))
+    EQU_Descripcion = db.Column(db.String(255))
+    EQU_Organizacion = db.Column(db.String(100))
     EQU_Auditor = db.Column(db.Integer, db.ForeignKey('HOR_Usuario.USU_Id'), nullable=False)
 
     auditor = db.relationship('Usuario', foreign_keys=[EQU_Auditor])
@@ -36,6 +38,8 @@ class Equipo(db.Model):
             "id": self.EQU_Id,
             "name": self.EQU_Nombre,
             "photo": self.EQU_Foto,
+            "description": self.EQU_Descripcion,
+            "organization": self.EQU_Organizacion,
             # Usuario.to_dict() trae sus propias claves (nombre/email/...) pensadas para
             # el login; aquí armamos manualmente el shape que espera el frontend de Home.
             "auditor": {
@@ -45,6 +49,9 @@ class Equipo(db.Model):
             } if self.auditor else None,
             "memberCount": len(self.miembros)
         }
+
+        if usuario_actual_id is not None:
+            data["soyAuditor"] = (self.EQU_Auditor == usuario_actual_id)
 
         if incluir_detalle:
             data["members"] = [m.to_dict() for m in self.miembros]

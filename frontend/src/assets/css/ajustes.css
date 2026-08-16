@@ -324,3 +324,10 @@
 .switch-control-ajustes input:checked + .deslizador-ajustes:before {
     transform: translateX(22px);
 }
+.guardando-ajustes {
+    font-size: 12px;
+    font-weight: 600;
+    color: #7a869a;
+    margin-left: 10px;
+    vertical-align: middle;
+}

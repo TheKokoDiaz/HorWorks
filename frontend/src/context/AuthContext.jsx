@@ -5,7 +5,7 @@
 // del usuario los tenía quemados (nombres/avatares de ejemplo).
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { API_BASE, authFetchJson, getAccessToken, getStoredUser, login as apiLogin, logout as apiLogout } from '../api/client';
+import { API_BASE, authFetchJson, getAccessToken, getStoredUser, login as apiLogin, register as apiRegister, logout as apiLogout } from '../api/client';
 
 const AuthContext = createContext(null);
 
@@ -43,13 +43,19 @@ export function AuthProvider({ children }) {
         return usuarioLogueado;
     }, []);
 
+    const register = useCallback(async (datos) => {
+        const usuarioCreado = await apiRegister(datos);
+        setUsuario(usuarioCreado);
+        return usuarioCreado;
+    }, []);
+
     const logout = useCallback(() => {
         setUsuario(null);
         apiLogout(); // limpia localStorage y redirige a /login
     }, []);
 
     return (
-        <AuthContext.Provider value={{ usuario, loading, isAuthenticated: !!usuario, login, logout, API_BASE }}>
+        <AuthContext.Provider value={{ usuario, loading, isAuthenticated: !!usuario, login, register, logout, API_BASE }}>
             {children}
         </AuthContext.Provider>
     );

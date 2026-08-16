@@ -6,6 +6,7 @@ import './assets/css/main.css'
 
 // SESIÓN
 import { AuthProvider } from './context/AuthContext'
+import { AjustesProvider } from './context/AjustesContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
 // PÁGINAS HTML
@@ -19,15 +20,22 @@ import Ajustes from './pages/ajustes'
 
 import Welcome from './pages/welcome'
 import Login from './pages/login'
+import Registro from './pages/registro'
+import InvitacionAuditor from './pages/invitacion_auditor'
 
 function App() {
     return (
         <AuthProvider>
+            <AjustesProvider>
             <BrowserRouter>
                 <Routes>
                     {/* 1. Al abrir la app en la raíz (/), mandamos directo al Login */}
                     <Route path="/" element={<Login />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/registro" element={<Registro />} />
+
+                    {/* Pública a propósito: quien la recibe puede no tener cuenta todavía */}
+                    <Route path="/invitacion-auditor/:token" element={<InvitacionAuditor />} />
 
                     {/* Páginas que requieren sesión */}
                     <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
@@ -42,6 +50,7 @@ function App() {
                     <Route path="/bienvenida" element={<Welcome />} />
                 </Routes>
             </BrowserRouter>
+            </AjustesProvider>
         </AuthProvider>
     )
 }

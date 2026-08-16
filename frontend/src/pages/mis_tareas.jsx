@@ -71,10 +71,28 @@ function MisTareas() {
 
     // --- ORDEN AUTOMÁTICO ANTES DE DIBUJAR ---
     // 1. Con bookmark  2. Normales  3. En papelera (soft delete)
+    // Dentro de cada grupo, ordenamos por prioridad (Alta primero) y luego por
+    // fecha límite más próxima, para que lo urgente/importante -incluyendo las
+    // tareas que un compañero o el auditor te haya asignado con prioridad
+    // Alta- salga al principio de la lista en vez de quedar en el orden en que
+    // llegaron del backend.
+    const PRIORIDAD_ORDEN = { alta: 0, media: 1, baja: 2 };
+    const porPrioridadYFecha = (a, b) => {
+        const pa = PRIORIDAD_ORDEN[(a.priority || '').toLowerCase()] ?? 1;
+        const pb = PRIORIDAD_ORDEN[(b.priority || '').toLowerCase()] ?? 1;
+        if (pa !== pb) return pa - pb;
+        const fa = a.deadlineDate ? `${a.deadlineDate}T${a.deadlineTime || '23:59'}` : null;
+        const fb = b.deadlineDate ? `${b.deadlineDate}T${b.deadlineTime || '23:59'}` : null;
+        if (fa && fb) return fa.localeCompare(fb);
+        if (fa) return -1;
+        if (fb) return 1;
+        return 0;
+    };
+
     const sortedTasks = useMemo(() => {
-        const conBookmark = tasks.filter(t => t.bookmarked && !t.deleted);
-        const normales = tasks.filter(t => !t.bookmarked && !t.deleted);
-        const enPapelera = tasks.filter(t => t.deleted);
+        const conBookmark = tasks.filter(t => t.bookmarked && !t.deleted).sort(porPrioridadYFecha);
+        const normales = tasks.filter(t => !t.bookmarked && !t.deleted).sort(porPrioridadYFecha);
+        const enPapelera = tasks.filter(t => t.deleted).sort(porPrioridadYFecha);
         return [...conBookmark, ...normales, ...enPapelera];
     }, [tasks]);
 

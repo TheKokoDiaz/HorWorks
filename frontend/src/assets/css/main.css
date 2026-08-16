@@ -16,6 +16,48 @@
     --font-family: 'Raleway', sans-serif;
 }
 
+/* TEMAS
+   Se activan poniendo data-theme="azul|verde|morado|naranja" en <html>
+   (lo hace AjustesContext según lo que el usuario elija en Ajustes).
+   El selector :root[data-theme=...] tiene más especificidad que :root a
+   secas, así que gana sin importar el orden de los <link>/imports de CSS
+   -- incluida la redeclaración de --sidebar-bg que hace sidebar.css. */
+:root[data-theme="azul"] {
+    --bg-primary: #0d3559;
+    --sidebar-bg: #1a365d;
+    --link-color: #0066cc;
+    --link-hover: #004fb3;
+    --btn-bg: #0d3559;
+    --btn-hover: #092740;
+}
+
+:root[data-theme="verde"] {
+    --bg-primary: #0d4a3a;
+    --sidebar-bg: #14532d;
+    --link-color: #16a34a;
+    --link-hover: #12833b;
+    --btn-bg: #14532d;
+    --btn-hover: #0d3b20;
+}
+
+:root[data-theme="morado"] {
+    --bg-primary: #3b1d5c;
+    --sidebar-bg: #4c1d95;
+    --link-color: #8b5cf6;
+    --link-hover: #7c3aed;
+    --btn-bg: #4c1d95;
+    --btn-hover: #3a1573;
+}
+
+:root[data-theme="naranja"] {
+    --bg-primary: #7c2d12;
+    --sidebar-bg: #9a3412;
+    --link-color: #ea580c;
+    --link-hover: #c2410c;
+    --btn-bg: #9a3412;
+    --btn-hover: #7c2d12;
+}
+
 /* GENERAL */
 @font-face {
     font-family: 'Raleway';

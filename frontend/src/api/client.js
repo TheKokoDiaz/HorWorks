@@ -74,6 +74,30 @@ export async function login(email, password) {
     return data.usuario;
 }
 
+export async function register({ nombre, usuario, email, password }) {
+    const response = await fetch(`${API_BASE}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, usuario, email, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || 'No se pudo crear la cuenta');
+    }
+
+    // Igual que login(): deja la sesión iniciada de una vez, para no
+    // obligar a la persona a volver a escribir sus credenciales.
+    setSession({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        usuario: data.usuario
+    });
+
+    return data.usuario;
+}
+
 export function logout() {
     clearSession();
     window.location.href = '/login';

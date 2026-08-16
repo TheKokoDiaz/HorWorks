@@ -21,6 +21,11 @@ class Tarea(db.Model):
     USU_Id = db.Column(db.Integer, nullable=False) 
     EQU_Id = db.Column(db.Integer, nullable=True)
 
+    # Id del evento en Google Calendar (si la tarea ya se sincronizó). NULL
+    # mientras el usuario no tenga Google Calendar conectado o la tarea no
+    # tenga fecha límite.
+    TAR_GoogleEventId = db.Column(db.String(255), nullable=True)
+
     # Una tarea puede tener varias evidencias (imágenes, PDFs, etc.)
     evidencias = db.relationship(
         'Evidencia',
@@ -44,7 +49,9 @@ class Tarea(db.Model):
             "completed": bool(self.TAR_Completada),
             "bookmarked": bool(self.TAR_Bookmarked),
             "deleted": bool(self.TAR_Eliminada),
-            "equipo_id": self.EQU_Id
+            "equipo_id": self.EQU_Id,
+            "googleEventId": self.TAR_GoogleEventId,
+            "syncedWithGoogle": bool(self.TAR_GoogleEventId)
         }
 
 

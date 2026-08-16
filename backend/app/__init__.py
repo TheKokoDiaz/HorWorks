@@ -57,19 +57,32 @@ def create_app():
     with app.app_context():
         from app.models.usuario import Usuario  # noqa: F401
         from app.models.home import Equipo, Grupo, Tarea, Evidencia, Actividad  # noqa: F401
+        from app.models.roadmap import RoadmapItem  # noqa: F401
+        from app.models.google_token import GoogleToken  # noqa: F401
+        from app.models.invitacion import InvitacionEquipo, InvitacionAuditor  # noqa: F401
         from app.models.ajustes import Ajustes  # noqa: F401
         db.create_all()  # Crea las tablas que no existan; no toca las que ya existen
     
     # 4. REGISTRAR RUTAS (Blueprints)
     # tarea_routes.py se eliminó: era un duplicado exacto de las rutas de
     # tareas que ya vive en home_routes.py (mismas URLs /api/tareas/...).
+    # calendar_routes.py también se eliminó: era un duplicado de
+    # google_routes.py con nombres de función que no existían en
+    # google_calendar_service.py (por eso las rutas de Calendar fallaban).
+    # Ahora solo existe app/routes/google_routes.py (google_bp).
     from app.routes.auth_routes import auth_bp
     from app.routes.home_routes import home_bp
+    from app.routes.roadmap_routes import roadmap_bp
     from app.routes.google_routes import google_bp
+    from app.routes.equipo_routes import equipo_bp
+    from app.routes.auditoria_routes import auditoria_bp
     from app.routes.ajustes_routes import ajustes_bp
     app.register_blueprint(home_bp, url_prefix='/api')
     app.register_blueprint(auth_bp, url_prefix='/api') # Así tu ruta queda como /api/login
+    app.register_blueprint(roadmap_bp, url_prefix='/api')
     app.register_blueprint(google_bp, url_prefix='/api')
+    app.register_blueprint(equipo_bp, url_prefix='/api')
+    app.register_blueprint(auditoria_bp, url_prefix='/api')
     app.register_blueprint(ajustes_bp, url_prefix='/api')
     
     return app

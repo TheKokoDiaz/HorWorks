@@ -1,3 +1,10 @@
+/* VARIABLES (locales: main.css no define --text-main ni --border-color) */
+:root {
+    --ceq-text-main: #1e293b;
+    --ceq-text-muted: #64748b;
+    --ceq-border-color: #e2e8f0;
+}
+
 /* Fondo gris claro para toda la pantalla */
 .crear-equipo-bg-full-gray {
     background-color: #e5e7eb;
@@ -24,14 +31,14 @@
 .crear-equipo-close-btn {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--ceq-text-main);
     text-decoration: none;
     font-family: sans-serif;
 }
 
 .crear-equipo-page-title {
     font-size: 2.2rem;
-    color: var(--text-main);
+    color: var(--ceq-text-main);
     margin-bottom: 3rem;
     font-weight: 700;
 }
@@ -55,7 +62,7 @@
 .crear-equipo-image-box {
     width: 200px;
     height: 200px;
-    border: 3px solid var(--text-main);
+    border: 3px solid var(--ceq-text-main);
     border-radius: 20px;
     display: flex;
     justify-content: center;
@@ -65,7 +72,7 @@
 
 .crear-equipo-icon-image {
     font-size: 6rem;
-    color: var(--text-main);
+    color: var(--ceq-text-main);
 }
 
 .crear-equipo-upload-link {
@@ -87,7 +94,7 @@
 .crear-equipo-input-group label {
     display: block;
     font-size: 1rem;
-    color: var(--text-main);
+    color: var(--ceq-text-main);
     margin-bottom: 0.5rem;
 }
 
@@ -113,7 +120,7 @@
     height: 45px;
     border-radius: 50%;
     background-color: #f1f5f9;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--ceq-border-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,7 +130,7 @@
 
 .crear-equipo-btn-add-circle span {
     font-size: 1.5rem;
-    color: var(--text-main);
+    color: var(--ceq-text-main);
 }
 
 /* Lista de Integrantes */
@@ -141,7 +148,7 @@
 }
 
 .crear-equipo-icon-star {
-    color: var(--text-muted);
+    color: var(--ceq-text-muted);
 }
 
 .crear-equipo-member-data {
@@ -152,19 +159,19 @@
 
 .crear-equipo-m-role {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--ceq-text-muted);
 }
 
 .crear-equipo-m-name {
     font-size: 1rem;
-    color: var(--text-main);
+    color: var(--ceq-text-main);
 }
 
 .crear-equipo-btn-remove {
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--text-muted);
+    color: var(--ceq-text-muted);
 }
 
 /* Botones Inferiores */
@@ -194,4 +201,67 @@
 
 .crear-equipo-btn-crear {
     background-color: #3b82f6;
+}
+/* Descripción */
+.crear-equipo-textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.crear-equipo-hint {
+    margin: 0.4rem 0 0;
+    font-size: 0.75rem;
+    color: var(--ceq-text-muted);
+}
+
+/* Error de validación / envío */
+.crear-equipo-error {
+    color: #dc2626;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Avisos de invitaciones que fallaron */
+.crear-equipo-avisos {
+    background-color: #fef3c7;
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.crear-equipo-avisos p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #92400e;
+    font-weight: 600;
+}
+
+.crear-equipo-avisos ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: 0.85rem;
+    color: #92400e;
+}
+
+.crear-equipo-avisos .crear-equipo-btn-crear {
+    align-self: flex-start;
+    padding: 0.6rem 2rem;
+}
+
+/* Botones inferiores */
+.crear-equipo-form-actions-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.crear-equipo-btn-crear:disabled {
+    opacity: 0.7;
+    cursor: default;
 }

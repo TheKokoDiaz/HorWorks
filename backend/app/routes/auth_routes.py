@@ -1,6 +1,7 @@
 # backend/app/routes/auth_routes.py
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app import db
 from app.models.usuario import Usuario
 from app.services.auth_service import autenticar_usuario, generar_tokens
 
@@ -28,6 +29,48 @@ def login():
         "usuario": usuario.to_dict(),
         **tokens  # access_token, refresh_token
     }), 200
+
+
+@auth_bp.route('/register', methods=['POST'])
+def register():
+    """
+    Alta de un nuevo usuario. Reutiliza el mismo shape de respuesta que
+    /login (usuario + access_token + refresh_token) para poder loguear
+    automáticamente justo después de registrarse.
+    """
+    data = request.get_json() or {}
+    nombre = (data.get('nombre') or '').strip()
+    username = (data.get('usuario') or '').strip()
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password') or ''
+
+    if not nombre or not username or not email or not password:
+        return jsonify({"error": "Nombre, usuario, correo y contraseña son obligatorios"}), 400
+    if len(password) < 4:
+        return jsonify({"error": "La contraseña debe tener al menos 4 caracteres"}), 400
+    if len(username) > 30:
+        return jsonify({"error": "El usuario no puede tener más de 30 caracteres"}), 400
+
+    if Usuario.query.filter_by(email=email).first():
+        return jsonify({"error": "Ya existe una cuenta con ese correo"}), 409
+    if Usuario.query.filter_by(usuario=username).first():
+        return jsonify({"error": "Ese nombre de usuario ya está en uso"}), 409
+
+    nuevo_usuario = Usuario(
+        nombre=nombre,
+        usuario=username,
+        email=email,
+        password=password,  # NOTA: igual que el resto de la app, sin hash todavía (ver auth_service.py)
+    )
+    db.session.add(nuevo_usuario)
+    db.session.commit()
+
+    tokens = generar_tokens(nuevo_usuario)
+    return jsonify({
+        "mensaje": "Cuenta creada correctamente",
+        "usuario": nuevo_usuario.to_dict(),
+        **tokens
+    }), 201
 
 
 @auth_bp.route('/refresh', methods=['POST'])
