@@ -69,7 +69,16 @@ function Sidebar() {
 
                 <div className="sidebar-bottom">
                     <Link to="/perfil" className="user-profile">
-                        <img src={avatarUrl} alt={nombreUsuario} />
+                        <img
+                            src={avatarUrl}
+                            alt={nombreUsuario}
+                            onError={(e) => {
+                                // Si la foto guardada en BD (ej. dicebear.com) no
+                                // responde, caemos a ui-avatars como respaldo.
+                                const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(nombreUsuario)}&background=fca5a5&color=fff`;
+                                if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
+                            }}
+                        />
                         <span className="text-link">{nombreUsuario}</span>
                     </Link>
                     <Link to="/ajustes" className="settings-btn">

@@ -30,7 +30,13 @@ CREATE TABLE HOR_Usuario(
     USU_Rol             VARCHAR(20)     NOT NULL    DEFAULT 'Alumno',
     USU_Estado          BOOL            NOT NULL    DEFAULT 1,
     USU_Tickets         INT             DEFAULT 5,
-    
+
+    -- Google Calendar: refresh_token de OAuth (permite pedir nuevos access_token
+    -- sin que el usuario vuelva a autorizar) y el correo de Google conectado,
+    -- que no siempre es el mismo que USU_Correo.
+    USU_Google_RefreshToken TEXT        NULL,
+    USU_Google_Email        VARCHAR(120) NULL,
+
     PRIMARY KEY(USU_Id)
 );
 
@@ -69,6 +75,12 @@ CREATE TABLE HOR_Tarea(
     TAR_Eliminada       BOOL            DEFAULT FALSE,
     USU_Id              INT             NOT NULL,
     EQU_Id              INT             NULL,
+
+    -- Id del evento creado en Google Calendar cuando la tarea se sincroniza
+    -- (NULL si el usuario no tiene Google Calendar conectado, o la tarea no
+    -- tiene fecha límite todavía). Sirve para poder actualizar/borrar el
+    -- evento correcto después.
+    TAR_GoogleEventId   VARCHAR(255)    NULL,
     
     PRIMARY KEY(TAR_Id),
     FOREIGN KEY(USU_Id) REFERENCES HOR_Usuario(USU_Id),
