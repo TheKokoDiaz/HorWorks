@@ -60,15 +60,11 @@ function Sidebar() {
                             <span className="material-symbols-outlined">group</span>
                             <span className="text-link">Equipos</span>
                         </Link>
-                        <Link to="/perfil" className={location.pathname === '/perfil' ? "active" : ""}>
-                            <span className="material-symbols-outlined">person</span>
-                            <span className="text-link">Perfil</span>
-                        </Link>
                     </nav>
                 </div>
 
                 <div className="sidebar-bottom">
-                    <Link to="/perfil" className="user-profile">
+                    <Link to="/perfil" className={location.pathname === '/perfil' ? "user-profile active" : "user-profile"}>
                         <img
                             src={avatarUrl}
                             alt={nombreUsuario}

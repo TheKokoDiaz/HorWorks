@@ -27,6 +27,30 @@
     z-index: 5;
 }
 
+/* --- Bloques de la barra: top (menú + nav) y bottom (perfil + ajustes) --- */
+/* Antes .sidebar-top / .sidebar-bottom / .nav-links no tenían ninguna regla
+   propia y dependían "de rebote" del align-items:center del .sidebar padre;
+   eso es frágil y es lo que causaba el descuadre. Ahora cada uno controla
+   su propio layout explícitamente. */
+.sidebar-top,
+.sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.sidebar-bottom {
+    gap: 1rem;
+}
+
 .sidebar a {
     color: white;
     text-decoration: none;
@@ -42,6 +66,12 @@
     gap: 5px;
 }
 
+/* Último link de la nav: sin margen extra, el espaciado de .sidebar-bottom
+   ya se encarga del resto. */
+.nav-links a:last-child {
+    margin-bottom: 0;
+}
+
 .sidebar a:hover, .sidebar a.active {
     opacity: 1;
 }
@@ -52,17 +82,19 @@
     padding: 10px;
 }
 
-.user-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
+/* .sidebar a.user-profile / .sidebar a.settings-btn tienen que ganarle en
+   especificidad a ".sidebar a" (que también es tag+clase); si se dejan como
+   ".user-profile"/".settings-btn" a secas, ".sidebar a" las pisa sin
+   importar el orden en el archivo, y por eso heredaban el margin-bottom:2rem
+   y el opacity:0.7 de los links de navegación en vez de lo suyo. */
+.sidebar a.user-profile {
     gap: 5px;
     font-size: 0.8rem;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    opacity: 1;
 }
 
-.user-profile img {
+.sidebar a.user-profile img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -81,6 +113,15 @@
 
 .menu-icon:hover {
     background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar a.settings-btn {
+    margin-bottom: 0;
+    opacity: 0.8;
+}
+
+.sidebar a.settings-btn:hover {
+    opacity: 1;
 }
 
 /* BARRA COLAPSADA */
