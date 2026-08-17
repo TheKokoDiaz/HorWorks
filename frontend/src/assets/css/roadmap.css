@@ -19,13 +19,14 @@
 .roadmap-container {
     flex: 1;
     padding: 2rem 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-left: 80px; 
+    width: 100%;
+    max-width: 100%; /* Eliminar restricción o centrado con margen fijo */
+    margin: 0;       /* Elimina el margin-left: 80px que desalinea la vista */
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
+    position: relative;
 }
-
 /* ==========================================================================
    ENCABEZADO Y LEYENDA
    ========================================================================== */
@@ -85,7 +86,7 @@
    ========================================================================== */
 .timeline-grid {
     display: grid;
-    grid-template-columns: 18% 82%; /* Relación División / Espacio temporal */
+    grid-template-columns: 200px 1fr; /* Usar un ancho fijo de etiqueta para alineación precisa */
     align-items: center;
 }
 
@@ -101,9 +102,9 @@
     padding: 15px;
 }
 
-.months-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 Trimestres */
+.months-container-wrapper {
+    position: relative;
+    width: 100%;
 }
 
 .quarter-col {
@@ -120,14 +121,14 @@
 
 .quarter-title-current {
     padding: 6px 0;
-    color: #2b7de9;
+    color: var(--link-color);
     font-size: 12px;
     position: relative;
 }
 
 .hoy-tag {
     font-size: 9px;
-    background: #2b7de9;
+    background: var(--link-color);
     color: white;
     padding: 1px 4px;
     border-radius: 3px;
@@ -231,20 +232,22 @@
 /* Línea vertical flotante de "Hoy" */
 .today-line {
     position: absolute;
-    top: 90px;
-    bottom: 0;
+    top: 0;
+    bottom: -1000px; /* Cubre el área de las secciones */
     width: 2px;
-    background-color: #2b7de9;
-    border-left: 1px dashed rgba(255,255,255,0.4);
+    background-color: var(--link-color, #f7b913);
     z-index: 5;
     pointer-events: none;
 }
+
 .today-line::before {
     content: '';
     position: absolute;
-    top: -4px; left: -3px;
-    width: 8px; height: 8px;
-    background: #2b7de9;
+    top: 0; 
+    left: -3px;
+    width: 8px; 
+    height: 8px;
+    background: var(--link-color, #f7b913);
     border-radius: 50%;
 }
 /* ==========================================================================
@@ -302,7 +305,7 @@
 }
 
 .google-connect-btn {
-    background: #2b7de9;
+    background: var(--link-color);
     color: #fff;
 }
 

@@ -1,3 +1,13 @@
+/* VARIABLES (locales: se conectan a los tokens de tema definidos en main.css,
+   para que elegir un tema en esta misma pantalla cambie también sus colores) */
+:root {
+    --ajs-accent: var(--link-color);
+    --ajs-accent-hover: var(--link-hover);
+    --ajs-accent-soft: color-mix(in srgb, var(--link-color) 35%, white);
+    --ajs-accent-soft-hover: color-mix(in srgb, var(--link-color) 55%, white);
+    --ajs-accent-text: var(--btn-bg);
+}
+
 /* --- CONTENEDOR DE DISEÑO PRINCIPAL (Para no tocar el body global) --- */
 .layout-ajustes-container {
     display: flex;
@@ -46,7 +56,7 @@
 }
 
 .encabezado-tarjeta-ajustes {
-    background-color: #1c558e;
+    background-color: var(--ajs-accent);
     color: #ffffff;
     padding: 12px 20px;
     font-size: 18px;
@@ -91,11 +101,11 @@
 }
 
 .btn-azul-claro-ajustes {
-    background-color: #7bd3ff;
+    background-color: var(--ajs-accent-soft);
     border: none;
     padding: 8px 16px;
     border-radius: 6px;
-    color: #0b345c;
+    color: var(--ajs-accent-text);
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
@@ -105,7 +115,7 @@
 }
 
 .btn-azul-claro-ajustes:hover {
-    background-color: #5ec2f2;
+    background-color: var(--ajs-accent-soft-hover);
 }
 
 /* --- POSPONER TICKETS --- */
@@ -162,7 +172,7 @@
 }
 
 .btn-usar-ticket-ajustes {
-    background-color: #1c558e;
+    background-color: var(--ajs-accent);
     color: #ffffff;
     border: none;
     padding: 10px;
@@ -174,7 +184,7 @@
 }
 
 .btn-usar-ticket-ajustes:hover {
-    background-color: #143d66;
+    background-color: var(--ajs-accent-hover);
 }
 
 .btn-usar-ticket-ajustes:disabled {
@@ -252,7 +262,7 @@
 }
 
 .btn-alternar-ajustes.activo {
-    background-color: #7bd3ff;
+    background-color: var(--ajs-accent-soft);
     font-weight: 600;
 }
 
@@ -318,7 +328,7 @@
 }
 
 .switch-control-ajustes input:checked + .deslizador-ajustes {
-    background-color: #4a90e2;
+    background-color: var(--ajs-accent);
 }
 
 .switch-control-ajustes input:checked + .deslizador-ajustes:before {

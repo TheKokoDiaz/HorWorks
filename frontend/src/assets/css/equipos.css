@@ -182,7 +182,7 @@
 }
 
 .eqp-btn-aceptar {
-    background-color: #3b82f6;
+    background-color: var(--btn-bg);
     color: white;
 }
 
@@ -207,7 +207,7 @@
     position: absolute;
     top: 6px;
     right: 6px;
-    background-color: #1c558e;
+    background-color: var(--btn-bg);
     color: white;
     font-size: 0.65rem;
     font-weight: 700;
@@ -384,7 +384,7 @@
 }
 
 .eqp-btn-primary {
-    background-color: #3b82f6;
+    background-color: var(--btn-bg);
     color: white;
 }
 

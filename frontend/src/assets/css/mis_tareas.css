@@ -1,5 +1,11 @@
 /* MIS TAREAS STYLES */
 
+/* VARIABLES (locales: se conectan a los tokens de tema definidos en main.css) */
+:root {
+    --mt-accent: var(--link-color);
+    --mt-accent-strong: var(--link-hover);
+}
+
 .tareas-main-layout {
     display: flex;
     gap: 24px;
@@ -267,7 +273,7 @@
 }
 
 .btn-icon-action.bookmarked {
-    color: #0284c7;
+    color: var(--mt-accent);
 }
 
 /* BLOQUE PRINCIPAL TAREA */
@@ -361,7 +367,7 @@
 
 .tarea-meta-card h4 {
     font-style: italic;
-    color: #0284c7;
+    color: var(--mt-accent);
     font-size: 1rem;
     font-weight: 500;
     margin: 0 0 8px 0;
@@ -393,7 +399,7 @@
 
 .tarea-evidence-card h4 {
     font-style: italic;
-    color: #0284c7;
+    color: var(--mt-accent);
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 6px 0;
@@ -421,13 +427,13 @@
 
 .tarea-evidence-dropzone:hover {
     background-color: #f1f5f9;
-    border-color: #0284c7;
+    border-color: var(--mt-accent);
 }
 
 .tarea-evidence-icon {
     width: 56px;
     height: 40px;
-    background-color: #0369a1;
+    background-color: var(--mt-accent-strong);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -443,7 +449,7 @@
     border: 1px solid #7dd3fc;
     border-radius: 10px;
     padding: 12px 16px;
-    color: #0369a1;
+    color: var(--mt-accent-strong);
     font-weight: 500;
 }
 
@@ -823,7 +829,7 @@
 
 .evidence-item-generic span.material-symbols-outlined {
     font-size: 30px;
-    color: #0284c7;
+    color: var(--mt-accent);
 }
 
 .evidence-item-name {
@@ -886,11 +892,11 @@
     border: 1px solid #bae6fd;
 }
 .btn-pastel-restore .material-symbols-outlined {
-    color: #0284c7;
+    color: var(--mt-accent);
     font-size: 2.4rem;
 }
 .btn-pastel-restore span.btn-label {
-    color: #0369a1;
+    color: var(--mt-accent-strong);
     font-weight: 600;
     font-size: 1.1rem;
 }

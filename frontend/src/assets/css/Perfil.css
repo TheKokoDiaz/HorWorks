@@ -1,7 +1,7 @@
 /* VARIABLES */
 :root {
     --prf-bg-color: #f8fafc;
-    --prf-sidebar-bg: #1a365d;
+    --prf-sidebar-bg: var(--sidebar-bg);
     --prf-text-main: #334155;
     --prf-text-muted: #64748b;
     --prf-card-bg: #ffffff;
@@ -207,7 +207,7 @@
 }
 
 .prf-btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--btn-hover);
 }
 
 .prf-btn-secondary {

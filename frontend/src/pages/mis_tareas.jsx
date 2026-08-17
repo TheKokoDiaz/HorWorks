@@ -38,6 +38,11 @@ function MisTareas() {
         title: '', description: '', priority: 'Media', estimatedTime: '', deadlineDate: '', deadlineTime: '', icon: 'folder'
     });
     const [postponeOption, setPostponeOption] = useState('30 min');
+    // --- Desafío (Gemini) que hay que resolver para poder posponer ---
+    const [desafio, setDesafio] = useState(null); // { token, pregunta }
+    const [respuestaDesafio, setRespuestaDesafio] = useState('');
+    const [desafioLoading, setDesafioLoading] = useState(false);
+    const [desafioError, setDesafioError] = useState('');
     const [newTaskForm, setNewTaskForm] = useState({
         title: '', description: '', priority: 'Alta', estimatedTime: '1 h 00 min', deadlineDate: '', deadlineTime: '', icon: 'folder'
     });
@@ -264,38 +269,78 @@ function MisTareas() {
         } catch (err) { console.error(err); }
     };
 
-    // --- 5. LÓGICA DE POSPONER (Sumar tiempo matemático) ---
+    // --- 5. DESAFÍO (Gemini) — se pide en cuanto se abre el modal de posponer ---
+    const pedirDesafio = async (taskId) => {
+        setDesafioLoading(true);
+        setDesafioError('');
+        setRespuestaDesafio('');
+        setDesafio(null);
+        try {
+            const res = await authFetch(`/tareas/${taskId}/desafio`, { method: 'POST' });
+            const data = await res.json();
+            if (res.ok) {
+                setDesafio(data); // { token, pregunta, expiraEnSegundos }
+            } else {
+                setDesafioError(data.error || 'No se pudo generar el desafío.');
+            }
+        } catch (err) {
+            console.error(err);
+            setDesafioError('No se pudo generar el desafío.');
+        } finally {
+            setDesafioLoading(false);
+        }
+    };
+
+    // Cada vez que se abre el modal de posponer, se pide un desafío nuevo
+    useEffect(() => {
+        if (isPostponeModalOpen && selectedTaskId) {
+            pedirDesafio(selectedTaskId);
+        }
+    }, [isPostponeModalOpen, selectedTaskId]);
+
+    const POSTPONE_MINUTOS = { '15 min': 15, '30 min': 30, '1 hora': 60, '2 horas': 120, '1 día': 1440 };
+
+    // --- 6. LÓGICA DE POSPONER (ahora requiere resolver el desafío) ---
     const handleSavePostpone = async (e) => {
         e.preventDefault();
         if (!activeTask.deadlineDate) {
             alert("No se puede posponer una tarea sin fecha límite.");
             return;
         }
-
-        const dt = new Date(`${activeTask.deadlineDate}T${activeTask.deadlineTime || '00:00'}:00`);
-        let addMs = 0;
-        if (postponeOption === '15 min') addMs = 15 * 60 * 1000;
-        if (postponeOption === '30 min') addMs = 30 * 60 * 1000;
-        if (postponeOption === '1 hora') addMs = 60 * 60 * 1000;
-        if (postponeOption === '2 horas') addMs = 2 * 60 * 60 * 1000;
-        if (postponeOption === '1 día') addMs = 24 * 60 * 60 * 1000;
-
-        const newDt = new Date(dt.getTime() + addMs);
-        const newDate = newDt.toISOString().split('T')[0];
-        const newTime = newDt.toTimeString().substring(0, 5);
+        if (!desafio) {
+            setDesafioError('Espera a que cargue el desafío (o inténtalo de nuevo).');
+            return;
+        }
+        if (!respuestaDesafio.trim()) {
+            setDesafioError('Responde el desafío antes de posponer.');
+            return;
+        }
 
         try {
-            const res = await authFetch(`/tareas/${selectedTaskId}`, {
-                method: 'PUT',
+            const res = await authFetch(`/tareas/${selectedTaskId}/posponer`, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ deadlineDate: newDate, deadlineTime: newTime })
+                body: JSON.stringify({
+                    token: desafio.token,
+                    respuesta: respuestaDesafio.trim(),
+                    addMinutes: POSTPONE_MINUTOS[postponeOption] || 30
+                })
             });
+            const data = await res.json();
             if (res.ok) {
-                const tareaActualizada = await res.json();
-                setTasks(prev => prev.map(t => t.id === selectedTaskId ? tareaActualizada : t));
+                setTasks(prev => prev.map(t => t.id === selectedTaskId ? data : t));
                 setIsPostponeModalOpen(false);
+                setDesafio(null);
+                setRespuestaDesafio('');
+            } else {
+                // Respuesta incorrecta, desafío vencido, etc: se pide uno nuevo
+                setDesafioError(data.error || 'No se pudo posponer la tarea.');
+                pedirDesafio(selectedTaskId);
             }
-        } catch (err) { console.error(err); }
+        } catch (err) {
+            console.error(err);
+            setDesafioError('No se pudo posponer la tarea.');
+        }
     };
 
     // --- 6. ELIMINACIÓN EN DOS PASOS (Soft Delete / Hard Delete) ---
@@ -857,9 +902,34 @@ function MisTareas() {
                                 <option value="2 horas">2 Horas</option>
                                 <option value="1 día">1 Día</option>
                             </select>
+
+                            <div className="desafio-postpone-box" style={{ marginTop: '1rem', padding: '0.75rem', borderRadius: '8px', background: '#f1f5f9' }}>
+                                <label style={{ fontWeight: 600 }}>Antes de posponer, resuelve esto:</label>
+                                {desafioLoading && <p style={{ color: '#64748b', margin: '0.5rem 0' }}>Generando desafío...</p>}
+                                {!desafioLoading && desafio && (
+                                    <>
+                                        <p style={{ margin: '0.5rem 0' }}>{desafio.pregunta}</p>
+                                        <input
+                                            className="modal-input"
+                                            type="text"
+                                            placeholder="Tu respuesta"
+                                            value={respuestaDesafio}
+                                            onChange={e => { setRespuestaDesafio(e.target.value); setDesafioError(''); }}
+                                            autoFocus
+                                        />
+                                    </>
+                                )}
+                                {desafioError && <p style={{ color: '#dc2626', margin: '0.5rem 0 0' }}>{desafioError}</p>}
+                                {!desafioLoading && !desafio && !desafioError && (
+                                    <button type="button" className="btn-secondary" onClick={() => pedirDesafio(selectedTaskId)}>
+                                        Generar desafío
+                                    </button>
+                                )}
+                            </div>
+
                             <div className="modal-footer">
                                 <button type="button" className="btn-secondary" onClick={() => setIsPostponeModalOpen(false)}>Cancelar</button>
-                                <button type="submit" className="btn-primary-blue">Posponer Tarea</button>
+                                <button type="submit" className="btn-primary-blue" disabled={desafioLoading || !desafio}>Posponer Tarea</button>
                             </div>
                         </form>
                     </div>

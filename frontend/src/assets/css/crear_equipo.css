@@ -77,7 +77,7 @@
 
 .crear-equipo-upload-link {
     font-size: 1.2rem;
-    color: #0284c7; /* Azul fuerte para el enlace */
+    color: var(--link-color); /* Color de enlace según el tema activo */
     text-decoration: underline;
     font-weight: 700;
     cursor: pointer;
@@ -200,7 +200,7 @@
 }
 
 .crear-equipo-btn-crear {
-    background-color: #3b82f6;
+    background-color: var(--btn-bg);
 }
 /* Descripción */
 .crear-equipo-textarea {

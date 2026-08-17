@@ -30,6 +30,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models.home import Usuario, Equipo, Grupo, Tarea, Evidencia, Actividad
 from app.services import google_calendar_service as gcal
+from app.services import gemini_service
 
 home_bp = Blueprint('home_bp', __name__)
 
@@ -174,6 +175,82 @@ def update_tarea(id):
         return jsonify({"error": str(e)}), 500
 
 
+@home_bp.route('/tareas/<int:id>/desafio', methods=['POST'])
+@jwt_required()
+def generar_desafio_tarea(id):
+    """
+    Genera un reto (con Gemini, o un fallback local si Gemini falla o no
+    está configurado) que el usuario debe resolver antes de poder posponer
+    esta tarea. Regresa {"token": ..., "pregunta": ...} — la respuesta
+    correcta NUNCA se manda al frontend, se valida del lado del servidor
+    en POST /tareas/<id>/posponer.
+    """
+    usuario_id = int(get_jwt_identity())
+    tarea = Tarea.query.get(id)
+    if not tarea:
+        return jsonify({"error": "Tarea no encontrada"}), 404
+    if not _puede_acceder_tarea(tarea, usuario_id):
+        return jsonify({"error": "No tienes permiso sobre esta tarea"}), 403
+    if not tarea.TAR_FechaLimite:
+        return jsonify({"error": "No se puede posponer una tarea sin fecha límite"}), 400
+
+    desafio = gemini_service.generar_desafio(usuario_id, tarea)
+    return jsonify(desafio), 200
+
+
+@home_bp.route('/tareas/<int:id>/posponer', methods=['POST'])
+@jwt_required()
+def posponer_tarea(id):
+    """
+    Aplica el nuevo plazo SOLO si la respuesta al desafío generado en
+    POST /tareas/<id>/desafio es correcta.
+    Body esperado: {"token": "...", "respuesta": "...", "addMinutes": 30}
+    """
+    usuario_id = int(get_jwt_identity())
+    tarea = Tarea.query.get(id)
+    if not tarea:
+        return jsonify({"error": "Tarea no encontrada"}), 404
+    if not _puede_acceder_tarea(tarea, usuario_id):
+        return jsonify({"error": "No tienes permiso sobre esta tarea"}), 403
+    if not tarea.TAR_FechaLimite:
+        return jsonify({"error": "No se puede posponer una tarea sin fecha límite"}), 400
+
+    data = request.json or {}
+    token = data.get('token')
+    respuesta_usuario = data.get('respuesta')
+    add_minutes = data.get('addMinutes')
+
+    if not token or respuesta_usuario is None or not add_minutes:
+        return jsonify({"error": "Faltan datos: token, respuesta y addMinutes son requeridos"}), 400
+
+    ok, motivo = gemini_service.validar_respuesta(usuario_id, id, token, respuesta_usuario)
+    if not ok:
+        return jsonify({"error": motivo}), 400
+
+    # --- misma lógica de "posponer" que ya vivía en el PUT genérico ---
+    limite_anterior = _parse_deadline(tarea)
+    segundos_restantes = max(0, int((limite_anterior - datetime.now()).total_seconds())) if limite_anterior else None
+    Actividad.registrar(
+        usuario_id, 'pospuesta', tarea.TAR_Nombre,
+        tarea_id=tarea.TAR_Id, segundos_antes_limite=segundos_restantes
+    )
+
+    base = limite_anterior or datetime.now()
+    nuevo_limite = base + timedelta(minutes=int(add_minutes))
+    tarea.TAR_FechaLimite = nuevo_limite.strftime('%Y-%m-%d')
+    tarea.TAR_HoraLimite = nuevo_limite.strftime('%H:%M')
+
+    try:
+        db.session.commit()
+        usuario = Usuario.query.get(usuario_id)
+        gcal.sync_tarea(usuario, tarea)
+        db.session.commit()
+        return jsonify(tarea.to_dict()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
 @home_bp.route('/tareas/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_tarea(id):
@@ -289,14 +366,20 @@ def _buscar_tarea_urgente(usuario_id):
     tareas pendientes con fecha límite futura. De esa prioridad toma la de fecha más próxima.
     """
     ahora = datetime.now()
+    limite_urgencia = ahora + timedelta(seconds=VENTANA_URGENCIA_SEGUNDOS)
     for prioridad, color, tier in NIVELES_PRIORIDAD:
-        candidatas = Tarea.query.filter_by(
-            USU_Id=usuario_id, TAR_Prioridad=prioridad,
-            TAR_Completada=False, TAR_Eliminada=False
+        candidatas = Tarea.query.filter(
+            Tarea.USU_Id == usuario_id,
+            func.lower(Tarea.TAR_Prioridad) == prioridad.lower(),
+            Tarea.TAR_Completada == False,
+            Tarea.TAR_Eliminada == False
         ).all()
 
         con_fecha = [(t, _parse_deadline(t)) for t in candidatas]
-        con_fecha = [(t, f) for t, f in con_fecha if f is not None and f >= ahora]
+        # Solo cuentan las que están dentro de la ventana de urgencia (<24h);
+        # así no se "atora" en una tarea de esta prioridad con fecha lejana
+        # mientras hay tareas de menor prioridad realmente por vencer.
+        con_fecha = [(t, f) for t, f in con_fecha if f is not None and ahora <= f <= limite_urgencia]
 
         if con_fecha:
             con_fecha.sort(key=lambda par: par[1])
@@ -317,9 +400,6 @@ def get_banner():
         return jsonify({"task": None}), 200
 
     segundos_restantes = int((deadline - datetime.now()).total_seconds())
-
-    if segundos_restantes >= VENTANA_URGENCIA_SEGUNDOS:
-        return jsonify({"task": None}), 200
 
     data = tarea.to_dict()
     data.update({
@@ -343,7 +423,7 @@ def get_destacadas():
         USU_Id=usuario_id, TAR_Completada=False, TAR_Eliminada=False
     ).all()
 
-    altas = sorted([t for t in base if t.TAR_Prioridad == 'Alta'], key=_deadline_key)
+    altas = sorted([t for t in base if (t.TAR_Prioridad or '').lower() == 'alta'], key=_deadline_key)
     resultado = altas[:5]
 
     if len(resultado) < 5:
@@ -386,7 +466,7 @@ def get_estadisticas():
         Tarea.USU_Id == usuario_id,
         Tarea.TAR_Completada == False,
         Tarea.TAR_Eliminada == False,
-        Tarea.TAR_Prioridad.in_(['Alta', 'Media'])
+        func.lower(Tarea.TAR_Prioridad).in_(['alta', 'media'])
     ).all()
     tareas_ignoradas = sum(1 for t in pendientes if (_parse_deadline(t) or datetime.max) < ahora)
 
