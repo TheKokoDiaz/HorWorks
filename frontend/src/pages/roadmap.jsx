@@ -189,27 +189,31 @@ function Roadmap() {
                     </div>
                 )}
 
-                {/* Cuadrícula de Tiempo (Meses) */}
                 <div className="timeline-grid header-grid">
                     <div className="row-label-blank"></div>
-                    <div className="months-container">
-                        {TRIMESTRES.map((t, i) => (
-                            <div className="quarter-col" key={t.titulo}>
-                                <div className={esAnioActual && i === trimestreActualIdx ? 'quarter-title-current' : 'quarter-title'}>
-                                    {t.titulo} {esAnioActual && i === trimestreActualIdx && <span className="hoy-tag">HOY</span>}
+                    <div className="months-container-wrapper">
+                        <div className="months-container">
+                            {TRIMESTRES.map((t, i) => (
+                                <div className="quarter-col" key={t.titulo}>
+                                    <div className={esAnioActual && i === trimestreActualIdx ? 'quarter-title-current' : 'quarter-title'}>
+                                        {t.titulo} {esAnioActual && i === trimestreActualIdx && <span className="hoy-tag">HOY</span>}
+                                    </div>
+                                    <div className="months-subgrid">
+                                        {t.meses.map((m) => <div key={m}>{NOMBRES_MES[m]}</div>)}
+                                    </div>
                                 </div>
-                                <div className="months-subgrid">
-                                    {t.meses.map((m) => <div key={m}>{NOMBRES_MES[m]}</div>)}
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+
+                        {/* Línea "Hoy" posicionada dentro del wrapper de meses (0% a 100% del grid) */}
+                        {esAnioActual && (
+                            <div 
+                                className="today-line" 
+                                style={{ left: `${fraccionAnio * 100}%` }}
+                            ></div>
+                        )}
                     </div>
                 </div>
-
-                {/* Línea vertical "Hoy" (solo si estamos viendo el año actual) */}
-                {esAnioActual && (
-                    <div className="today-line" style={{ left: `calc(18% + (82% * ${fraccionAnio}))` }}></div>
-                )}
 
                 {loading && <p className="roadmap-loading">Cargando roadmap…</p>}
 
