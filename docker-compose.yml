@@ -7,6 +7,11 @@ services:
     environment:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      # Sin esto, MySQL corre en UTC y CURRENT_TIMESTAMP/NOW() quedan
+      # desfasados ~6h contra la hora local del navegador (Querétaro,
+      # GMT-6). La imagen oficial de mysql ya trae tzdata, así que basta
+      # con esta variable.
+      TZ: America/Mexico_City
     volumes:
       - mysql_data:/var/lib/mysql
       # Al arrancar por primera vez, ejecuta automáticamente tu script SQL
@@ -40,6 +45,14 @@ services:
       - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
       - GOOGLE_CALENDAR_TIMEZONE=${GOOGLE_CALENDAR_TIMEZONE}
       - FRONTEND_URL=${FRONTEND_URL}
+      # Para los desafíos de "posponer tarea" (app/services/gemini_service.py).
+      # Si se deja vacía, el backend usa un banco local de retos de respaldo
+      # en vez de tronar — no es obligatoria para que la app funcione.
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      # Mismo motivo que en "db": el Dockerfile ya fija TZ al buildear la
+      # imagen, pero se deja explícito aquí también para que quede en un
+      # solo lugar visible y no dependa de acordarse de reconstruir.
+      - TZ=America/Mexico_City
     ports:
       - "5000:5000"
     depends_on:
